@@ -210,7 +210,7 @@ svg.ic.bolt{width:13px;height:13px;margin:0 2px 0 0;color:#ffe066}
     <div class="pill stat"><div><b id="pOut">0</b><small>MW/Sek.</small></div><div class="cap" id="pCalf">0/8 Kälber</div></div>
   </div>
   
-  <button id="birthFab" aria-label="Nächstes Kälbchen"><svg class="ring" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3.5"/><circle id="birthRing" cx="22" cy="22" r="19" fill="none" stroke="#7dff4a" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="119.4" transform="rotate(-90 22 22)"/></svg><svg class="mg" viewBox="0 0 24 24"><ellipse cx="11" cy="14" rx="7.5" ry="5" fill="#dcfa9e" stroke="#4f7a1c" stroke-width="1.2"/><circle cx="17.5" cy="10.5" r="4" fill="#dcfa9e" stroke="#4f7a1c" stroke-width="1.2"/><circle cx="18.6" cy="10" r=".8" fill="#2a2d36"/><path d="M19 3.5c-1 1.2-1 2.5 0 3.3" stroke="#59d62a" stroke-width="1.4" fill="none"/><circle cx="19.2" cy="3" r="1.4" fill="#7dff4a"/></svg><span id="birthLbl">30s</span></button>
+  
   <p id="birthInfo" style="display:none"></p>
   <div id="chefCard" style="display:none"><div class="ct"><b>Kraftwerk-Chef</b><span id="chefTxt"></span></div><div class="cb"><button id="chefNo">Nein danke</button><button id="chefYes"></button></div></div>
   <div id="pbar"><button id="calfBuy" class="primary">Kälbchen</button><button id="pMisBtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="currentColor" opacity=".2"/><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2.5 12h19M12 2.5c3 3 3 16 0 19M12 2.5c-3 3-3 16 0 19" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span>Welt&shy;rettung</span></button><button id="pUpBtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5" fill="currentColor" opacity=".18"/><path d="M13.4 4.6 7.2 13.3h4.5l-.9 6.1 6.2-8.7h-4.5z" fill="currentColor"/></svg><span>Upgrades</span></button><button id="pMapBtn"><svg viewBox="0 0 24 24"><path d="M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="currentColor" opacity=".25"/><path d="M8.5 4v13.5M15.5 6.5V20M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Karte</span></button><button id="pLadBtn"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2.6" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="2.6" fill="currentColor" opacity=".35"/><rect x="3" y="13" width="8" height="8" rx="2.6" fill="currentColor" opacity=".35"/><rect x="13" y="13" width="8" height="8" rx="2.6" fill="currentColor"/></svg><span>Stufen</span></button></div>
@@ -405,7 +405,6 @@ const MISSIONS=[
  {n:'Meteor-Schutzschild',d:'Ein riesiger Meteor rast auf die Erde zu!',need:1000,dia:250,bonus:.25,x:80,y:9}
 ];
 const PUP=[
- {k:'birth',n:'Schnellere Geburt',d:l=>'Kalb alle '+fmtL(birthInt(l))+' s',cost:l=>200*Math.pow(2.5,l),max:8},
  {k:'slots',n:'Größerer Brutkasten',d:l=>(8+2*l)+' Plätze',cost:l=>500*Math.pow(3,l),max:6},
  {k:'amp',n:'Reaktor-Verstärker',d:l=>'+'+(l*25)+' % Leistung',cost:l=>300*Math.pow(2.2,l),max:20}
 ];
@@ -422,7 +421,6 @@ function plantOutput(){let o=0;S.plant.calves.forEach(c=>o+=calfMW(c.lvl));retur
 function addCalf(L,x,y){const c={lvl:L,x:x??(.15+Math.random()*.7),y:y??(.46+Math.random()*.4),id:pUid++,pop:1,wait:Math.random()*2};c.tx=c.x;c.ty=c.y;S.plant.calves.push(c);return c}
 function plantTick(dt){const P=S.plant;if(!P.unlocked)return;
   P.mw+=plantOutput()*dt;
-  if(P.calves.length<slots()){P.birthT+=dt;if(P.birthT>=birthInt(P.up.birth)){P.birthT=0;addCalf(1);if(plantOpen)pFloats.push({t:'Ein GLOW-Kälbchen ist geboren!',l:1.4,x:.5,y:.12})}}
   P.calves.forEach(c=>{if(c.pop)c.pop=Math.max(0,c.pop-dt*3);if(pDrag&&pDrag.c===c)return;
     const dx=c.tx-c.x,dy=c.ty-c.y,d=Math.hypot(dx,dy);
     if(d<.005){c.wait-=dt;if(c.wait<=0){c.tx=Math.min(.9,Math.max(.1,c.x+(Math.random()-.5)*.3));c.ty=Math.min(.9,Math.max(.44,c.y+(Math.random()-.5)*.25));c.wait=1+Math.random()*3}c.mv=0}
@@ -502,8 +500,6 @@ function buildPlantBg(){
   // Grasbüschel
   const gn=Math.round(W2*H2/2200);g.lineCap='round';
   for(let i=0;i<gn;i++){const x=r()*W2,y=hz+28+r()*(H2-hz-28),h=5+r()*6;g.strokeStyle=r()<.5?'rgba(40,120,20,.5)':'rgba(220,255,150,.65)';g.lineWidth=1.6;g.beginPath();g.moveTo(x,y);g.lineTo(x-3,y-h);g.moveTo(x,y);g.lineTo(x,y-h*1.2);g.moveTo(x,y);g.lineTo(x+3,y-h);g.stroke()}
-  // Fässer
-  [[.07,.5],[.93,.86]].forEach(([fx,fy2])=>{const x=W2*fx,y=hz+(H2-hz)*fy2*.85;g.fillStyle='#ffd23f';g.strokeStyle='#7a5a00';g.lineWidth=1.5;g.beginPath();g.roundRect(x-9,y-22,18,24,3);g.fill();g.stroke();g.fillStyle='#2a2d36';g.fillRect(x-9,y-16,18,2);g.fillRect(x-9,y-5,18,2);shDraw(g,ATOM_SH,x,y-10,.32)});
 }
 function drawPlant(dt){
   const c=pcx,W2=PW,H2=PH,P=S.plant;if(!c)return;
@@ -523,7 +519,7 @@ function drawPlant(dt){
   pFloats.forEach(f=>{f.l-=dt;if(f.spark){f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy+=.9*dt}else f.y-=dt*.06});pFloats=pFloats.filter(f=>f.l>0);
   pFloats.forEach(f=>{if(f.spark){c.globalAlpha=Math.max(0,f.l*1.6);c.fillStyle=f.col;c.beginPath();c.arc(f.x*W2,f.y*H2,3.5,0,7);c.fill();return}
     c.globalAlpha=Math.min(1,f.l*2);c.font='900 16px Nunito, system-ui';c.textAlign='center';const fw=c.measureText(f.t).width/2+8,fx=Math.min(W2-fw,Math.max(fw,W2*f.x));c.lineWidth=4;c.strokeStyle='rgba(15,40,10,.75)';c.strokeText(f.t,fx,H2*f.y);c.fillStyle='#ffffff';c.fillText(f.t,fx,H2*f.y)});c.globalAlpha=1;
-  if(!P.calves.length){c.fillStyle='rgba(20,60,10,.6)';c.font='800 15px Nunito, system-ui';c.textAlign='center';c.fillText('Warte auf das erste GLOW-Kälbchen …',W2/2,H2*.62)}
+  if(!P.calves.length){c.fillStyle='rgba(20,60,10,.6)';c.font='800 15px Nunito, system-ui';c.textAlign='center';c.fillText('Kaufe GLOW-Kälbchen mit Atom-Münzen!',W2/2,H2*.62)}
 }
 function plantPointer(){
   const cvp=document.getElementById('plantCv');
@@ -562,9 +558,7 @@ function updPlantUI(){const P=S.plant,out=plantOutput();updChefUI();
   document.getElementById('pOut').textContent=fmtL(out);
   document.getElementById('pCalf').textContent=P.calves.length+'/'+slots()+' Kälber';
   const iv=birthInt(P.up.birth),full=P.calves.length>=slots();
-  document.getElementById('birthInfo').textContent=full?'Brutkasten voll – verschmelze Kälber!':'Nächstes Kälbchen in '+Math.max(1,Math.ceil(iv-P.birthT))+' s · '+P.cows+(P.cows===1?' Mutterkuh':' Mutterkühe');
-  {const pr=full?1:Math.min(1,P.birthT/iv);document.getElementById('birthRing').style.strokeDashoffset=(119.4*(1-pr)).toFixed(1);const bl=document.getElementById('birthLbl'),bt=full?'VOLL':Math.max(1,Math.ceil(iv-P.birthT))+'s';if(bl.textContent!==bt)bl.textContent=bt}
-  const bb=document.getElementById('calfBuy');bb.disabled=full||(S.atom||0)<ATOM_CALF;const bh='<span>Kälbchen<small>'+IC.atom+ATOM_CALF+'</small></span>';if(bb.innerHTML!==bh)bb.innerHTML=bh;document.getElementById('pAtom').textContent=(S.atom||0).toLocaleString('de-DE');
+      const bb=document.getElementById('calfBuy');bb.disabled=full||(S.atom||0)<ATOM_CALF;const bh='<span>Kälbchen<small>'+IC.atom+ATOM_CALF+'</small></span>';if(bb.innerHTML!==bh)bb.innerHTML=bh;document.getElementById('pAtom').textContent=(S.atom||0).toLocaleString('de-DE');
   renderMissions(true);renderPup(true);
 }
 function renderMissions(update){const box=document.getElementById('missionList'),P=S.plant,out=plantOutput();
@@ -605,7 +599,7 @@ function initPlant(){
   document.getElementById('pMisBtn').onclick=()=>{renderMissions();open('pMis')};
   document.getElementById('pUpBtn').onclick=()=>{renderPup();open('pUps')};
   document.getElementById('pLadBtn').onclick=()=>{renderPup();open('pLad')};
-  document.getElementById('birthFab').onclick=()=>showToast(document.getElementById('birthInfo').textContent);
+  
   plantPointer();updMapBtn();
 }
 
