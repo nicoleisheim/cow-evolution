@@ -104,7 +104,7 @@ svg.ic.bolt{width:13px;height:13px;margin:0 2px 0 0;color:#ffe066}
     <canvas id="cv"></canvas>
     <button id="magBtn" class="fab" aria-label="Magnet an/aus"><svg class="ring" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3.5"/><circle id="magRing" cx="22" cy="22" r="19" fill="none" stroke="#ff5fa2" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="119.4" transform="rotate(-90 22 22)"/></svg><svg class="mg" viewBox="0 -1.5 24 24"><path d="M5 3h5v8a2 2 0 0 0 4 0V3h5v8a7 7 0 0 1-14 0z" fill="#ff5fa2"/><path d="M5 3h5v3.6H5zM14 3h5v3.6h-5z" fill="#eef1f4"/></svg><span id="magLbl">10s</span></button>
     <button id="crateBtn" class="fab" aria-label="Kisten an/aus"><svg class="ring" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3.5"/><circle id="crateRing" cx="22" cy="22" r="19" fill="none" stroke="#ff5fa2" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="119.4" transform="rotate(-90 22 22)"/></svg><svg class="mg" viewBox="0 0 24 24"><rect x="4.5" y="9.5" width="15" height="10.5" rx="2.4" fill="#f6b26b"/><rect x="3.3" y="6.6" width="17.4" height="4.4" rx="1.8" fill="#ffc98a"/><rect x="10.7" y="6.6" width="2.6" height="13.4" fill="#ff5fa2"/><path d="M12 6.6C10.5 3.6 7 3.4 7 5.3c0 1.6 2.8 1.6 5 1.3zm0 0c1.5-3 5-3.2 5-1.3 0 1.6-2.8 1.6-5 1.3z" fill="#ff5fa2"/></svg><span id="crateLbl">35s</span></button>
-    <div id="hint">Zieh zwei gleiche Kühe aufeinander!</div>
+    <div id="hint" style="display:none"></div>
   </div>
   <div id="bar">
     <button id="buyBtn" class="primary"><svg viewBox="0 0 24 24"><rect x="2.5" y="2.5" width="19" height="19" rx="6.5" fill="currentColor" opacity=".25"/><path d="M12 7.5v9M7.5 12h9" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span>Kuh kaufen<small id="buyCost">10</small></span></button>
@@ -368,7 +368,7 @@ function drawSky(dt){
     const sg=cx.createRadialGradient(sx,sy,4,sx,sy,48);sg.addColorStop(0,'rgba(255,240,150,.9)');sg.addColorStop(1,'rgba(255,240,150,0)');cx.fillStyle=sg;cx.beginPath();cx.arc(sx,sy,48,0,7);cx.fill();
     cx.fillStyle=mix('#ffe066','#ff8a3d',Math.max(0,1-Math.sin(Math.PI*u)*2.2));cx.beginPath();cx.arc(sx,sy,16,0,7);cx.fill()}
   if(p>.28&&p<.72){const u=(p-.28)/.44,mx=W*(.06+.88*u),my=hz*(1.05-.8*Math.sin(Math.PI*u));
-    cx.fillStyle='rgba(244,241,222,.95)';cx.beginPath();cx.arc(mx,my,13,0,7);cx.fill();cx.fillStyle=mix('#4fb0f0','#2c3d86',n);cx.beginPath();cx.arc(mx+6,my-4,11,0,7);cx.fill()}
+    const mg=cx.createRadialGradient(mx,my,8,mx,my,44);mg.addColorStop(0,'rgba(255,248,220,.45)');mg.addColorStop(1,'rgba(255,248,220,0)');cx.fillStyle=mg;cx.beginPath();cx.arc(mx,my,44,0,7);cx.fill();cx.save();cx.beginPath();cx.rect(0,0,W,H);cx.moveTo(mx+19,my-5);cx.arc(mx+7,my-5,12,0,Math.PI*2,true);cx.closePath();cx.clip('evenodd');cx.fillStyle='#fff6d6';cx.beginPath();cx.arc(mx,my,14,0,7);cx.fill();cx.restore()}
   if(!clouds.length)for(let i=0;i<4;i++)clouds.push({x:(i+Math.random()*.6)/4*W,y:(.12+Math.random()*.4)*hz,s:.6+Math.random()*.7,v:4+Math.random()*8});
   clouds.forEach(c=>{c.x+=c.v*dt;if(c.x>W+90)c.x=-90;const a=1-.3*n;cx.fillStyle='rgba(255,255,255,'+(.9*a)+')';
     [[-22,4,16],[0,-4,22],[22,3,16],[8,8,14],[-8,8,14]].forEach(([dx,dy,r])=>{cx.beginPath();cx.arc(c.x+dx*c.s,c.y+dy*c.s,r*c.s,0,7);cx.fill()})});
@@ -622,7 +622,7 @@ document.getElementById('resetBtn').onclick=()=>{const b=document.getElementById
   if(Date.now()-resetArm<4000){try{localStorage.removeItem('kuhEvo1');localStorage.removeItem('kuhEvoTap')}catch(e){}window.__reset=1;location.reload();return}
   resetArm=Date.now();b.querySelector('span').textContent='Wirklich? Nochmal tippen';b.style.background='#ff5fa2';b.style.color='#fff';
   setTimeout(()=>{b.querySelector('span').textContent='Neu starten';b.style.background='#fde7f1';b.style.color='#d6347f'},4000)};
-function hideHint(){const h=document.getElementById('hint');let tap=false,sel=false;try{tap=!!localStorage.getItem('kuhEvoTap');sel=!!localStorage.getItem('kuhEvoSell')}catch(e){}if(S.merged<2)return;if(!tap){h.textContent='Tipp eine Kuh an für Bonus-Münzen!';h.style.opacity=1}else if(!sel){h.textContent='Halte eine Kuh gedrückt, um sie zu verkaufen';h.style.opacity=1}else h.style.opacity=0}
+function hideHint(){}
 hideHint();
 setInterval(save,5000);
 addEventListener('pagehide',save);document.addEventListener('visibilitychange',()=>{if(document.hidden)save()});
