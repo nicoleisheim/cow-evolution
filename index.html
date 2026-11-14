@@ -267,7 +267,7 @@ function drawCow(c,x,y,s,L,t,flip,lifted,glow,walk){
     el(c,0,s*.32,s*.6,s*.13,'#8e9aa3');el(c,0,s*.27,s*.48,s*.08,'#cfd8dc');
     for(let i=0;i<5;i++)el(c,-s*.4+i*s*.2,s*.34,s*.03,s*.03,Math.sin(t*6+i)>0?'#ffeb3b':'#ff5252');
   }
-  if(d.starburst){c.save();c.translate(0,b);c.rotate(t*.4);for(let i=0;i<12;i++){c.rotate(Math.PI/6);c.fillStyle=i%2?'rgba(255,255,255,.35)':'rgba(255,140,220,.35)';c.beginPath();c.moveTo(0,0);c.lineTo(-s*.05,-s*.62);c.lineTo(s*.05,-s*.62);c.fill()}c.restore()}
+  if(d.starburst){c.save();c.translate(0,b);c.rotate(t*.4);for(let i=0;i<12;i++){c.rotate(Math.PI/6);c.fillStyle=i%2?'rgba(255,255,255,.35)':'rgba(255,140,220,.35)';c.beginPath();c.moveTo(0,0);c.lineTo(-s*.035,-s*.48);c.lineTo(s*.035,-s*.48);c.fill()}c.restore()}
   if(d.wings){const fl=Math.sin(t*3)*.16;c.save();c.translate(-s*.04,-s*.17+b);c.rotate(-.3+fl);c.beginPath();c.moveTo(0,0);c.bezierCurveTo(-s*.08,-s*.34,-s*.42,-s*.4,-s*.52,-s*.22);c.quadraticCurveTo(-s*.42,-s*.17,-s*.45,-s*.1);c.quadraticCurveTo(-s*.34,-s*.08,-s*.35,-s*.02);c.quadraticCurveTo(-s*.22,-s*.02,-s*.2,s*.05);c.closePath();c.fillStyle='#ffffff';c.fill();c.strokeStyle='#b6a6f2';c.lineWidth=s*.02;c.stroke();c.restore();}
   if(d.jetpack){rr(c,-s*.42,-s*.32+b,s*.18,s*.34,s*.05,'#90a4ae');rr(c,-s*.4,-s*.28+b,s*.05,s*.26,s*.02,'#cfd8dc');
     const fl=s*(.12+Math.random()*.06);el(c,-s*.33,s*.08+b+fl*.5,s*.06,fl,'#ff9800');el(c,-s*.33,s*.06+b+fl*.35,s*.03,fl*.6,'#fff176')}
@@ -288,7 +288,7 @@ function drawCow(c,x,y,s,L,t,flip,lifted,glow,walk){
   const bodyPath=()=>{if(d.shape==='box'){c.beginPath();c.roundRect(-RX,-RY+b,RX*2,RY*1.8,s*.08)}else if(d.shape==='facet'){facetPath(c,0,b,RX,RY*1.1)}else{c.beginPath();c.ellipse(0,b,RX,RY,0,0,7)}};
   if(d.cosmic){c.shadowColor='rgba(180,160,255,.8)';c.shadowBlur=s*.3}
   if(d.crystal){c.shadowColor='#bff4ff';c.shadowBlur=s*.35}
-  if(d.radio){c.shadowColor=d.glow||'rgba(125,255,74,.95)';c.shadowBlur=s*.45}
+  if(d.radio){c.shadowColor=d.glow||'rgba(125,255,74,.95)';c.shadowBlur=d.soft?s*.22:s*.45}
   bodyPath();c.fillStyle=d.crystal?crystalFill(c,s):d.body;c.fill();c.shadowBlur=0;
   c.save();bodyPath();c.clip();
   if(d.spots==='big'){[[-.22,-.12,.14],[.1,.12,.12],[-.02,-.22,.08],[.24,-.1,.08]].forEach(([sx,sy,r])=>el(c,sx*s,sy*s+b,r*s*1.2,r*s*.8,d.spot,.5))}
@@ -329,7 +329,7 @@ function drawHead(c,s,d,t,seed){
   const OL=outl(d),LW=s*.022;
   if(!d.robot&&!d.crystal){el(c,-s*.13,-s*.1,s*.09,s*.04,d.body,-.5);c.strokeStyle=OL;c.lineWidth=LW;c.stroke();el(c,-s*.13,-s*.1,s*.05,s*.02,'#f6b6b6',-.5)}
   if(d.horns){const hc=d.cosmic?'#ffd600':d.crystal?'#e9fbff':'#f1e2bb';c.strokeStyle=OL;c.lineWidth=LW*.8;c.fillStyle=shade(hc.length===7?hc:'#f1e2bb',.88);c.beginPath();c.moveTo(s*.13,-s*.13);c.quadraticCurveTo(s*.17,-s*.3,s*.07,-s*.27);c.lineTo(s*.07,-s*.15);c.closePath();c.fill();c.stroke();c.fillStyle=hc;c.beginPath();c.moveTo(-s*.08,-s*.13);c.quadraticCurveTo(-s*.12,-s*.3,-s*.02,-s*.27);c.lineTo(-s*.02,-s*.15);c.closePath();c.fill();c.stroke()}
-  if(d.mohawk){const sp=[[-.15,-.33,'#ff3d8b'],[-.08,-.4,'#ff6fb0'],[0,-.42,'#ff3d8b'],[.08,-.38,'#ff6fb0']];c.strokeStyle=OL;c.lineWidth=LW*.8;sp.forEach(([x0,yt,col])=>{c.fillStyle=col;c.beginPath();c.moveTo(x0*s-s*.045,-s*.13);c.quadraticCurveTo(x0*s-s*.02,(yt+.1)*s,x0*s+s*.01,yt*s);c.quadraticCurveTo(x0*s+s*.02,(yt+.12)*s,x0*s+s*.045,-s*.13);c.closePath();c.fill();c.stroke()})}
+  if(d.mohawk){const sp=[[-.15,-.33,'#ff3d8b'],[-.08,-.4,'#ff6fb0'],[0,-.42,'#ff3d8b'],[.08,-.38,'#ff6fb0']];c.strokeStyle=OL;c.lineWidth=LW*.8;sp.forEach(([x0,yt,col])=>{const yb=-s*(.17*Math.sqrt(Math.max(0,1-Math.pow(x0/.19,2)))-.05);c.fillStyle=col;c.beginPath();c.moveTo(x0*s-s*.045,yb);c.quadraticCurveTo(x0*s-s*.02,(yt+.1)*s,x0*s+s*.01,(yt+.03)*s);c.quadraticCurveTo(x0*s+s*.02,(yt+.14)*s,x0*s+s*.045,yb);c.closePath();c.fill();c.stroke()})}
   const hp=()=>{if(d.robot){c.beginPath();c.roundRect(-s*.19,-s*.17,s*.38,s*.32,s*.05)}else if(d.crystal)facetPath(c,0,0,s*.2,s*.17);else{c.beginPath();c.ellipse(0,0,s*.19,s*.17,0,0,7)}};
   if(d.robot){rr(c,-s*.24,-s*.08,s*.06,s*.12,s*.02,'#7f909c');c.strokeStyle=OL;c.lineWidth=LW;c.stroke()}
   hp();c.fillStyle=d.crystal?crystalFill(c,s):d.body;c.fill();
@@ -343,7 +343,7 @@ function drawHead(c,s,d,t,seed){
   if(d.band){c.fillStyle='#e53935';c.fillRect(-s*.17,-s*.155,s*.34,s*.045);c.fillRect(-s*.26,-s*.15,s*.1,s*.022);c.fillRect(-s*.25,-s*.125,s*.08,s*.022)}
   // Maul
   if(d.robot){rr(c,s*.0,s*.02,s*.18,s*.1,s*.02,'#7f909c');c.strokeStyle='#37474f';c.lineWidth=s*.012;c.beginPath();for(let i=1;i<4;i++){c.moveTo(s*.0+i*s*.045,s*.03);c.lineTo(s*.0+i*s*.045,s*.11)}c.stroke()}
-  else{el(c,s*.1,s*.07,s*.12,s*.09,d.alien?'#b7f08f':d.crystal?'rgba(255,255,255,.55)':d.cosmic?'#c9b8ff':d.radio?'#eefc9a':'#f6b6b6');c.strokeStyle=OL;c.lineWidth=LW;c.stroke();el(c,s*.08,s*.07,s*.018,s*.025,'#6b3b3b');el(c,s*.15,s*.07,s*.018,s*.025,'#6b3b3b')}
+  else{el(c,s*.1,s*.07,s*.12,s*.09,d.alien?'#b7f08f':d.crystal?'rgba(255,255,255,.55)':d.cosmic?'#c9b8ff':d.mz?d.mz:d.radio?'#eefc9a':'#f6b6b6');c.strokeStyle=OL;c.lineWidth=LW;c.stroke();el(c,s*.08,s*.07,s*.018,s*.025,'#6b3b3b');el(c,s*.15,s*.07,s*.018,s*.025,'#6b3b3b')}
   if(d.rocker){c.strokeStyle='#d6dae3';c.lineWidth=s*.014;c.beginPath();c.arc(-s*.17,-s*.05,s*.022,0,7);c.stroke()}
   if(d.noseRing){c.strokeStyle='#ffcc33';c.lineWidth=s*.022;c.beginPath();c.arc(s*.115,s*.15,s*.045,.15,Math.PI-.15);c.stroke()}
   // Augen
@@ -354,8 +354,9 @@ function drawHead(c,s,d,t,seed){
     const big=d.calf?1.4:1;
     const eyes=d.third?[[s*.0,-s*.03],[s*.1,-s*.04],[s*.05,-s*.12]]:[[s*(.045-.05*big),-s*.055],[s*(.045+.05*big),-s*.055]];
     eyes.forEach(([ex,ey])=>{if(blink){c.strokeStyle='#222';c.lineWidth=s*.015;c.beginPath();c.moveTo(ex-s*.03,ey);c.lineTo(ex+s*.03,ey);c.stroke()}
-      else{el(c,ex,ey,s*.04*big,s*.045*big,d.radio?'#eaffb8':'#fff');c.strokeStyle=OL;c.lineWidth=LW*.7;c.stroke();el(c,ex+s*.01,ey+s*.005,s*.022*big,s*.026*big,d.cosmic?'#24185e':d.crystal?'#4a3aff':d.radio?'#2f8f00':'#222');el(c,ex+s*.018*big,ey-s*.008*big,s*.01*big,s*.01*big,'#fff')}});
+      else{el(c,ex,ey,s*.04*big,s*.045*big,d.radio&&!d.soft?'#eaffb8':'#fff');c.strokeStyle=OL;c.lineWidth=LW*.7;c.stroke();el(c,ex+s*.01,ey+s*.005,s*.022*big,s*.026*big,d.cosmic?'#24185e':d.crystal?'#4a3aff':d.soft?'#2a2d36':d.radio?'#2f8f00':'#222');el(c,ex+s*.018*big,ey-s*.008*big,s*.01*big,s*.01*big,'#fff')}});
   }
+  if(d.soft&&!d.calf){el(c,-s*.06,s*.03,s*.028,s*.016,'rgba(255,120,150,.4)')}
   if(d.calf){el(c,s*.0,s*.04,s*.03,s*.018,'rgba(255,120,120,.45)')}
   if(d.helmet){c.fillStyle='rgba(180,225,255,.28)';c.strokeStyle='rgba(255,255,255,.95)';c.lineWidth=s*.025;c.beginPath();c.arc(s*.02,-s*.01,s*.28,0,7);c.fill();c.stroke();c.fillStyle='rgba(255,255,255,.6)';c.beginPath();c.ellipse(-s*.08,-s*.13,s*.07,s*.03,-.6,0,7);c.fill()}
   if(d.cosmic){c.strokeStyle='#ffd600';c.lineWidth=s*.03;c.shadowColor='#ffd600';c.shadowBlur=12;c.beginPath();c.ellipse(-s*.02,-s*.3+Math.sin(t*2)*s*.02,s*.15,s*.045,0,0,7);c.stroke();c.shadowBlur=0}
@@ -386,14 +387,14 @@ const IC={coin:shSvg('coin',COIN_SH),dia:shSvg('dia',DIA_SH),bolt:'<svg class="i
 document.getElementById('coinIcon').innerHTML=IC.coin;document.getElementById('diaIcon').innerHTML=IC.dia;
 // ---------- Endgame: Kernkraftwerk & Weltrettung ----------
 const CALF=[
- {n:'GLOW-Kälbchen',d:'Frisch geschlüpft und leuchtet schon im Dunkeln.',body:'#e6fbb8',spot:'#c3e98a',leg:'#b4d88a',sc:.72,hs:1.35,bw:.85,legs:'short',calf:1,radio:1,bulb:'#7dff4a',glow:'rgba(150,255,110,.8)'},
- {n:'Uran-Kalb',d:'Trägt stolz seine Warnstreifen.',body:'#f4ee52',spot:'#d8cf2a',leg:'#9a9230',sc:.8,hs:1.25,legs:'short',calf:1,radio:1,noTre:1,stripes:1,glow:'rgba(240,240,80,.9)'},
- {n:'Plutonium-Rind',d:'Grün mit lila Flecken – schwer, stark und strahlend gut gelaunt.',body:'#86e83c',spot:'#8a4fd6',leg:'#4f7a1c',sc:.9,horns:1,radio:1,noTre:1,spots:'big',glow:'rgba(120,255,40,.95)'},
- {n:'Thorium-Bulle',d:'Ein türkises Kraftpaket mit goldenem Nasenring.',body:'#3fd0b8',spot:'#22a08c',leg:'#1f5f55',sc:1,bw:1.08,legs:'thick',horns:1,radio:1,noseRing:1,glow:'rgba(70,255,210,.95)'},
- {n:'Isotopen-Kuh',d:'Um sie kreisen ständig kleine Elektronen.',body:'#b593ff',spot:'#8f6be6',leg:'#4c3a85',sc:1.05,horns:1,radio:1,noTre:1,orbits:1,glow:'rgba(190,150,255,.95)'},
- {n:'Reaktor-Kuh',d:'Hat einen leuchtenden Kern im Bauch.',body:'#4cb4ff',spot:'#1e88d6',leg:'#1d4e7a',sc:1.1,horns:1,radio:1,noTre:1,porthole:1,antenna:1,glow:'rgba(80,190,255,.95)'},
- {n:'Fusions-Kuh',d:'Brennt so heiß wie die Sonne.',body:'#ffad3d',spot:'#ff7a1a',leg:'#a8561a',sc:1.15,horns:1,radio:1,noTre:1,flames:1,float:1,glow:'rgba(255,170,60,.95)'},
- {n:'Supernova-Kuh',d:'Die stärkste Energiequelle des Universums.',body:'#ff7fd0',spot:'#ff4fb8',leg:'#9a2f78',sc:1.22,horns:1,radio:1,noTre:1,starburst:1,wings:1,float:1,glow:'rgba(255,120,220,.95)'}
+ {n:'GLOW-Kälbchen',d:'Frisch geschlüpft und leuchtet schon im Dunkeln.',body:'#d8f7a8',spot:'#b5e27a',leg:'#9cc86a',mz:'#f3ffd9',sc:.72,hs:1.35,bw:.85,legs:'short',calf:1,radio:1,noTre:1,soft:1,spots:'small',bulb:'#7dff4a',glow:'rgba(150,255,110,.7)'},
+ {n:'Uran-Kalb',d:'Trägt stolz seine Warnstreifen.',body:'#f6ef6a',spot:'#e0d23c',leg:'#c2b445',mz:'#fffbd6',sc:.8,hs:1.25,legs:'short',calf:1,radio:1,noTre:1,soft:1,stripes:1,glow:'rgba(240,235,90,.75)'},
+ {n:'Plutonium-Rind',d:'Grün mit lila Flecken – schwer, stark und gut gelaunt.',body:'#9de85a',spot:'#9b6be0',leg:'#6fae3c',mz:'#eaffd2',sc:.9,horns:1,radio:1,noTre:1,soft:1,spots:'big',glow:'rgba(140,255,80,.75)'},
+ {n:'Thorium-Bulle',d:'Ein türkises Kraftpaket mit goldenem Nasenring.',body:'#58d6c2',spot:'#36b3a0',leg:'#2f9483',mz:'#d6fff7',sc:1,bw:1.08,legs:'thick',horns:1,radio:1,noTre:1,soft:1,noseRing:1,spots:'small',glow:'rgba(90,240,210,.75)'},
+ {n:'Isotopen-Kuh',d:'Um sie kreisen ständig kleine Elektronen.',body:'#bfa1ff',spot:'#9d7cf0',leg:'#8a6ad6',mz:'#efe6ff',sc:1.05,horns:1,radio:1,noTre:1,soft:1,orbits:1,glow:'rgba(190,160,255,.75)'},
+ {n:'Reaktor-Kuh',d:'Hat einen leuchtenden Kern im Bauch.',body:'#6cc2ff',spot:'#3a9ae6',leg:'#3f8ccc',mz:'#e1f3ff',sc:1.1,horns:1,radio:1,noTre:1,soft:1,porthole:1,antenna:1,glow:'rgba(100,200,255,.75)'},
+ {n:'Fusions-Kuh',d:'Brennt so heiß wie die Sonne.',body:'#ffb44f',spot:'#ff8a2a',leg:'#e08a3a',mz:'#fff0d9',sc:1.15,horns:1,radio:1,noTre:1,soft:1,flames:1,float:1,glow:'rgba(255,180,80,.75)'},
+ {n:'Supernova-Kuh',d:'Die stärkste Energiequelle des Universums.',body:'#ff8fd6',spot:'#ff5fbe',leg:'#e06ab4',mz:'#ffe6f6',sc:1.22,horns:1,radio:1,noTre:1,soft:1,starburst:1,wings:1,float:1,glow:'rgba(255,140,220,.75)'}
 ];
 const CMAX=CALF.length;
 function calfMW(L){return .5*Math.pow(3,L-1)}
