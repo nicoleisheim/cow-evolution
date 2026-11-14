@@ -1,0 +1,22 @@
+{
+ "name": "Kuh-Evolution",
+ "short_name": "Kuh-Evo",
+ "start_url": "./",
+ "display": "standalone",
+ "orientation": "portrait",
+ "background_color": "#ec9cc1",
+ "theme_color": "#ff5fa2",
+ "icons": [
+  {
+   "src": "icon-180.png",
+   "sizes": "180x180",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  }
+ ]
+}
