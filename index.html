@@ -117,7 +117,7 @@ svg.ic.bolt{width:13px;height:13px;margin:0 2px 0 0;color:#ffe066}
 .ppills{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:6px;margin-bottom:8px}
 .pp{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:7px 10px;color:#fff;display:flex;flex-direction:column}
 .pp b{font:900 15px Nunito,system-ui;color:#b8ff8a;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pp small{font:700 11px Nunito,system-ui;opacity:.7}
-#plantCv{position:static;width:100%;height:220px;border-radius:20px;flex:none;touch-action:manipulation}
+#plantCv{position:static;width:100%;height:300px;touch-action:none;border-radius:20px;flex:none;touch-action:manipulation}
 .pbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
 .pbtns button{border:0;border-radius:18px;padding:11px 8px;font:900 16px Nunito,system-ui;cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.15}
 .pbtns small{font:700 11.5px Nunito,system-ui;opacity:.8}
@@ -127,6 +127,14 @@ svg.ic.bolt{width:13px;height:13px;margin:0 2px 0 0;color:#ffe066}
 #fillBtn:disabled{background:rgba(255,255,255,.1);color:rgba(255,255,255,.55);box-shadow:none}
 .pscroll{flex:1;overflow:auto;background:#fff;border-radius:22px;padding:12px}
 .pscroll h3{font:900 16px Nunito,system-ui;color:var(--ink);margin:4px 2px 8px}
+.pbtns.one{grid-template-columns:1fr}
+#calfBuy{background:linear-gradient(135deg,#c6ff8a,#59d62a);color:#173d05;box-shadow:0 6px 16px rgba(110,240,60,.35)}
+#calfBuy:disabled{background:rgba(255,255,255,.1);color:rgba(255,255,255,.55);box-shadow:none}
+#calfBuy small{display:flex;align-items:center;gap:2px}
+#birthInfo{color:rgba(255,255,255,.75);font:700 12.5px Nunito,system-ui;text-align:center;margin:8px 0 0}
+.row button.mw{background:linear-gradient(135deg,#c6ff8a,#59d62a);color:#173d05;box-shadow:0 3px 8px rgba(110,240,60,.3)}
+.row button.mw svg.ic{color:#173d05;width:13px;height:13px}
+.pscroll .row canvas{position:static;width:64px;height:52px;flex:none}
 .mrow .bar{height:6px;border-radius:6px;background:#e3e8e4;margin-top:6px;overflow:hidden}.mrow .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#9cff6a,#3fc41c);border-radius:6px}
 .mrow.done{background:#effbe8}.mrow.done button{background:#59d62a}.mrow.lockd{opacity:.55}
 .locked{filter:brightness(0) opacity(.25)}
@@ -166,10 +174,11 @@ svg.ic.bolt{width:13px;height:13px;margin:0 2px 0 0;color:#ffe066}
 </div>
 <div id="plantView" class="view dark">
   <div class="vhead"><button class="vback" id="plantBack">‹ Karte</button><h2>Kernkraftwerk</h2><span></span></div>
-  <div class="ppills"><div class="pp"><b id="pMilk">0</b><small>Atom-Milch</small></div><div class="pp"><b id="pMW">0</b><small>Strom (MW)</small></div><div class="pp"><b id="pOut">0</b><small>MW / Sek.</small></div></div>
+  <div class="ppills"><div class="pp"><b id="pMW">0</b><small>Strom (MW)</small></div><div class="pp"><b id="pOut">0</b><small>MW / Sek.</small></div><div class="pp"><b id="pCalf">0</b><small>Kälber</small></div></div>
   <canvas id="plantCv"></canvas>
-  <div class="pbtns"><button id="milkBtn">Melken</button><button id="fillBtn">Stäbe befüllen</button></div>
-  <div class="pscroll"><h3 id="missionHead">Weltrettung</h3><div id="missionList"></div><h3>Kraftwerk-Upgrades</h3><div id="pupList"></div></div>
+  <p id="birthInfo"></p>
+  <div class="pbtns one"><button id="calfBuy">Kälbchen kaufen</button></div>
+  <div class="pscroll"><h3 id="missionHead">Weltrettung</h3><div id="missionList"></div><h3>Kraftwerk-Upgrades</h3><div id="pupList"></div><h3>Kalb-Stufen</h3><div id="calfLadder"></div></div>
 </div>
 <div class="overlay" id="cowSheet"><div class="panel" style="text-align:center"><canvas id="cowCv" width="360" height="260" style="position:static;display:block;width:180px;height:130px;margin:0 auto 4px"></canvas><h2 id="cowName" style="margin-bottom:4px"></h2><p id="cowInfo" style="color:var(--muted);font-weight:600;margin-bottom:16px"></p><button id="sellBtn" class="sellbtn"></button><button class="close" data-close="cowSheet" style="background:#f3f6f2;color:var(--ink)">Abbrechen</button></div></div>
 <div class="overlay" id="buy"><div class="panel"><h2>Kuh kaufen</h2><div id="buyList"></div><p id="buyNote" style="font-size:13px;color:#6b5a3e;margin-top:4px"></p><button class="close" data-close="buy">Schließen</button></div></div>
@@ -204,7 +213,7 @@ function facetPath(c,cx,cy,rx,ry){c.beginPath();FACET.forEach((f,i)=>{const a=i/
 function crystalFill(c,s){const g=c.createLinearGradient(-s*.4,-s*.3,s*.4,s*.3);g.addColorStop(0,'#b8f6ff');g.addColorStop(.5,'#6fd8ff');g.addColorStop(1,'#b48cff');return g}
 
 function drawCow(c,x,y,s,L,t,flip,lifted,glow,walk){
-  const d=LV[L-1];s*=d.sc;
+  const d=typeof L==='object'?L:LV[L-1];s*=d.sc;
   const bw=d.bw||1,bh=d.bh||1,RX=s*.42*bw,RY=s*.26*bh,OL=outl(d),LW=s*.022;
   c.save();c.translate(x,y);
   // Stufen-Farbring am Boden
@@ -240,7 +249,7 @@ function drawCow(c,x,y,s,L,t,flip,lifted,glow,walk){
   const bodyPath=()=>{if(d.shape==='box'){c.beginPath();c.roundRect(-RX,-RY+b,RX*2,RY*1.8,s*.08)}else if(d.shape==='facet'){facetPath(c,0,b,RX,RY*1.1)}else{c.beginPath();c.ellipse(0,b,RX,RY,0,0,7)}};
   if(d.cosmic){c.shadowColor='rgba(180,160,255,.8)';c.shadowBlur=s*.3}
   if(d.crystal){c.shadowColor='#bff4ff';c.shadowBlur=s*.35}
-  if(d.radio){c.shadowColor='rgba(125,255,74,.95)';c.shadowBlur=s*.45}
+  if(d.radio){c.shadowColor=d.glow||'rgba(125,255,74,.95)';c.shadowBlur=s*.45}
   bodyPath();c.fillStyle=d.crystal?crystalFill(c,s):d.body;c.fill();c.shadowBlur=0;
   c.save();bodyPath();c.clip();
   if(d.spots==='big'){[[-.22,-.12,.14],[.1,.12,.12],[-.02,-.22,.08],[.24,-.1,.08]].forEach(([sx,sy,r])=>el(c,sx*s,sy*s+b,r*s*1.2,r*s*.8,d.spot,.5))}
@@ -328,46 +337,55 @@ const SH_P=new Map();function shDraw(c,sh,x,y,k){c.save();c.translate(x-12*k,y-1
 const IC={coin:shSvg('coin',COIN_SH),dia:shSvg('dia',DIA_SH),bolt:'<svg class="ic bolt" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>'};
 document.getElementById('coinIcon').innerHTML=IC.coin;document.getElementById('diaIcon').innerHTML=IC.dia;
 // ---------- Endgame: Kernkraftwerk & Weltrettung ----------
+const CALF=[
+ {n:'GLOW-Kälbchen',d:'Frisch geschlüpft und leuchtet schon im Dunkeln.',body:'#dcfa9e',spot:'#b6e36a',leg:'#a9cf6e',sc:.72,hs:1.35,bw:.85,legs:'short',calf:1,radio:1,glow:'rgba(150,255,110,.8)'},
+ {n:'Uran-Kalb',d:'Summt leise vor sich hin.',body:'#c9f53a',spot:'#9dcc1c',leg:'#7f9a2c',sc:.8,hs:1.25,legs:'short',calf:1,radio:1,glow:'rgba(140,255,60,.9)'},
+ {n:'Plutonium-Rind',d:'Schwer, stark und strahlend gut gelaunt.',body:'#9eef2a',spot:'#6fbf12',leg:'#4f7a1c',sc:.9,horns:1,radio:1,glow:'rgba(120,255,40,.95)'},
+ {n:'Thorium-Bulle',d:'Ein Kraftpaket mit grünem Glühen.',body:'#6fe39a',spot:'#3fb874',leg:'#2f6b4c',sc:1,bw:1.08,legs:'thick',horns:1,radio:1,glow:'rgba(80,255,170,.95)'},
+ {n:'Isotopen-Kuh',d:'Wechselt manchmal ihre Farbe – niemand weiß, warum.',body:'#4fe3c8',spot:'#22b49c',leg:'#1f6b62',sc:1.05,horns:1,radio:1,glow:'rgba(70,255,220,.95)'},
+ {n:'Reaktor-Kuh',d:'Hat einen eigenen kleinen Kern im Bauch.',body:'#4cc9ff',spot:'#1e95d6',leg:'#1d4e7a',sc:1.1,horns:1,radio:1,antenna:1,glow:'rgba(80,200,255,.95)'},
+ {n:'Fusions-Kuh',d:'So heiß wie die Sonne, so sanft wie ein Kälbchen.',body:'#ffe14d',spot:'#ffb21a',leg:'#b8781a',sc:1.15,horns:1,radio:1,float:1,glow:'rgba(255,220,80,.95)'},
+ {n:'Supernova-Kuh',d:'Die stärkste Energiequelle des Universums.',body:'#ff8ad8',spot:'#ff4fb8',leg:'#9a2f78',sc:1.22,horns:1,radio:1,float:1,wings:1,glow:'rgba(255,120,220,.95)'}
+];
+const CMAX=CALF.length;
+function calfMW(L){return .5*Math.pow(3,L-1)}
 const MISSIONS=[
- {n:'Dorf Wiesenhausen',d:'Im Dorf sind alle Lichter ausgegangen.',mw:100,dia:10,bonus:.1,x:20,y:66},
- {n:'Stadt Rosaburg',d:'Ampeln und Straßenbahnen stehen still.',mw:1000,dia:25,bonus:.1,x:70,y:76},
- {n:'Hauptstadt Kuhlonia',d:'Das ganze Land braucht dringend Strom.',mw:10000,dia:50,bonus:.15,x:76,y:38},
- {n:'Raumstation Muhnar',d:'Ohne Strom fällt die Station aus der Umlaufbahn.',mw:100000,dia:100,bonus:.15,x:24,y:12},
- {n:'Meteor-Schutzschild',d:'Ein riesiger Meteor rast auf die Erde zu!',mw:1000000,dia:250,bonus:.25,x:80,y:9}
+ {n:'Dorf Wiesenhausen',d:'Im Dorf sind alle Lichter ausgegangen.',need:4,dia:10,bonus:.1,x:20,y:66},
+ {n:'Stadt Rosaburg',d:'Ampeln und Straßenbahnen stehen still.',need:12,dia:25,bonus:.1,x:70,y:76},
+ {n:'Hauptstadt Kuhlonia',d:'Das ganze Land braucht dringend Strom.',need:40,dia:50,bonus:.15,x:76,y:38},
+ {n:'Raumstation Muhnar',d:'Ohne Strom fällt die Station aus der Umlaufbahn.',need:120,dia:100,bonus:.15,x:24,y:12},
+ {n:'Meteor-Schutzschild',d:'Ein riesiger Meteor rast auf die Erde zu!',need:1000,dia:250,bonus:.25,x:80,y:9}
 ];
 const PUP=[
- {k:'auto',n:'Melkmaschine',d:l=>fmtL(milkRate(l))+' L/Sek. pro Kuh',cost:l=>50000*Math.pow(3,l),max:10},
- {k:'tank',n:'Größerer Tank',d:l=>fmt(tankCap(l))+' L Platz',cost:l=>30000*Math.pow(2.5,l),max:8},
- {k:'rods',n:'Mehr Brennstäbe',d:l=>(4+l)+' Brennstäbe',cost:l=>100000*Math.pow(3,l),max:4},
- {k:'eff',n:'Effizienter Reaktor',d:l=>fmt(mwPerL(l))+' MW pro Liter',cost:l=>200000*Math.pow(3,l),max:10},
- {k:'refill',n:'Auto-Befüllung',d:l=>l?'Stäbe füllen sich selbst':'Stäbe füllen sich selbst',cost:l=>1500000,max:1}
+ {k:'birth',n:'Schnellere Geburt',d:l=>'Kalb alle '+fmtL(birthInt(l))+' s',cost:l=>200*Math.pow(2.5,l),max:8},
+ {k:'slots',n:'Größerer Brutkasten',d:l=>(8+2*l)+' Plätze',cost:l=>500*Math.pow(3,l),max:6},
+ {k:'amp',n:'Reaktor-Verstärker',d:l=>'+'+(l*25)+' % Leistung',cost:l=>300*Math.pow(2.2,l),max:20}
 ];
-const ROD_L=10,ROD_BURN=.5;
-function milkRate(l){return .2*(1+.5*l)}
-function tankCap(l){return 50*Math.pow(2,l)}
-function mwPerL(l){return 5*(1+.5*l)}
+const CALF_PRICE=250000;
 function fmtL(n){return n<10?(Math.round(n*10)/10).toString().replace('.',','):fmt(n)}
-function defPlant(){return {unlocked:false,cows:0,milk:0,mw:0,rods:[],missions:0,up:{auto:0,tank:0,rods:0,eff:0,refill:0}}}
+function defPlant(){return {unlocked:false,cows:0,mw:0,calves:[],best:1,missions:0,birthT:0,up:{birth:0,slots:0,amp:0}}}
 function worldBonus(){let b=1;const m=(typeof S!=='undefined'&&S&&S.plant)?S.plant.missions:0;for(let i=0;i<m;i++)b+=MISSIONS[i].bonus;return b}
-let plantOpen=false,plantOut=0,pFloats=[],pTap=0,pendingMap=false;
-function rodCount(){return 4+S.plant.up.rods}
-function fillRods(){const P=S.plant;while(P.rods.length<rodCount())P.rods.push(0);let n=0;
-  for(let i=0;i<P.rods.length;i++){if(P.rods[i]<=.01&&P.milk>=ROD_L){P.milk-=ROD_L;P.rods[i]=ROD_L;n++}}return n}
+let plantOpen=false,pendingMap=false,pFloats=[],pDrag=null,pUid=1;
+function slots(){return 8+2*S.plant.up.slots}
+function birthInt(l){const m=Math.max(1,(typeof S!=='undefined'&&S&&S.plant)?S.plant.cows:1);return Math.max(2,30*Math.pow(.85,l)/m)}
+function plantOutput(){let o=0;S.plant.calves.forEach(c=>o+=calfMW(c.lvl));return o*(1+.25*S.plant.up.amp)}
+function addCalf(L,x,y){const c={lvl:L,x:x??(.15+Math.random()*.7),y:y??(.25+Math.random()*.6),id:pUid++,pop:1,wait:Math.random()*2};c.tx=c.x;c.ty=c.y;S.plant.calves.push(c);return c}
 function plantTick(dt){const P=S.plant;if(!P.unlocked)return;
-  P.milk=Math.min(tankCap(P.up.tank),P.milk+P.cows*milkRate(P.up.auto)*dt);
-  while(P.rods.length<rodCount())P.rods.push(0);
-  let out=0;for(let i=0;i<P.rods.length;i++){if(P.rods[i]>0){const b=Math.min(P.rods[i],ROD_BURN*dt);P.rods[i]-=b;if(P.rods[i]<1e-4)P.rods[i]=0;out+=b}}
-  const mw=out*mwPerL(P.up.eff);P.mw+=mw;plantOut=plantOut*.9+(dt>0?mw/dt:0)*.1;
-  if(P.up.refill)fillRods();
+  P.mw+=plantOutput()*dt;
+  if(P.calves.length<slots()){P.birthT+=dt;if(P.birthT>=birthInt(P.up.birth)){P.birthT=0;addCalf(1);if(plantOpen)pFloats.push({t:'Ein GLOW-Kälbchen ist geboren!',l:1.4,x:.5,y:.12})}}
+  P.calves.forEach(c=>{if(c.pop)c.pop=Math.max(0,c.pop-dt*3);if(pDrag&&pDrag.c===c)return;
+    const dx=c.tx-c.x,dy=c.ty-c.y,d=Math.hypot(dx,dy);
+    if(d<.005){c.wait-=dt;if(c.wait<=0){c.tx=Math.min(.9,Math.max(.1,c.x+(Math.random()-.5)*.3));c.ty=Math.min(.88,Math.max(.25,c.y+(Math.random()-.5)*.25));c.wait=1+Math.random()*3}c.mv=0}
+    else{const sp=.06*dt;c.x+=dx/d*Math.min(sp,d);c.y+=dy/d*Math.min(sp,d);c.flip=dx<0;c.mv=1}});
 }
 function radioArrive(n){
-  const first=!S.plant.unlocked;S.plant.cows++;S.plant.unlocked=true;if(first)pendingMap=true;updMapBtn();save();
+  const first=!S.plant.unlocked;S.plant.cows++;S.plant.unlocked=true;
+  if(first){pendingMap=true;addCalf(1,.35,.55);addCalf(1,.65,.6)}
+  updMapBtn();save();
   setTimeout(()=>{if(!S.cows.includes(n))return;const [x,y]=toPx(n);S.cows=S.cows.filter(o=>o!==n);
     burst(x,y,'#7dff4a',26);rings.push({x,y,r:10,l:.7,col:'#7dff4a'});
-    if(!first)showToast('Eine Radioaktive Kuh ist ins Kernkraftwerk gezogen!');save()},1400);
+    if(!first)showToast('Neue Mutterkuh im Kraftwerk – Kälber kommen jetzt schneller!');save()},1400);
 }
-function milkTap(){const P=S.plant;if(!P.cows)return;const cap=tankCap(P.up.tank),add=Math.min(P.cows,cap-P.milk);
-  P.milk+=Math.max(0,add);pTap=1;pFloats.push({t:add>0?'+'+fmtL(add)+' L':'Tank voll!',l:.9,x:.2,y:.32})}
 function showToast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.remove('on');void el.offsetWidth;el.classList.add('on')}
 
 // ----- Karte -----
@@ -375,112 +393,113 @@ function updMapBtn(){const b=document.getElementById('mapBtn');b.classList.toggl
 function renderMap(){
   const box=document.getElementById('mapPins'),P=S.plant;box.innerHTML='';
   const pin=(x,y,cls,html,label,fn)=>{const b=document.createElement('button');b.className='pin '+cls;b.style.left=x+'%';b.style.top=y+'%';b.innerHTML=html+'<span>'+label+'</span>';if(fn)b.onclick=fn;box.appendChild(b);return b};
-  const mc=miniCow(2,64,52,false);
-  const w=pin(36,44,'meadow','','Deine Weide',()=>closeMap());w.prepend(mc);
+  const w=pin(36,44,'meadow','','Deine Weide',()=>closeMap());w.prepend(miniCow(2,64,52,false));
   pin(58,60,'plant'+(P.unlocked?'':' lk'),'<svg viewBox="0 0 48 48"><path d="M9 42c3-9 3-17 0-26h14c-3 9-3 17 0 26z" fill="#cfd6df"/><path d="M9 16h14" stroke="#9aa6b5" stroke-width="2"/><rect x="25" y="26" width="16" height="16" rx="2" fill="#9aa6b5"/><circle cx="33" cy="34" r="5" fill="'+(P.unlocked?'#7dff4a':'#6b7686')+'"/><path d="M12 10c2-3 5-3 7 0" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="'+(P.unlocked?'.9':'0')+'"/></svg>'+(P.unlocked?'':'<i class="lock"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2.5" fill="#fff"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10" stroke="#fff" stroke-width="2.4" fill="none"/></svg></i>'),
     P.unlocked?'Kernkraftwerk':'Kernkraftwerk – ab Radioaktiver Kuh',()=>{if(P.unlocked){closeMap();openPlant()}else showToast('Verschmelze zwei Kosmische Kühe zur Radioaktiven Kuh!')});
   MISSIONS.forEach((m,i)=>{const on=i<P.missions;pin(m.x,m.y,'city'+(on?' on':''),
     '<svg viewBox="0 0 32 32"><path d="M4 28V14l7-5v19z" fill="'+(on?'#ffd84d':'#7a8496')+'"/><path d="M11 28V8l9-4v24z" fill="'+(on?'#ffe98a':'#8b95a8')+'"/><path d="M20 28V12l8 4v12z" fill="'+(on?'#ffd84d':'#7a8496')+'"/>'+
     (on?'<g fill="#fff8d0"><rect x="14" y="10" width="2.5" height="2.5"/><rect x="14" y="16" width="2.5" height="2.5"/><rect x="23" y="19" width="2.5" height="2.5"/><rect x="6.5" y="18" width="2.5" height="2.5"/></g>':'')+'</svg>',
-    m.n,()=>showToast(on?m.n+' hat wieder Strom!':m.n+': braucht '+fmt(m.mw)+' MW'))});
-  const done=P.missions>=MISSIONS.length;
+    m.n,()=>showToast(on?m.n+' hat wieder Strom!':m.n+': braucht '+fmt(m.need)+' MW/Sek. Leistung'))});
+  const done=P.missions>=MISSIONS.length,bon=Math.round((worldBonus()-1)*100);
   document.getElementById('mapInfo').innerHTML=!P.unlocked?'Erreiche die <b>Radioaktive Kuh</b>, um das Kernkraftwerk zu öffnen.':
-    done?'<b>Die Welt ist gerettet!</b> Strom-Bonus auf der Weide: +'+Math.round((worldBonus()-1)*100)+' %':
-    P.missions+' von '+MISSIONS.length+' Orten versorgt · Strom-Bonus auf der Weide: +'+Math.round((worldBonus()-1)*100)+' %';
+    done?'<b>Die Welt ist gerettet!</b> Strom-Bonus auf der Weide: +'+bon+' %':P.missions+' von '+MISSIONS.length+' Orten versorgt · Strom-Bonus auf der Weide: +'+bon+' %';
 }
-function openMap(){S.plant.seenMap=S.plant.unlocked?true:S.plant.seenMap;updMapBtn();renderMap();document.getElementById('mapView').classList.add('on')}
+function openMap(){if(S.plant.unlocked)S.plant.seenMap=true;updMapBtn();renderMap();document.getElementById('mapView').classList.add('on')}
 function closeMap(){document.getElementById('mapView').classList.remove('on')}
 
-// ----- Kraftwerk -----
+// ----- Kraftwerk mit Brutkasten -----
 let pcv=null,pcx=null,PW=0,PH=0;
+function calfSize(){return Math.max(44,Math.min(80,Math.min(PW,PH)*.2))}
+function pPx(c){return [c.x*PW,c.y*PH]}
 function openPlant(){plantOpen=true;document.getElementById('plantView').classList.add('on');
   pcv=document.getElementById('plantCv');pcx=pcv.getContext('2d');const d=window.devicePixelRatio||1;PW=pcv.clientWidth;PH=pcv.clientHeight;pcv.width=PW*d;pcv.height=PH*d;pcx.setTransform(d,0,0,d,0,0);
   renderMissions();renderPup();updPlantUI()}
-function closePlant(){plantOpen=false;document.getElementById('plantView').classList.remove('on')}
+function closePlant(){plantOpen=false;pDrag=null;document.getElementById('plantView').classList.remove('on')}
+function mergeCalves(a,b){const P=S.plant,L=a.lvl+1,[x,y]=pPx(b);P.calves=P.calves.filter(o=>o!==a&&o!==b);addCalf(L,b.x,b.y);
+  pFloats.push({t:'+'+fmtL(calfMW(L)*(1+.25*P.up.amp))+' MW/Sek.',l:1,x:b.x,y:b.y-.12});
+  for(let i=0;i<14;i++)pFloats.push({spark:1,x:b.x,y:b.y,vx:(Math.random()-.5)*.6,vy:(Math.random()-.8)*.5,l:.6,col:CALF[L-1].glow});
+  if(L>P.best){P.best=L;showToast('Neue Stufe: '+CALF[L-1].n+'! '+CALF[L-1].d)}
+  save();renderMissions(true)}
 function drawPlant(dt){
   const c=pcx,W2=PW,H2=PH,P=S.plant;if(!c)return;
-  const bg=c.createLinearGradient(0,0,0,H2);bg.addColorStop(0,'#2a2550');bg.addColorStop(1,'#3b2f63');c.fillStyle=bg;c.fillRect(0,0,W2,H2);
-  // Kühlturm hinten
-  const tx=W2*.83,ty=H2*.08;c.fillStyle='#4a4775';c.beginPath();c.moveTo(tx-46,H2*.78);c.quadraticCurveTo(tx-22,H2*.42,tx-34,ty+18);c.lineTo(tx+34,ty+18);c.quadraticCurveTo(tx+22,H2*.42,tx+46,H2*.78);c.fill();
-  if(plantOut>.5){for(let i=0;i<5;i++){const k=((T*.25+i/5)%1);c.fillStyle='rgba(255,255,255,'+(.35*(1-k))+')';c.beginPath();c.arc(tx+Math.sin(i*2+T)*8,ty+14-k*60,14+k*22,0,7);c.fill()}}
-  // Boden
-  c.fillStyle='#4b3f7a';c.fillRect(0,H2*.78,W2,H2*.22);c.fillStyle='rgba(255,255,255,.06)';for(let x=0;x<W2;x+=28)c.fillRect(x,H2*.78,2,H2*.22);
-  // Kuh im Stall
-  const cs=Math.min(120,W2*.25),cxp=Math.max(W2*.22,cs*.62),cyp=H2*.6;
-  c.fillStyle='rgba(125,255,74,.12)';c.beginPath();c.ellipse(cxp,H2*.8,cs*.6,cs*.13,0,0,7);c.fill();
-  pTap=Math.max(0,pTap-dt*5);c.save();c.translate(cxp,cyp);c.scale(1+pTap*.06,1-pTap*.05);drawCow(c,0,0,cs,MAXL,T,false);c.restore();
-  if(P.cows>1){c.fillStyle='#7dff4a';c.font='900 14px Nunito, system-ui';c.textAlign='center';c.fillText('× '+P.cows,cxp,H2*.18)}
-  // Schlauch Kuh -> Tank
-  const tankX=W2*.43,tankW=W2*.12,tankY=H2*.22,tankH=H2*.55;
-  c.strokeStyle='#8f95b8';c.lineWidth=5;c.lineCap='round';c.beginPath();c.moveTo(cxp,cyp+cs*.24);c.bezierCurveTo(cxp+cs*.4,H2*.95,tankX-30,H2*.9,tankX,tankY+tankH*.85);c.stroke();
-  if(P.cows&&P.milk<tankCap(P.up.tank)-.01){c.fillStyle='#7dff4a';for(let i=0;i<4;i++){const k=(T*.8+i/4)%1,bx=(1-k)**3*cxp+3*(1-k)**2*k*(cxp+cs*.4)+3*(1-k)*k*k*(tankX-30)+k**3*tankX,by=(1-k)**3*(cyp+cs*.24)+3*(1-k)**2*k*H2*.95+3*(1-k)*k*k*H2*.9+k**3*(tankY+tankH*.85);c.beginPath();c.arc(bx,by,3,0,7);c.fill()}}
-  // Tank
-  const lvl=P.milk/tankCap(P.up.tank);
-  c.fillStyle='rgba(255,255,255,.08)';c.beginPath();c.roundRect(tankX,tankY,tankW,tankH,12);c.fill();
-  c.save();c.beginPath();c.roundRect(tankX,tankY,tankW,tankH,12);c.clip();
-  const mh=tankH*lvl;c.shadowColor='#7dff4a';c.shadowBlur=18;c.fillStyle='#6ef03c';c.fillRect(tankX,tankY+tankH-mh,tankW,mh);c.shadowBlur=0;
-  c.fillStyle='rgba(255,255,255,.35)';for(let i=0;i<5;i++){const k=(T*.5+i*.21)%1;if(mh>8){c.beginPath();c.arc(tankX+tankW*(.2+.6*((i*.37)%1)),tankY+tankH-k*mh,2.5,0,7);c.fill()}}
-  c.restore();c.strokeStyle='#c7cbe6';c.lineWidth=2.5;c.beginPath();c.roundRect(tankX,tankY,tankW,tankH,12);c.stroke();
-  c.fillStyle='rgba(255,255,255,.25)';c.fillRect(tankX+5,tankY+10,4,tankH-20);
-  // Reaktor mit Brennstäben
-  const rx=W2*.6,rw=W2*.33,ry=H2*.3,rh=H2*.48,n=rodCount();
-  c.fillStyle='#57537f';c.beginPath();c.roundRect(rx,ry,rw,rh,14);c.fill();c.strokeStyle='#8f8bc0';c.lineWidth=2;c.stroke();
-  const gw=(rw-16)/n;
-  for(let i=0;i<n;i++){const f=(P.rods[i]||0)/ROD_L,x=rx+8+i*gw+gw*.18,w=gw*.64,y=ry+12,h=rh-24;
-    c.fillStyle='#2b2850';c.beginPath();c.roundRect(x,y,w,h,w/2);c.fill();
-    if(f>0){c.save();c.shadowColor='#7dff4a';c.shadowBlur=12+Math.sin(T*6+i)*4;c.fillStyle='#7dff4a';c.beginPath();c.roundRect(x,y+h*(1-f),w,h*f,w/2);c.fill();c.restore()}
-    c.strokeStyle='#8f8bc0';c.lineWidth=1.5;c.beginPath();c.roundRect(x,y,w,h,w/2);c.stroke()}
-  // Blitz-Symbol über dem Reaktor
-  c.save();c.translate(rx+rw/2,ry-16);c.fillStyle=plantOut>.5?'#ffe14d':'#6b6894';c.beginPath();c.moveTo(3,-12);c.lineTo(-7,2);c.lineTo(0,2);c.lineTo(-3,12);c.lineTo(7,-2);c.lineTo(0,-2);c.closePath();c.fill();c.restore();
-  // schwebende Texte
-  pFloats.forEach(f=>{f.l-=dt;f.y-=dt*.12});pFloats=pFloats.filter(f=>f.l>0);
-  pFloats.forEach(f=>{c.globalAlpha=Math.min(1,f.l*2);c.font='900 18px Nunito, system-ui';c.textAlign='center';c.lineWidth=4;c.strokeStyle='rgba(20,40,10,.7)';c.strokeText(f.t,W2*f.x,H2*f.y);c.fillStyle='#b8ff8a';c.fillText(f.t,W2*f.x,H2*f.y)});c.globalAlpha=1;
+  const bg=c.createRadialGradient(W2/2,H2*.55,20,W2/2,H2/2,Math.max(W2,H2)*.75);bg.addColorStop(0,'#2f3f63');bg.addColorStop(1,'#1d1a3d');c.fillStyle=bg;c.fillRect(0,0,W2,H2);
+  // leuchtendes Wabengitter
+  c.strokeStyle='rgba(125,255,74,.09)';c.lineWidth=1;const hs=26;
+  for(let y=0,r=0;y<H2+hs;y+=hs*.87,r++)for(let x=(r%2)*hs*.75;x<W2+hs;x+=hs*1.5){c.beginPath();for(let k=0;k<6;k++){const a=k*Math.PI/3;const px=x+Math.cos(a)*hs*.5,py=y+Math.sin(a)*hs*.5;k?c.lineTo(px,py):c.moveTo(px,py)}c.closePath();c.stroke()}
+  // Rahmen des Brutkastens
+  c.strokeStyle='rgba(125,255,74,.35)';c.lineWidth=3;c.setLineDash([10,8]);c.lineDashOffset=-T*12;c.beginPath();c.roundRect(8,8,W2-16,H2-16,18);c.stroke();c.setLineDash([]);
+  // Kälber
+  const s=calfSize(),order=[...P.calves].sort((a,b)=>a.y-b.y);if(pDrag){order.splice(order.indexOf(pDrag.c),1);order.push(pDrag.c)}
+  order.forEach(k=>{const [x,y]=pPx(k),sc=1+(k.pop?Math.sin(k.pop*Math.PI)*.3:0),lift=pDrag&&pDrag.c===k&&pDrag.moved,
+    glow=pDrag&&pDrag.moved&&pDrag.c!==k&&pDrag.c.lvl===k.lvl&&k.lvl<CMAX;
+    drawCow(c,x,y,s*sc,CALF[k.lvl-1],T+k.id,k.flip,lift,glow,k.mv&&!lift)});
+  // Effekte
+  pFloats.forEach(f=>{f.l-=dt;if(f.spark){f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy+=.9*dt}else f.y-=dt*.06});pFloats=pFloats.filter(f=>f.l>0);
+  pFloats.forEach(f=>{if(f.spark){c.globalAlpha=Math.max(0,f.l*1.6);c.fillStyle=f.col;c.beginPath();c.arc(f.x*W2,f.y*H2,3.5,0,7);c.fill();return}
+    c.globalAlpha=Math.min(1,f.l*2);c.font='900 16px Nunito, system-ui';c.textAlign='center';c.lineWidth=4;c.strokeStyle='rgba(15,30,10,.75)';c.strokeText(f.t,W2*f.x,H2*f.y);c.fillStyle='#c8ff9a';c.fillText(f.t,W2*f.x,H2*f.y)});c.globalAlpha=1;
+  if(!P.calves.length){c.fillStyle='rgba(255,255,255,.6)';c.font='800 15px Nunito, system-ui';c.textAlign='center';c.fillText('Warte auf das erste GLOW-Kälbchen …',W2/2,H2/2)}
 }
-function updPlantUI(){const P=S.plant;
-  document.getElementById('pMilk').textContent=fmtL(P.milk)+' / '+fmt(tankCap(P.up.tank))+' L';
+function plantPointer(){
+  const cvp=document.getElementById('plantCv');
+  const pos=e=>{const r=cvp.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top]};
+  cvp.addEventListener('pointerdown',e=>{const [px,py]=pos(e),s=calfSize();let best=null,bd=1e9;
+    S.plant.calves.forEach(k=>{const [x,y]=pPx(k),d=Math.hypot(px-x,py-y);if(d<s*CALF[k.lvl-1].sc*.6&&d<bd){bd=d;best=k}});
+    if(best){pDrag={c:best,dx:best.x*PW-px,dy:best.y*PH-py,sx:px,sy:py,moved:false};cvp.setPointerCapture(e.pointerId)}});
+  cvp.addEventListener('pointermove',e=>{if(!pDrag)return;const [px,py]=pos(e);if(Math.hypot(px-pDrag.sx,py-pDrag.sy)>8)pDrag.moved=true;
+    if(pDrag.moved){const k=pDrag.c,m=calfSize()*CALF[k.lvl-1].sc*.7;k.x=Math.min(1-m/PW,Math.max(m/PW,(px+pDrag.dx)/PW));k.y=Math.min(1-m*.7/PH,Math.max(m/PH,(py+pDrag.dy)/PH));k.tx=k.x;k.ty=k.y}});
+  const end=()=>{if(!pDrag)return;const k=pDrag.c,moved=pDrag.moved;pDrag=null;k.wait=1.5;
+    if(!moved){k.pop=.6;pFloats.push({t:fmtL(calfMW(k.lvl)*(1+.25*S.plant.up.amp))+' MW/Sek.',l:.9,x:k.x,y:k.y-.14});return}
+    const s=calfSize(),t=S.plant.calves.find(o=>o!==k&&o.lvl===k.lvl&&Math.hypot((o.x-k.x)*PW,(o.y-k.y)*PH)<s*.6);
+    if(t&&k.lvl<CMAX)mergeCalves(k,t)};
+  cvp.addEventListener('pointerup',end);cvp.addEventListener('pointercancel',end);
+}
+function updPlantUI(){const P=S.plant,out=plantOutput();
   document.getElementById('pMW').textContent=Math.floor(P.mw).toLocaleString('de-DE');
-  document.getElementById('pOut').textContent=fmtL(plantOut);
-  const fb=document.getElementById('fillBtn'),empty=P.rods.slice(0,rodCount()).filter(r=>r<=.01).length+(rodCount()-P.rods.length);
-  fb.disabled=!!P.up.refill||empty===0||P.milk<ROD_L;
-  fb.innerHTML=P.up.refill?'Automatik an<small>Stäbe füllen sich selbst</small>':'Stäbe befüllen<small>'+ROD_L+' L je Stab · '+empty+' leer</small>';
-  document.getElementById('milkBtn').innerHTML='Melken<small>+'+P.cows+' L pro Tipp</small>';
+  document.getElementById('pOut').textContent=fmtL(out);
+  document.getElementById('pCalf').textContent=P.calves.length+' / '+slots();
+  const iv=birthInt(P.up.birth),full=P.calves.length>=slots();
+  document.getElementById('birthInfo').textContent=full?'Brutkasten voll – verschmelze Kälber!':'Nächstes Kälbchen in '+Math.max(1,Math.ceil(iv-P.birthT))+' s · '+P.cows+' Mutterkuh'+(P.cows===1?'':'kühe');
+  const bb=document.getElementById('calfBuy');bb.disabled=full||S.coins<CALF_PRICE;bb.innerHTML='Kälbchen kaufen<small>'+IC.coin+fmt(CALF_PRICE)+'</small>';
   renderMissions(true);renderPup(true);
 }
-function renderMissions(update){const box=document.getElementById('missionList'),P=S.plant;
+function renderMissions(update){const box=document.getElementById('missionList'),P=S.plant,out=plantOutput();
   if(!update){box.innerHTML='';MISSIONS.forEach((m,i)=>{const r=document.createElement('div');r.className='row mrow';r.innerHTML='<div class="txt"><b></b><span></span><div class="bar"><i></i></div></div><button></button>';
-    r.querySelector('button').onclick=()=>{if(i!==P.missions||P.mw<m.mw)return;P.mw-=m.mw;P.missions++;S.dia+=m.dia;
+    r.querySelector('button').onclick=()=>{if(i!==P.missions||plantOutput()<m.need)return;P.missions++;S.dia+=m.dia;
       showToast(P.missions>=MISSIONS.length?'Die Welt ist gerettet! +'+m.dia+' Diamanten':m.n+' hat wieder Strom! +'+m.dia+' Diamanten');save();renderMissions(true)};box.appendChild(r)})}
+  if(!box.children.length)return;
   MISSIONS.forEach((m,i)=>{const r=box.children[i],done=i<P.missions,cur=i===P.missions,lock=i>P.missions;
     r.classList.toggle('done',done);r.classList.toggle('lockd',lock);
-    r.querySelector('b').textContent=lock?'??? – '+fmt(m.mw)+' MW':m.n;
-    r.querySelector('span').innerHTML=done?'Versorgt · +'+Math.round(m.bonus*100)+' % Ertrag auf der Weide':lock?'Erst den vorherigen Ort versorgen':m.d+'<br>Belohnung: '+IC.dia+m.dia+' · +'+Math.round(m.bonus*100)+' % Ertrag';
-    r.querySelector('.bar i').style.width=(done?100:cur?Math.min(100,P.mw/m.mw*100):0)+'%';
-    const b=r.querySelector('button');b.textContent=done?'✓':cur?'Liefern':'–';b.disabled=!cur||P.mw<m.mw});
+    r.querySelector('b').textContent=lock?'??? – braucht '+fmt(m.need)+' MW/Sek.':m.n;
+    r.querySelector('span').innerHTML=done?'Versorgt · +'+Math.round(m.bonus*100)+' % Ertrag auf der Weide':lock?'Erst den vorherigen Ort versorgen':m.d+'<br>Braucht <b style="display:inline">'+fmt(m.need)+' MW/Sek.</b> Leistung · Belohnung: '+IC.dia+m.dia+' · +'+Math.round(m.bonus*100)+' % Ertrag';
+    r.querySelector('.bar i').style.width=(done?100:cur?Math.min(100,out/m.need*100):0)+'%';
+    const b=r.querySelector('button');b.textContent=done?'✓':cur?'Versorgen':'–';b.disabled=!cur||out<m.need});
   document.getElementById('missionHead').textContent=P.missions>=MISSIONS.length?'Weltrettung – geschafft!':'Weltrettung';
 }
 function renderPup(update){const box=document.getElementById('pupList'),P=S.plant;
-  if(!update){box.innerHTML='';PUP.forEach((u,i)=>{const r=document.createElement('div');r.className='row';r.innerHTML='<div class="txt"><b>'+u.n+'</b><span></span></div><button></button>';
-    r.querySelector('button').onclick=()=>{const l=P.up[u.k];if(l>=u.max||S.coins<u.cost(l))return;S.coins-=u.cost(l);P.up[u.k]++;save();renderPup(true)};box.appendChild(r)})}
+  if(!update){box.innerHTML='';PUP.forEach((u,i)=>{const r=document.createElement('div');r.className='row';r.innerHTML='<div class="txt"><b>'+u.n+'</b><span></span></div><button class="mw"></button>';
+    r.querySelector('button').onclick=()=>{const l=P.up[u.k];if(l>=u.max||P.mw<u.cost(l))return;P.mw-=u.cost(l);P.up[u.k]++;save();renderPup(true)};box.appendChild(r)})}
+  if(!box.children.length)return;
   PUP.forEach((u,i)=>{const r=box.children[i],l=P.up[u.k],mx=l>=u.max;
-    r.querySelector('span').textContent=mx?(u.k==='refill'?'Aktiv':'Maximal · '+u.d(l)):(u.k==='refill'?u.d(l):u.d(l)+' → '+u.d(l+1));
-    const b=r.querySelector('button');b.innerHTML=mx?'MAX':IC.coin+fmt(u.cost(l));b.disabled=mx||S.coins<u.cost(l)});
+    r.querySelector('span').textContent=mx?'Maximal · '+u.d(l):u.d(l)+' → '+u.d(l+1);
+    const b=r.querySelector('button');b.innerHTML=mx?'MAX':IC.bolt+fmt(u.cost(l))+' MW';b.disabled=mx||P.mw<u.cost(l)});
+  const lad=document.getElementById('calfLadder');if(lad&&!update){lad.innerHTML='';CALF.forEach((d,i)=>{const L=i+1,known=L<=P.best,r=document.createElement('div');r.className='row';
+    const cv=document.createElement('canvas');cv.width=128;cv.height=104;const g=cv.getContext('2d');g.scale(2,2);drawCow(g,29,30,40,d,1,false);if(!known)cv.className='locked';r.appendChild(cv);
+    const t=document.createElement('div');t.className='txt';t.innerHTML='<b>'+L+'. '+(known?d.n:'???')+'</b><span>'+(known?d.d+'<br>':'')+fmtL(calfMW(L))+' MW/Sek.</span>';r.appendChild(t);lad.appendChild(r)})}
 }
 function initPlant(){
   document.getElementById('mapBtn').onclick=openMap;
   document.getElementById('mapBack').onclick=closeMap;
   document.getElementById('plantBack').onclick=()=>{closePlant();openMap()};
-  document.getElementById('milkBtn').onclick=milkTap;
-  document.getElementById('fillBtn').onclick=()=>{const n=fillRods();if(n){pFloats.push({t:n+' Stab'+(n>1?'e':'')+' befüllt',l:1.1,x:.76,y:.22})}};
-  document.getElementById('plantCv').addEventListener('pointerdown',e=>{const r=e.currentTarget.getBoundingClientRect();if(e.clientX-r.left<r.width*.38)milkTap()});
+  document.getElementById('calfBuy').onclick=()=>{const P=S.plant;if(P.calves.length>=slots()||S.coins<CALF_PRICE)return;S.coins-=CALF_PRICE;const k=addCalf(1);pFloats.push({t:'+1 GLOW-Kälbchen',l:1,x:k.x,y:k.y-.14});save()};
   document.querySelector('#discover .close').addEventListener('click',()=>{if(pendingMap){pendingMap=false;setTimeout(openMap,150)}});
   addEventListener('resize',()=>{if(plantOpen)openPlant()});
-  updMapBtn();
+  plantPointer();updMapBtn();
 }
 
 // ---------- Zustand ----------
 let S={dia:0,boostUntil:0,coins:250,cows:[],highest:1,buys:0,up:{crate:0,cap:0,income:0,crateLvl:0,magnet:0},magnetOn:true,last:Date.now(),merged:0};
 try{const s=JSON.parse(localStorage.getItem('kuhEvo1'));if(s&&s.cows){S=Object.assign(S,s);S.up=Object.assign({crate:0,cap:0,income:0,crateLvl:0,magnet:0},s.up)}}catch(e){}
-S.plant=Object.assign(defPlant(),S.plant||{});S.plant.up=Object.assign(defPlant().up,S.plant.up);
+S.plant=Object.assign(defPlant(),S.plant||{});S.plant.up=Object.assign(defPlant().up,S.plant.up);if(!Array.isArray(S.plant.calves))S.plant.calves=[];S.plant.calves.forEach((c,i)=>{c.id=i+1;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2});if(S.plant.unlocked&&!S.plant.calves.length&&!S.plant.best)S.plant.best=1;
 function save(){if(window.__reset)return;S.last=Date.now();try{localStorage.setItem('kuhEvo1',JSON.stringify(S))}catch(e){}}
 let coins=[],crates=[],parts=[],floats=[],crateT=0,uid=1;
 S.cows.forEach(c=>{c.id=uid++;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2;c.ph=Math.random()*COIN_EVERY});
