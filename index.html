@@ -114,7 +114,7 @@ svg.ic.bolt{width:13px;height:13px;margin:0 2px 0 0;color:#ffe066}
 #mapInfo{text-align:center;color:var(--ink);font:700 14px Nunito,system-ui;margin-top:10px}
 .view.dark{background:linear-gradient(#211d42,#2f2757)}
 .view.dark .vhead h2{color:#fff}.view.dark .vback{background:rgba(255,255,255,.12);color:#fff}
-.ppills{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:6px;margin-bottom:8px}
+.ppills{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}
 .pp{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:7px 10px;color:#fff;display:flex;flex-direction:column}
 .pp b{font:900 15px Nunito,system-ui;color:#b8ff8a;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pp small{font:700 11px Nunito,system-ui;opacity:.7}
 #plantCv{position:static;width:100%;height:300px;touch-action:none;border-radius:20px;flex:none;touch-action:manipulation}
@@ -131,6 +131,7 @@ svg.ic.bolt{width:13px;height:13px;margin:0 2px 0 0;color:#ffe066}
 #calfBuy{background:linear-gradient(135deg,#c6ff8a,#59d62a);color:#173d05;box-shadow:0 6px 16px rgba(110,240,60,.35)}
 #calfBuy:disabled{background:rgba(255,255,255,.1);color:rgba(255,255,255,.55);box-shadow:none}
 #calfBuy small{display:flex;align-items:center;gap:2px}
+#calfBuy svg.ic{width:15px;height:15px;margin:0 3px 0 0}
 #birthInfo{color:rgba(255,255,255,.75);font:700 12.5px Nunito,system-ui;text-align:center;margin:8px 0 0}
 .row button.mw{background:linear-gradient(135deg,#c6ff8a,#59d62a);color:#173d05;box-shadow:0 3px 8px rgba(110,240,60,.3)}
 .row button.mw svg.ic{color:#173d05;width:13px;height:13px}
@@ -174,7 +175,7 @@ svg.ic.bolt{width:13px;height:13px;margin:0 2px 0 0;color:#ffe066}
 </div>
 <div id="plantView" class="view dark">
   <div class="vhead"><button class="vback" id="plantBack">‹ Karte</button><h2>Kernkraftwerk</h2><span></span></div>
-  <div class="ppills"><div class="pp"><b id="pMW">0</b><small>Strom (MW)</small></div><div class="pp"><b id="pOut">0</b><small>MW / Sek.</small></div><div class="pp"><b id="pCalf">0</b><small>Kälber</small></div></div>
+  <div class="ppills"><div class="pp"><b id="pMW">0</b><small>Strom</small></div><div class="pp"><b id="pOut">0</b><small>MW/Sek.</small></div><div class="pp"><b id="pCalf">0</b><small>Kälber</small></div><div class="pp"><b id="pAtom">0</b><small>Atom</small></div></div>
   <canvas id="plantCv"></canvas>
   <p id="birthInfo"></p>
   <div class="pbtns one"><button id="calfBuy">Kälbchen kaufen</button></div>
@@ -459,7 +460,7 @@ function updPlantUI(){const P=S.plant,out=plantOutput();
   document.getElementById('pCalf').textContent=P.calves.length+' / '+slots();
   const iv=birthInt(P.up.birth),full=P.calves.length>=slots();
   document.getElementById('birthInfo').textContent=full?'Brutkasten voll – verschmelze Kälber!':'Nächstes Kälbchen in '+Math.max(1,Math.ceil(iv-P.birthT))+' s · '+P.cows+' Mutterkuh'+(P.cows===1?'':'kühe');
-  const bb=document.getElementById('calfBuy');bb.disabled=full||S.coins<CALF_PRICE;bb.innerHTML='Kälbchen kaufen<small>'+IC.coin+fmt(CALF_PRICE)+'</small>';
+  const bb=document.getElementById('calfBuy');bb.disabled=full||(S.atom||0)<ATOM_CALF;bb.innerHTML='Kälbchen kaufen<small>'+IC.atom+ATOM_CALF+' Atom-Münzen</small>';document.getElementById('pAtom').textContent=(S.atom||0).toLocaleString('de-DE');
   renderMissions(true);renderPup(true);
 }
 function renderMissions(update){const box=document.getElementById('missionList'),P=S.plant,out=plantOutput();
@@ -490,14 +491,15 @@ function initPlant(){
   document.getElementById('mapBtn').onclick=openMap;
   document.getElementById('mapBack').onclick=closeMap;
   document.getElementById('plantBack').onclick=()=>{closePlant();openMap()};
-  document.getElementById('calfBuy').onclick=()=>{const P=S.plant;if(P.calves.length>=slots()||S.coins<CALF_PRICE)return;S.coins-=CALF_PRICE;const k=addCalf(1);pFloats.push({t:'+1 GLOW-Kälbchen',l:1,x:k.x,y:k.y-.14});save()};
+  document.getElementById('calfBuy').onclick=()=>{const P=S.plant;if(P.calves.length>=slots()||(S.atom||0)<ATOM_CALF)return;S.atom-=ATOM_CALF;const k=addCalf(1);pFloats.push({t:'+1 GLOW-Kälbchen',l:1,x:k.x,y:k.y-.14});save()};
   document.querySelector('#discover .close').addEventListener('click',()=>{if(pendingMap){pendingMap=false;setTimeout(openMap,150)}});
   addEventListener('resize',()=>{if(plantOpen)openPlant()});
   plantPointer();updMapBtn();
 }
 
+const ATOM_SH=[["M1.8000000000000007 12.9a10.2 10.2 0 1 0 20.4 0a10.2 10.2 0 1 0 -20.4 0z", "#2f8f12"], ["M1.8000000000000007 11.6a10.2 10.2 0 1 0 20.4 0a10.2 10.2 0 1 0 -20.4 0z", "#7dff4a"], ["M4.6 11.6a7.4 7.4 0 1 0 14.8 0a7.4 7.4 0 1 0 -14.8 0z", "#b8ff8a"], ["M12 11.6L8.80 6.06A6.4 6.4 0 0 1 15.20 6.06z", "#1d3a0a"], ["M12 11.6L18.40 11.60A6.4 6.4 0 0 1 15.20 17.14z", "#1d3a0a"], ["M12 11.6L8.80 17.14A6.4 6.4 0 0 1 5.60 11.60z", "#1d3a0a"], ["M10.1 11.6a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0z", "#b8ff8a"], ["M10.9 11.6a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0 -2.2 0z", "#1d3a0a"]];
 // ---------- Zustand ----------
-let S={dia:0,boostUntil:0,coins:250,cows:[],highest:1,buys:0,up:{crate:0,cap:0,income:0,crateLvl:0,magnet:0},magnetOn:true,last:Date.now(),merged:0};
+let S={atom:0,dia:0,boostUntil:0,coins:250,cows:[],highest:1,buys:0,up:{crate:0,cap:0,income:0,crateLvl:0,magnet:0},magnetOn:true,last:Date.now(),merged:0};
 try{const s=JSON.parse(localStorage.getItem('kuhEvo1'));if(s&&s.cows){S=Object.assign(S,s);S.up=Object.assign({crate:0,cap:0,income:0,crateLvl:0,magnet:0},s.up)}}catch(e){}
 S.plant=Object.assign(defPlant(),S.plant||{});S.plant.up=Object.assign(defPlant().up,S.plant.up);if(!Array.isArray(S.plant.calves))S.plant.calves=[];S.plant.calves.forEach((c,i)=>{c.id=i+1;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2});if(S.plant.unlocked&&!S.plant.calves.length&&!S.plant.best)S.plant.best=1;
 function save(){if(window.__reset)return;S.last=Date.now();try{localStorage.setItem('kuhEvo1',JSON.stringify(S))}catch(e){}}
@@ -666,7 +668,7 @@ let tapHintDone=false;
 function hideHint2(){if(!tapHintDone){tapHintDone=true;try{localStorage.setItem('kuhEvoTap','1')}catch(e){}}}
 let magT=0,magPull=null;
 function startMagnet(){
-  for(let L=1;L<MAXL;L++){const g=S.cows.filter(c=>c.lvl===L&&!(drag&&drag.c===c));if(g.length<2)continue;
+  for(let L=1;L<mergeCap();L++){const g=S.cows.filter(c=>c.lvl===L&&!(drag&&drag.c===c));if(g.length<2)continue;
     let best=null,bd=9;for(let i=0;i<g.length;i++)for(let j=i+1;j<g.length;j++){const d=Math.hypot(g[i].x-g[j].x,g[i].y-g[j].y);if(d<bd){bd=d;best=[g[i],g[j]]}}
     magPull={a:best[0],b:best[1]};return}
 }
@@ -688,7 +690,75 @@ function openCowSheet(c){if(c.lvl>=MAXL)return;sheetCow=c;const d=LV[c.lvl-1],g=
   b.innerHTML=last?'Die letzte Kuh bleibt':'Verkaufen für '+diaFor(c.lvl)+' '+IC.dia;
   try{localStorage.setItem('kuhEvoSell','1')}catch(e){}hideHint();open('cowSheet')}
 document.getElementById('sellBtn').onclick=()=>{const c=sheetCow;sheetCow=null;document.getElementById('cowSheet').classList.remove('on');if(c&&S.cows.includes(c))sell(c)};
+// ---------- Kraftwerk-Mitarbeiter auf der Weide ----------
+IC.atom=shSvg('atom',ATOM_SH);
+const ATOM_CALF=5;
+let wk=null,wkT=20;
+function atomFor(L){return L<4?1:Math.round(2*Math.pow(1.5,L-4))}
+function mergeCap(){return S.highest>=MAXL?MAXL-1:MAXL}
+function spawnWorker(){
+  const hi=Math.min(MAXL-1,S.highest-1),lo=Math.max(2,hi-5);if(hi<2){wkT=60;return}
+  const have=S.cows.filter(c=>c.lvl>=lo&&c.lvl<=hi).map(c=>c.lvl);
+  const want=have.length&&Math.random()<.75?have[Math.floor(Math.random()*have.length)]:lo+Math.floor(Math.random()*(hi-lo+1));
+  const y=.42+Math.random()*.35;wk={x:-.12,y,tx:.18+Math.random()*.22,ty:y,want,phase:'in',t:45,flip:false,say:null,sayT:0};
+}
+function updateWorker(dt){
+  if(!S.plant||!S.plant.unlocked)return;
+  if(!wk){wkT-=dt;if(wkT<=0)spawnWorker();return}
+  if(wk.sayT>0)wk.sayT-=dt;
+  const dx=wk.tx-wk.x,dy=wk.ty-wk.y,d=Math.hypot(dx,dy);
+  if(d>.005){const sp=.13*dt;wk.x+=dx/d*Math.min(sp,d);wk.y+=dy/d*Math.min(sp,d);wk.flip=dx<0;wk.walk=1}else{wk.walk=0;
+    if(wk.phase==='in')wk.phase='wait';
+    else if(wk.phase==='out'){wk=null;wkT=90+Math.random()*60;return}}
+  if(wk.phase==='wait'){wk.t-=dt;if(wk.t<=0){wk.phase='out';wk.tx=1.15;wk.say='Schade – bis später!';wk.sayT=2}}
+}
+function workerDrop(c){
+  if(!wk||wk.phase==='out')return false;const [wx,wy]=toPx(wk),[x,y]=toPx(c);
+  if(Math.hypot(x-wx,y-(wy-cowSize()*.3))>cowSize()*.75)return false;
+  if(c.lvl!==wk.want){wk.say='Ich suche eine '+LV[wk.want-1].n+'!';wk.sayT=2.2;c.wait=1;return true}
+  const n=atomFor(c.lvl);S.cows=S.cows.filter(o=>o!==c);S.atom=(S.atom||0)+n;
+  burst(x,y,'#7dff4a',22);rings.push({x,y,r:10,l:.6,col:'#7dff4a'});
+  showToast('Verkauft! +'+n+' Atom-Münze'+(n>1?'n':'')+' · jetzt '+S.atom+' im Kraftwerk');
+  wk.phase='out';wk.tx=1.15;wk.say='Danke! Die nehme ich mit.';wk.sayT=2.5;save();return true;
+}
+function drawWorker(){
+  if(!wk)return;const s=cowSize()*1.05,[x,y]=toPx(wk),c=cx,bob=wk.walk?Math.abs(Math.sin(T*9))*s*.04:0,sw=wk.walk?Math.sin(T*9)*s*.05:0;
+  c.save();c.translate(x,y-bob);
+  if(drag&&drag.moved&&wk.phase==='wait'&&drag.c.lvl===wk.want){c.strokeStyle='rgba(125,255,74,.95)';c.lineWidth=3;c.setLineDash([6,5]);c.beginPath();c.ellipse(0,-s*.25,s*.5,s*.62,0,0,7);c.stroke();c.setLineDash([])}
+  if(wk.flip)c.scale(-1,1);
+  const OL='#8a6a00',LWw=s*.022;c.lineWidth=LWw;c.strokeStyle=OL;
+  // Beine
+  [[-.1,sw],[.04,-sw]].forEach(([lx,o])=>{c.fillStyle='#e6b800';c.beginPath();c.roundRect(lx*s+o,s*.05,s*.11,s*.3,s*.04);c.fill();c.stroke();c.fillStyle='#2b2b2b';c.beginPath();c.roundRect(lx*s+o-s*.01,s*.32,s*.14,s*.07,s*.03);c.fill()});
+  // Körper
+  c.fillStyle='#ffd23f';c.beginPath();c.roundRect(-s*.17,-s*.36,s*.34,s*.46,s*.1);c.fill();c.stroke();
+  c.fillStyle='#e6b800';c.fillRect(-s*.17,-s*.06,s*.34,s*.05);
+  // Warnzeichen auf der Brust
+  shDraw(c,ATOM_SH,s*.02,-s*.2,s*.0075);
+  // Arme + Klemmbrett
+  c.fillStyle='#ffd23f';c.beginPath();c.roundRect(-s*.25,-s*.32,s*.09,s*.28,s*.04);c.fill();c.stroke();
+  c.save();c.translate(s*.2,-s*.2);c.rotate(-.25);c.fillStyle='#a0703c';c.beginPath();c.roundRect(-s*.07,-s*.1,s*.15,s*.2,s*.02);c.fill();c.fillStyle='#fff';c.fillRect(-s*.05,-s*.07,s*.11,s*.14);c.fillStyle='#9aa4b5';for(let i=0;i<3;i++)c.fillRect(-s*.035,-s*.045+i*s*.04,s*.08,s*.012);c.restore();
+  c.fillStyle='#ffd23f';c.beginPath();c.roundRect(s*.13,-s*.32,s*.09,s*.2,s*.04);c.fill();c.stroke();
+  // Kopf mit Schutzhelm
+  c.fillStyle='#ffd23f';c.beginPath();c.arc(0,-s*.5,s*.17,0,7);c.fill();c.stroke();
+  c.fillStyle='#24324a';c.beginPath();c.roundRect(-s*.07,-s*.57,s*.2,s*.12,s*.05);c.fill();
+  c.fillStyle='rgba(255,255,255,.55)';c.beginPath();c.roundRect(-s*.03,-s*.555,s*.07,s*.025,s*.012);c.fill();
+  c.fillStyle='#7a8496';c.beginPath();c.roundRect(-s*.2,-s*.5,s*.06,s*.1,s*.02);c.fill();
+  c.restore();
+  // Sprechblase
+  const bx=Math.min(W-74,Math.max(74,x)),by=y-s*.98;
+  if(wk.sayT>0&&wk.say){c.save();c.font='800 13px Nunito, system-ui';const tw=c.measureText(wk.say).width,w=tw+24,h=30,bx=Math.min(W-w/2-6,Math.max(w/2+6,x));
+    c.fillStyle='#fff';c.shadowColor='rgba(0,0,0,.2)';c.shadowBlur=8;c.beginPath();c.roundRect(bx-w/2,by-h/2,w,h,15);c.fill();c.shadowBlur=0;
+    c.fillStyle='#1d2a22';c.textAlign='center';c.textBaseline='middle';c.fillText(wk.say,bx,by+1);c.restore();return}
+  if(wk.phase==='out')return;
+  const w=132,h=58;c.save();c.fillStyle='#fff';c.shadowColor='rgba(0,0,0,.22)';c.shadowBlur=10;c.beginPath();c.roundRect(bx-w/2,by-h/2,w,h,16);c.moveTo(bx-8,by+h/2);c.lineTo(bx,by+h/2+10);c.lineTo(bx+8,by+h/2);c.fill();c.shadowBlur=0;
+  drawCow(c,bx-34,by+4,40,wk.want,T,false);
+  c.fillStyle='#1d2a22';c.font='800 11px Nunito, system-ui';c.textAlign='left';c.textBaseline='middle';c.fillText('Kaufe für',bx+2,by-11);
+  c.font='900 17px Nunito, system-ui';const r='+'+atomFor(wk.want);c.fillText(r,bx+2,by+9);shDraw(c,ATOM_SH,bx+8+c.measureText(r).width+8,by+9,.42);
+  if(wk.phase==='wait'){c.fillStyle='#e3e8e4';c.beginPath();c.roundRect(bx-w/2+10,by+h/2-7,w-20,3,2);c.fill();c.fillStyle='#59d62a';c.beginPath();c.roundRect(bx-w/2+10,by+h/2-7,(w-20)*Math.max(0,wk.t/45),3,2);c.fill()}
+  c.restore();
+}
 // ---------- Eingabe ----------
+
 let drag=null;
 function toPx(o){return [o.x*W,o.y*H]}
 function pos(e){const r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top]}
@@ -709,8 +779,10 @@ cv.addEventListener('pointermove',e=>{
 });
 function endDrag(){
   if(!drag)return;const c=drag.c;if(!drag.moved){drag=null;tapCow(c);return}if(overSell(c)){const ok=drag.sellT>=SELL_T,ox=drag.ox,oy=drag.oy;drag=null;if(ok){sell(c);return}c.x=c.tx=ox;c.y=c.ty=oy;c.wait=1;const [x,y]=toPx(c);floats.push({x,y:y-cowSize()*.6,t:'Zum Verkaufen 1 Sek. halten',l:1.6});return}drag=null;const s=cowSize();
+  if(workerDrop(c))return;
   const t=S.cows.find(o=>o!==c&&o.lvl===c.lvl&&Math.hypot((o.x-c.x)*W,(o.y-c.y)*H)<s*.6);
-  if(t&&c.lvl<MAXL)merge(c,t);
+  if(t&&c.lvl<mergeCap())merge(c,t);
+  else if(t&&c.lvl===MAXL-1){const [x,y]=toPx(c);floats.push({x,y:y-s*.6,t:'Kosmische Kühe verschmelzen nicht mehr',l:1.6})}
   c.wait=1.5;
 }
 cv.addEventListener('pointerup',endDrag);cv.addEventListener('pointercancel',endDrag);
@@ -761,8 +833,8 @@ function loop(now){
       if(d<=sp+.012){magPull=null;merge(a,b)}else{a.x+=dx/d*sp;a.y+=dy/d*sp;a.tx=a.x;a.ty=a.y;a.flip=dx<0;a.mv=1}}}
   updMagUI();
   if(drag&&!drag.moved&&performance.now()-drag.t0>LP_MS){const c=drag.c;drag=null;openCowSheet(c)}
-  plantTick(dt);if(plantOpen)drawPlant(dt);
-  if(S.test){if(S.coins<1e12)S.coins=1e12;if(S.dia<1e6)S.dia=1e6}
+  plantTick(dt);updateWorker(dt);if(plantOpen)drawPlant(dt);
+  if(S.test){if(S.coins<1e12)S.coins=1e12;if(S.dia<1e6)S.dia=1e6;if((S.atom||0)<1e4)S.atom=1e4}
   draw(dt);ui();
   requestAnimationFrame(loop);
 }
@@ -778,14 +850,15 @@ function draw(dt){
   const order=[...S.cows].sort((a,b)=>a.y-b.y);
   if(drag){const dc=drag.c;order.splice(order.indexOf(dc),1);order.push(dc)}
   order.forEach(c=>{const [x,y]=toPx(c);const sc=1+(c.pop?Math.sin(c.pop*Math.PI)*.35:0)+(c.tap?Math.sin(c.tap*Math.PI)*.06:0);
-    const glow=drag&&drag.moved&&drag.c!==c&&drag.c.lvl===c.lvl&&c.lvl<MAXL;
+    const glow=drag&&drag.moved&&drag.c!==c&&drag.c.lvl===c.lvl&&c.lvl<mergeCap();
     drawCow(cx,x,y,s*sc,c.lvl,T+c.id,c.flip,drag&&drag.moved&&drag.c===c,glow,c.mv&&!(drag&&drag.c===c));
     if(drag&&drag.c===c&&overSell(c)){cx.globalAlpha=.35;cx.fillStyle='#4dd9ff';cx.beginPath();cx.arc(x,y,s*.55,0,7);cx.fill();cx.globalAlpha=1;const n=diaFor(c.lvl),t='+'+n;cx.font='bold 20px Nunito, system-ui';cx.textAlign='center';cx.lineWidth=4;cx.strokeStyle='rgba(0,0,0,.45)';const tw=cx.measureText(t).width;cx.strokeText(t,x-10,y-s*.75);cx.fillStyle='#fff';cx.fillText(t,x-10,y-s*.75);drawDia(cx,x+tw/2-2,y-s*.77,11)}});
+  drawWorker();
   drawNight();
   coins.forEach(k=>{const [x,y]=toPx(k);const a=k.age>5?6-k.age:1;drawCoin(cx,x,y-Math.min(1,k.age*3)*s*.15+Math.sin(T*4+k.x*9)*2,s*.13,a)});
   parts.forEach(p=>{cx.globalAlpha=Math.max(0,p.l*1.5);cx.fillStyle=p.col;cx.beginPath();cx.arc(p.x,p.y,4,0,7);cx.fill()});cx.globalAlpha=1;
   drawFx(dt);
-  floats.forEach(f=>{if(f.gold){drawTapBadge(f);return}cx.globalAlpha=Math.min(1,f.l*2);cx.fillStyle=f.gold?'#ffe066':'#fff';cx.strokeStyle='rgba(60,40,0,.65)';cx.lineWidth=f.gold?4:3;cx.font=f.gold?'800 20px Nunito, system-ui':'bold 16px Nunito, system-ui';cx.textAlign='center';cx.strokeText(f.t,f.x,f.y);cx.fillText(f.t,f.x,f.y)});cx.globalAlpha=1;
+  floats.forEach(f=>{if(f.gold){drawTapBadge(f);return}cx.globalAlpha=Math.min(1,f.l*2);cx.fillStyle=f.gold?'#ffe066':'#fff';cx.strokeStyle='rgba(60,40,0,.65)';cx.lineWidth=f.gold?4:3;cx.font=f.gold?'800 20px Nunito, system-ui':'bold 16px Nunito, system-ui';cx.textAlign='center';const fw=cx.measureText(f.t).width/2+8,fx=Math.min(W-fw,Math.max(fw,f.x));cx.strokeText(f.t,fx,f.y);cx.fillText(f.t,fx,f.y)});cx.globalAlpha=1;
 }
 let uiT=0;
 function ui(){
@@ -862,7 +935,7 @@ setInterval(save,5000);
 addEventListener('pagehide',save);document.addEventListener('visibilitychange',()=>{if(document.hidden)save()});
 function updTestBtn(){const b=document.getElementById('testBtn');b.textContent='Test '+(S.test?'an':'aus');b.style.background=S.test?'#1d2a22':'#eef1f4';b.style.color=S.test?'#fff':'#1d2a22';
   document.getElementById('coins').style.outline=S.test?'2px dashed #fff':'none'}
-document.getElementById('testBtn').onclick=()=>{if(!S.test){S.testBackup={coins:S.coins,dia:S.dia};S.test=true}else{S.test=false;if(S.testBackup){S.coins=S.testBackup.coins;S.dia=S.testBackup.dia;delete S.testBackup}}updTestBtn();save()};
+document.getElementById('testBtn').onclick=()=>{if(!S.test){S.testBackup={coins:S.coins,dia:S.dia,atom:S.atom||0};S.test=true}else{S.test=false;if(S.testBackup){S.coins=S.testBackup.coins;S.dia=S.testBackup.dia;S.atom=S.testBackup.atom||0;delete S.testBackup}}updTestBtn();save()};
 updTestBtn();
 initPlant();
 requestAnimationFrame(loop);
