@@ -79,17 +79,21 @@ svg.ic.coin,svg.ic.dia{width:16px;height:16px;vertical-align:-3px;margin-right:4
 #coinIcon svg{width:28px;height:28px;margin:0}#diaIcon svg{width:22px;height:22px;margin:0 2px 0 6px}
 svg.ic.bolt{width:13px;height:13px;margin:0 2px 0 0;color:#ffe066}
 .row button svg.ic{filter:drop-shadow(0 1px 1px rgba(0,0,0,.15))}
-#magBtn,#crateBtn{position:absolute;z-index:2;left:calc(12px + env(safe-area-inset-left));top:calc(74px + env(safe-area-inset-top));width:54px;height:54px;border-radius:50%;border:1px solid var(--glassB);background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 6px 20px rgba(0,0,0,.15);cursor:pointer;padding:0;transition:transform .12s}
-#magBtn:active,#crateBtn:active{transform:scale(.92)}
-#magBtn .ring,#crateBtn .ring{position:absolute;inset:3px;width:46px;height:46px}
-#magBtn .mg,#crateBtn .mg{position:absolute;left:50%;top:50%;width:24px;height:24px;transform:translate(-50%,-50%)}
-#magBtn span,#crateBtn span{position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);background:#fff;color:#d6347f;font:900 10px Nunito,system-ui;padding:2px 6px;border-radius:999px;box-shadow:0 2px 6px rgba(0,0,0,.15);white-space:nowrap}
+#magBtn,#crateBtn,#wkBtn{position:absolute;z-index:2;left:calc(12px + env(safe-area-inset-left));top:calc(74px + env(safe-area-inset-top));width:54px;height:54px;border-radius:50%;border:1px solid var(--glassB);background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 6px 20px rgba(0,0,0,.15);cursor:pointer;padding:0;transition:transform .12s}
+#magBtn:active,#crateBtn:active,#wkBtn:active{transform:scale(.92)}
+#magBtn .ring,#crateBtn .ring,#wkBtn .ring{position:absolute;inset:3px;width:46px;height:46px}
+#magBtn .mg,#crateBtn .mg,#wkBtn .mg{position:absolute;left:50%;top:50%;width:24px;height:24px;transform:translate(-50%,-50%)}
+#magBtn span,#crateBtn span,#wkBtn span{position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);background:#fff;color:#d6347f;font:900 10px Nunito,system-ui;padding:2px 6px;border-radius:999px;box-shadow:0 2px 6px rgba(0,0,0,.15);white-space:nowrap}
 #magBtn.off .mg,#crateBtn.off .mg{filter:grayscale(1);opacity:.55}
 #magBtn.off span,#crateBtn.off span{color:#7a8580}
 .sellbtn{width:100%;border:0;border-radius:18px;padding:14px;font:800 16px Nunito,system-ui;background:linear-gradient(135deg,#7ae6ff,#2a8cf0);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:2px;box-shadow:0 6px 16px rgba(42,140,240,.35)}
 .sellbtn svg.ic{width:20px;height:20px;margin:0 0 0 4px}
 .sellbtn:disabled{background:#e5e9e6;color:#7a8580;box-shadow:none}
 #crateBtn{top:calc(146px + env(safe-area-inset-top))}
+#wkBtn{top:calc(218px + env(safe-area-inset-top));display:none}
+#wkBtn.show{display:block}
+#wkBtn.here span{background:#59d62a;color:#fff}
+#wkBtn .mg{width:28px;height:28px}
 #toast{position:fixed;left:50%;top:calc(64px + env(safe-area-inset-top));transform:translate(-50%,-20px);z-index:40;background:#1d2a22;color:#fff;font:800 14px Nunito,system-ui;padding:10px 16px;border-radius:999px;opacity:0;pointer-events:none;max-width:90vw;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.25)}
 #toast.on{animation:toast 2.6s ease forwards}
 @keyframes toast{0%{opacity:0;transform:translate(-50%,-20px)}10%,80%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-10px)}}
@@ -151,6 +155,7 @@ svg.ic.bolt{width:13px;height:13px;margin:0 2px 0 0;color:#ffe066}
   <div id="field">
     <canvas id="cv"></canvas>
     <button id="magBtn" class="fab" aria-label="Magnet an/aus"><svg class="ring" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3.5"/><circle id="magRing" cx="22" cy="22" r="19" fill="none" stroke="#ff5fa2" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="119.4" transform="rotate(-90 22 22)"/></svg><svg class="mg" viewBox="0 -1.5 24 24"><path d="M5 3h5v8a2 2 0 0 0 4 0V3h5v8a7 7 0 0 1-14 0z" fill="#ff5fa2"/><path d="M5 3h5v3.6H5zM14 3h5v3.6h-5z" fill="#eef1f4"/></svg><span id="magLbl">10s</span></button>
+    <button id="wkBtn" aria-label="Nächster Mitarbeiter"><svg class="ring" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3.5"/><circle id="wkRing" cx="22" cy="22" r="19" fill="none" stroke="#7dff4a" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="119.4" transform="rotate(-90 22 22)"/></svg><svg class="mg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="#ffd23f" stroke="#7a5a00" stroke-width="1.2"/><ellipse cx="12.3" cy="11.3" rx="6.4" ry="5.2" fill="#bfe9ff" stroke="#2a2d36" stroke-width="1.2"/><ellipse cx="12.3" cy="12" rx="4.6" ry="3.8" fill="#ffd9c2"/><circle cx="10.6" cy="11.4" r=".9" fill="#2a2d36"/><circle cx="14.2" cy="11.4" r=".9" fill="#2a2d36"/><path d="M11 13.3q1.3 1.1 2.6 0" stroke="#2a2d36" stroke-width=".8" fill="none" stroke-linecap="round"/><circle cx="12.3" cy="18.4" r="2" fill="#8a93a5" stroke="#4a5160" stroke-width=".7"/></svg><span id="wkLbl">2m</span></button>
     <button id="crateBtn" class="fab" aria-label="Kisten an/aus"><svg class="ring" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3.5"/><circle id="crateRing" cx="22" cy="22" r="19" fill="none" stroke="#ff5fa2" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="119.4" transform="rotate(-90 22 22)"/></svg><svg class="mg" viewBox="0 0 24 24"><rect x="4.5" y="9.5" width="15" height="10.5" rx="2.4" fill="#f6b26b"/><rect x="3.3" y="6.6" width="17.4" height="4.4" rx="1.8" fill="#ffc98a"/><rect x="10.7" y="6.6" width="2.6" height="13.4" fill="#ff5fa2"/><path d="M12 6.6C10.5 3.6 7 3.4 7 5.3c0 1.6 2.8 1.6 5 1.3zm0 0c1.5-3 5-3.2 5-1.3 0 1.6-2.8 1.6-5 1.3z" fill="#ff5fa2"/></svg><span id="crateLbl">35s</span></button>
     <div id="hint" style="display:none"></div>
   </div>
@@ -323,7 +328,9 @@ const UPG=[
  {k:'cap',n:'Größere Weide',d:l=>(10+l)+' Kühe Platz',cost:l=>1200*Math.pow(2.4,l),max:10},
  {k:'income',n:'Saftigeres Gras',d:l=>'+'+(l*20)+'% Ertrag',cost:l=>750*Math.pow(2,l),max:30},
  {k:'crateLvl',n:'Bessere Kisten',d:l=>'Kisten enthalten '+LV[l].n,cost:l=>12000*Math.pow(12,l),max:3,need:l=>l+4},
- {k:'magnet',n:'Stärkerer Magnet',d:l=>'Magnet alle '+magInt(l)+' s',cost:l=>1500*Math.pow(2.3,l),max:7}
+ {k:'magnet',n:'Stärkerer Magnet',d:l=>'Magnet alle '+magInt(l)+' s',cost:l=>1500*Math.pow(2.3,l),max:7},
+ {k:'wkFreq',n:'Häufigere Mitarbeiter-Besuche',d:l=>'Besuch alle '+fmtT(wkInt(l)),cost:l=>2e6*Math.pow(2.5,l),max:8,need:l=>MAXL},
+ {k:'wkPay',n:'Bessere Atom-Preise',d:l=>'+'+(l*25)+' % Atom-Münzen',cost:l=>3e6*Math.pow(2.6,l),max:10,need:l=>MAXL}
 ];
 function magInt(l){return 10-l}
 function crateInt(l){return 35*Math.pow(.88,l)}
@@ -499,8 +506,8 @@ function initPlant(){
 
 const ATOM_SH=[["M1.8000000000000007 12.9a10.2 10.2 0 1 0 20.4 0a10.2 10.2 0 1 0 -20.4 0z", "#2f8f12"], ["M1.8000000000000007 11.6a10.2 10.2 0 1 0 20.4 0a10.2 10.2 0 1 0 -20.4 0z", "#7dff4a"], ["M4.6 11.6a7.4 7.4 0 1 0 14.8 0a7.4 7.4 0 1 0 -14.8 0z", "#b8ff8a"], ["M12 11.6L8.80 6.06A6.4 6.4 0 0 1 15.20 6.06z", "#1d3a0a"], ["M12 11.6L18.40 11.60A6.4 6.4 0 0 1 15.20 17.14z", "#1d3a0a"], ["M12 11.6L8.80 17.14A6.4 6.4 0 0 1 5.60 11.60z", "#1d3a0a"], ["M10.1 11.6a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0z", "#b8ff8a"], ["M10.9 11.6a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0 -2.2 0z", "#1d3a0a"]];
 // ---------- Zustand ----------
-let S={atom:0,dia:0,boostUntil:0,coins:250,cows:[],highest:1,buys:0,up:{crate:0,cap:0,income:0,crateLvl:0,magnet:0},magnetOn:true,last:Date.now(),merged:0};
-try{const s=JSON.parse(localStorage.getItem('kuhEvo1'));if(s&&s.cows){S=Object.assign(S,s);S.up=Object.assign({crate:0,cap:0,income:0,crateLvl:0,magnet:0},s.up)}}catch(e){}
+let S={atom:0,dia:0,boostUntil:0,coins:250,cows:[],highest:1,buys:0,up:{crate:0,cap:0,income:0,crateLvl:0,magnet:0,wkFreq:0,wkPay:0},magnetOn:true,last:Date.now(),merged:0};
+try{const s=JSON.parse(localStorage.getItem('kuhEvo1'));if(s&&s.cows){S=Object.assign(S,s);S.up=Object.assign({crate:0,cap:0,income:0,crateLvl:0,magnet:0,wkFreq:0,wkPay:0},s.up)}}catch(e){}
 S.plant=Object.assign(defPlant(),S.plant||{});S.plant.up=Object.assign(defPlant().up,S.plant.up);if(!Array.isArray(S.plant.calves))S.plant.calves=[];S.plant.calves.forEach((c,i)=>{c.id=i+1;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2});if(S.plant.unlocked&&!S.plant.calves.length&&!S.plant.best)S.plant.best=1;
 function save(){if(window.__reset)return;S.last=Date.now();try{localStorage.setItem('kuhEvo1',JSON.stringify(S))}catch(e){}}
 let coins=[],crates=[],parts=[],floats=[],crateT=0,uid=1;
@@ -672,6 +679,11 @@ function startMagnet(){
     let best=null,bd=9;for(let i=0;i<g.length;i++)for(let j=i+1;j<g.length;j++){const d=Math.hypot(g[i].x-g[j].x,g[i].y-g[j].y);if(d<bd){bd=d;best=[g[i],g[j]]}}
     magPull={a:best[0],b:best[1]};return}
 }
+function updWkUI(){const b=document.getElementById('wkBtn'),un=!!(S.plant&&S.plant.unlocked);b.classList.toggle('show',un);if(!un)return;
+  const iv=wkInt(S.up.wkFreq),here=!!wk;b.classList.toggle('here',here);
+  document.getElementById('wkRing').style.strokeDashoffset=(119.4*(here?0:Math.max(0,Math.min(1,wkT/iv)))).toFixed(1);
+  const l=document.getElementById('wkLbl'),t=here?'DA':wkT<60?Math.max(1,Math.ceil(wkT))+'s':Math.ceil(wkT/60)+'m';if(l.textContent!==t)l.textContent=t}
+document.getElementById('wkBtn').onclick=()=>{showToast(wk?(wk.phase==='out'?'Der Mitarbeiter ist auf dem Rückweg.':'Ein Mitarbeiter wartet auf der Weide – er sucht eine '+LV[wk.want-1].n+'!'):'Der nächste Kraftwerk-Mitarbeiter kommt in '+fmtT(wkT)+'.')};
 function updCrateUI(){const on=S.cratesOn!==false,full=S.cows.length+crates.length>=cap(),b=document.getElementById('crateBtn');b.classList.toggle('off',!on);
   const iv=crateInt(S.up.crate),pr=!on?0:full?1:crateT/iv;document.getElementById('crateRing').style.strokeDashoffset=(119.4*(1-pr)).toFixed(1);
   const l=document.getElementById('crateLbl'),t=!on?'AUS':full?'VOLL':Math.max(1,Math.ceil(iv-crateT))+'s';if(l.textContent!==t)l.textContent=t}
@@ -694,7 +706,9 @@ document.getElementById('sellBtn').onclick=()=>{const c=sheetCow;sheetCow=null;d
 IC.atom=shSvg('atom',ATOM_SH);
 const ATOM_CALF=5;
 let wk=null,wkT=20;
-function atomFor(L){return L<4?1:Math.round(2*Math.pow(1.5,L-4))}
+function atomFor(L){return Math.max(1,Math.round((L<4?1:2*Math.pow(1.5,L-4))*(1+.25*(S.up.wkPay||0))))}
+function wkInt(l){return 120*Math.pow(.88,l||0)}
+function fmtT(t){t=Math.ceil(t);return t<60?t+' s':Math.floor(t/60)+':'+String(t%60).padStart(2,'0')+' Min.'}
 function mergeCap(){return S.highest>=MAXL?MAXL-1:MAXL}
 function spawnWorker(){
   const hi=Math.min(MAXL-1,S.highest-1),lo=Math.max(2,hi-5);if(hi<2){wkT=60;return}
@@ -709,7 +723,7 @@ function updateWorker(dt){
   const dx=wk.tx-wk.x,dy=wk.ty-wk.y,d=Math.hypot(dx,dy);
   if(d>.005){const sp=.13*dt;wk.x+=dx/d*Math.min(sp,d);wk.y+=dy/d*Math.min(sp,d);wk.flip=dx<0;wk.walk=1}else{wk.walk=0;
     if(wk.phase==='in')wk.phase='wait';
-    else if(wk.phase==='out'){wk=null;wkT=90+Math.random()*60;return}}
+    else if(wk.phase==='out'){wk=null;wkT=wkInt(S.up.wkFreq);return}}
 }
 function workerDrop(c){
   if(!wk||wk.phase==='out')return false;const [wx,wy]=toPx(wk),[x,y]=toPx(c);
@@ -730,7 +744,7 @@ function drawWorker(){
   [[-.085,sw],[.085,-sw]].forEach(([lx,o])=>{c.fillStyle=Yd;c.beginPath();c.roundRect(lx*s-s*.055+o,s*.02,s*.11,s*.27,s*.05);c.fill();c.stroke();
     c.fillStyle='#2a2d36';c.beginPath();c.roundRect(lx*s-s*.07+o,s*.26,s*.15,s*.1,[s*.05,s*.05,s*.03,s*.03]);c.fill();c.strokeStyle='#15171c';c.stroke();c.strokeStyle=OL});
   // hinterer Arm
-  c.fillStyle=Yd;c.save();c.translate(-s*.17,-s*.24);c.rotate(.25-sw*2);c.beginPath();c.roundRect(-s*.05,0,s*.1,s*.24,s*.05);c.fill();c.stroke();c.fillStyle=G;c.beginPath();c.arc(0,s*.25,s*.055,0,7);c.fill();c.restore();
+  c.fillStyle=Yd;c.save();c.translate(-s*.17,-s*.24);c.rotate(.18);c.beginPath();c.roundRect(-s*.05,0,s*.1,s*.24,s*.05);c.fill();c.stroke();c.fillStyle=G;c.beginPath();c.arc(0,s*.25,s*.055,0,7);c.fill();c.restore();
   // Körper (Schutzanzug)
   c.fillStyle=Y;c.beginPath();c.moveTo(-s*.15,-s*.3);c.quadraticCurveTo(-s*.22,-s*.05,-s*.18,s*.08);c.quadraticCurveTo(0,s*.14,s*.18,s*.08);c.quadraticCurveTo(s*.22,-s*.05,s*.15,-s*.3);c.quadraticCurveTo(0,-s*.36,-s*.15,-s*.3);c.closePath();c.fill();c.stroke();
   // Reißverschluss + Warnstreifen-Gürtel
@@ -823,7 +837,7 @@ function loop(now){
   const dt=Math.min(.05,(now-lastT)/1000);lastT=now;T+=dt;
   // Kisten
   if(S.cratesOn!==false&&S.cows.length+crates.length<cap()){crateT+=dt;if(crateT>=crateInt(S.up.crate)){crateT=0;spawnCrate()}}
-  updCrateUI();
+  updCrateUI();updWkUI();
   crates.forEach(k=>{k.drop=Math.min(1,k.drop+dt*2.5);k.age+=dt;if(k.drop>=1&&!k.landed){k.landed=1;const [x,y]=toPx(k);for(let i=0;i<10;i++)parts.push({x:x+rnd(-20,20),y:y+cowSize()*.3,vx:rnd(-80,80),vy:rnd(-90,-30),l:rnd(.3,.5),col:'#e8dcb5'})}});
   // Kühe
   S.cows.forEach(c=>{
