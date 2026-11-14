@@ -156,7 +156,9 @@ svg.ic.bolt{width:13px;height:13px;margin:0 2px 0 0;color:#ffe066}
 .ptop{position:absolute;left:0;right:0;top:0;z-index:2;display:flex;justify-content:space-between;align-items:flex-start;padding:calc(10px + env(safe-area-inset-top)) 12px 0;pointer-events:none}
 .ptop .pbolt{width:26px;height:26px;margin-left:2px}
 #pAtomIc svg{width:26px;height:26px}
-#plantBack{top:calc(74px + env(safe-area-inset-top))}#birthFab{top:calc(146px + env(safe-area-inset-top))}
+#birthFab{top:calc(74px + env(safe-area-inset-top))}
+#pbar{grid-template-columns:1.25fr 1fr 1fr 1fr 1fr;gap:4px}
+#pbar button{font-size:12.5px;padding:9px 4px}#pbar button.primary{padding:9px 6px}
 #plantBack .mg{width:26px;height:26px}#birthFab .mg{width:28px;height:28px}
 #pbar button.primary{background:linear-gradient(135deg,#c6ff8a,#59d62a);color:#173d05;box-shadow:0 6px 16px rgba(110,240,60,.4),inset 0 1px 0 rgba(255,255,255,.6)}
 #pbar button.primary small{color:rgba(23,61,5,.8);display:flex;align-items:center;gap:2px}
@@ -207,11 +209,11 @@ svg.ic.bolt{width:13px;height:13px;margin:0 2px 0 0;color:#ffe066}
     <div class="pills"><div class="pill"><svg class="pbolt" viewBox="0 0 24 24"><path d="M13.4 2.6 5.2 13.3h5.7l-1.1 8.1 8.2-11h-5.8z" fill="#ffe14d" stroke="#b8860b" stroke-width="1.2" stroke-linejoin="round"/></svg><span id="pMW">0</span></div><div class="pill"><span class="pi" id="pAtomIc"></span><span id="pAtom">0</span></div></div>
     <div class="pill stat"><div><b id="pOut">0</b><small>MW/Sek.</small></div><div class="cap" id="pCalf">0/8 Kälber</div></div>
   </div>
-  <button id="plantBack" aria-label="Zur Karte"><svg class="mg" viewBox="0 0 24 24"><path d="M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="#ffffff" opacity=".9"/><path d="M8.5 4v13.5M15.5 6.5V20M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="none" stroke="#3fb11c" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Karte</span></button>
+  
   <button id="birthFab" aria-label="Nächstes Kälbchen"><svg class="ring" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3.5"/><circle id="birthRing" cx="22" cy="22" r="19" fill="none" stroke="#7dff4a" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="119.4" transform="rotate(-90 22 22)"/></svg><svg class="mg" viewBox="0 0 24 24"><ellipse cx="11" cy="14" rx="7.5" ry="5" fill="#dcfa9e" stroke="#4f7a1c" stroke-width="1.2"/><circle cx="17.5" cy="10.5" r="4" fill="#dcfa9e" stroke="#4f7a1c" stroke-width="1.2"/><circle cx="18.6" cy="10" r=".8" fill="#2a2d36"/><path d="M19 3.5c-1 1.2-1 2.5 0 3.3" stroke="#59d62a" stroke-width="1.4" fill="none"/><circle cx="19.2" cy="3" r="1.4" fill="#7dff4a"/></svg><span id="birthLbl">30s</span></button>
   <p id="birthInfo" style="display:none"></p>
   <div id="chefCard" style="display:none"><div class="ct"><b>Kraftwerk-Chef</b><span id="chefTxt"></span></div><div class="cb"><button id="chefNo">Nein danke</button><button id="chefYes"></button></div></div>
-  <div id="pbar"><button id="calfBuy" class="primary">Kälbchen</button><button id="pMisBtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="currentColor" opacity=".2"/><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2.5 12h19M12 2.5c3 3 3 16 0 19M12 2.5c-3 3-3 16 0 19" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span>Welt&shy;rettung</span></button><button id="pUpBtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5" fill="currentColor" opacity=".18"/><path d="M13.4 4.6 7.2 13.3h4.5l-.9 6.1 6.2-8.7h-4.5z" fill="currentColor"/></svg><span>Upgrades</span></button><button id="pLadBtn"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2.6" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="2.6" fill="currentColor" opacity=".35"/><rect x="3" y="13" width="8" height="8" rx="2.6" fill="currentColor" opacity=".35"/><rect x="13" y="13" width="8" height="8" rx="2.6" fill="currentColor"/></svg><span>Stufen</span></button></div>
+  <div id="pbar"><button id="calfBuy" class="primary">Kälbchen</button><button id="pMisBtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="currentColor" opacity=".2"/><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2.5 12h19M12 2.5c3 3 3 16 0 19M12 2.5c-3 3-3 16 0 19" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span>Welt&shy;rettung</span></button><button id="pUpBtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5" fill="currentColor" opacity=".18"/><path d="M13.4 4.6 7.2 13.3h4.5l-.9 6.1 6.2-8.7h-4.5z" fill="currentColor"/></svg><span>Upgrades</span></button><button id="pMapBtn"><svg viewBox="0 0 24 24"><path d="M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="currentColor" opacity=".25"/><path d="M8.5 4v13.5M15.5 6.5V20M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Karte</span></button><button id="pLadBtn"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2.6" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="2.6" fill="currentColor" opacity=".35"/><rect x="3" y="13" width="8" height="8" rx="2.6" fill="currentColor" opacity=".35"/><rect x="13" y="13" width="8" height="8" rx="2.6" fill="currentColor"/></svg><span>Stufen</span></button></div>
 </div>
 <div class="overlay hi" id="pMis"><div class="panel"><h2 id="missionHead">Weltrettung</h2><div id="missionList"></div><button class="close" data-close="pMis">Schließen</button></div></div>
 <div class="overlay hi" id="pUps"><div class="panel"><h2>Kraftwerk-Upgrades</h2><p style="color:var(--muted);font-weight:600;margin:-6px 0 10px;font-size:13px">Bezahlt wird mit gespeichertem Strom.</p><div id="pupList"></div><button class="close" data-close="pUps">Schließen</button></div></div>
@@ -592,7 +594,7 @@ function renderPup(update){const box=document.getElementById('pupList'),P=S.plan
 function initPlant(){
   document.getElementById('mapBtn').onclick=openMap;
   document.getElementById('mapBack').onclick=closeMap;
-  document.getElementById('plantBack').onclick=()=>{closePlant();openMap()};
+  document.getElementById('pMapBtn').onclick=()=>{closePlant();openMap()};
   document.getElementById('calfBuy').onclick=()=>{const P=S.plant;if(P.calves.length>=slots()||(S.atom||0)<ATOM_CALF)return;S.atom-=ATOM_CALF;const k=addCalf(1);pFloats.push({t:'+1 GLOW-Kälbchen',l:1,x:k.x,y:k.y-.14});save()};
   document.querySelector('#discover .close').addEventListener('click',()=>{if(pendingMap){pendingMap=false;setTimeout(openMap,150)}});
   addEventListener('resize',()=>{if(plantOpen)openPlant()});
