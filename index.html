@@ -390,7 +390,6 @@ function birthInt(l){const m=Math.max(1,(typeof S!=='undefined'&&S&&S.plant)?S.p
 function plantOutput(){let o=0;S.plant.calves.forEach(c=>o+=calfMW(c.lvl));return o*(1+.25*S.plant.up.amp)}
 function addCalf(L,x,y){const c={lvl:L,x:x??(.15+Math.random()*.7),y:y??(.25+Math.random()*.6),id:pUid++,pop:1,wait:Math.random()*2};c.tx=c.x;c.ty=c.y;S.plant.calves.push(c);return c}
 function plantTick(dt){const P=S.plant;if(!P.unlocked)return;
-  if(!P.chef&&P.cows>=2){chefT-=dt;if(chefT<=0){chefT=CHEF_INT;P.chef={reward:chefReward()};updMapBtn();showToast('Der Kraftwerk-Chef ist da – er möchte eine Mutterkuh in den Ruhestand schicken!');save()}}
   P.mw+=plantOutput()*dt;
   if(P.calves.length<slots()){P.birthT+=dt;if(P.birthT>=birthInt(P.up.birth)){P.birthT=0;addCalf(1);if(plantOpen)pFloats.push({t:'Ein GLOW-Kälbchen ist geboren!',l:1.4,x:.5,y:.12})}}
   P.calves.forEach(c=>{if(c.pop)c.pop=Math.max(0,c.pop-dt*3);if(pDrag&&pDrag.c===c)return;
@@ -399,17 +398,17 @@ function plantTick(dt){const P=S.plant;if(!P.unlocked)return;
     else{const sp=.06*dt;c.x+=dx/d*Math.min(sp,d);c.y+=dy/d*Math.min(sp,d);c.flip=dx<0;c.mv=1}});
 }
 function radioArrive(n){
-  const first=!S.plant.unlocked;S.plant.cows++;S.plant.unlocked=true;
-  if(first){pendingMap=true;addCalf(1,.35,.55);addCalf(1,.65,.6)}
+  const first=!S.plant.unlocked;
+  if(!first){setTimeout(()=>showToast('Eine Radioaktive Mutterkuh wartet auf der Weide – der Kraftwerk-Chef holt sie bald ab!'),1600);return}
+  S.plant.cows++;S.plant.unlocked=true;pendingMap=true;addCalf(1,.35,.55);addCalf(1,.65,.6);
   updMapBtn();save();
   setTimeout(()=>{if(!S.cows.includes(n))return;const [x,y]=toPx(n);S.cows=S.cows.filter(o=>o!==n);
-    burst(x,y,'#7dff4a',26);rings.push({x,y,r:10,l:.7,col:'#7dff4a'});
-    if(!first)showToast('Neue Mutterkuh im Kraftwerk – Kälber kommen jetzt schneller!');save()},1400);
+    burst(x,y,'#7dff4a',26);rings.push({x,y,r:10,l:.7,col:'#7dff4a'});save()},1400);
 }
 function showToast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.remove('on');void el.offsetWidth;el.classList.add('on')}
 
 // ----- Karte -----
-function updMapBtn(){const b=document.getElementById('mapBtn');b.classList.toggle('new',!!(S.plant.unlocked&&(!S.plant.seenMap||S.plant.chef)))}
+function updMapBtn(){const b=document.getElementById('mapBtn');b.classList.toggle('new',!!(S.plant.unlocked&&!S.plant.seenMap))}
 function renderMap(){
   const box=document.getElementById('mapPins'),P=S.plant;box.innerHTML='';
   const pin=(x,y,cls,html,label,fn)=>{const b=document.createElement('button');b.className='pin '+cls;b.style.left=x+'%';b.style.top=y+'%';b.innerHTML=html+'<span>'+label+'</span>';if(fn)b.onclick=fn;box.appendChild(b);return b};
@@ -457,7 +456,6 @@ function drawPlant(dt){
   pFloats.forEach(f=>{f.l-=dt;if(f.spark){f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy+=.9*dt}else f.y-=dt*.06});pFloats=pFloats.filter(f=>f.l>0);
   pFloats.forEach(f=>{if(f.spark){c.globalAlpha=Math.max(0,f.l*1.6);c.fillStyle=f.col;c.beginPath();c.arc(f.x*W2,f.y*H2,3.5,0,7);c.fill();return}
     c.globalAlpha=Math.min(1,f.l*2);c.font='900 16px Nunito, system-ui';c.textAlign='center';c.lineWidth=4;c.strokeStyle='rgba(15,30,10,.75)';c.strokeText(f.t,W2*f.x,H2*f.y);c.fillStyle='#c8ff9a';c.fillText(f.t,W2*f.x,H2*f.y)});c.globalAlpha=1;
-  if(P.chef)drawChef(c,W2-46,H2-40,Math.min(110,H2*.42));
   if(!P.calves.length){c.fillStyle='rgba(255,255,255,.6)';c.font='800 15px Nunito, system-ui';c.textAlign='center';c.fillText('Warte auf das erste GLOW-Kälbchen …',W2/2,H2/2)}
 }
 function plantPointer(){
@@ -474,7 +472,7 @@ function plantPointer(){
     if(t&&k.lvl<CMAX)mergeCalves(k,t)};
   cvp.addEventListener('pointerup',end);cvp.addEventListener('pointercancel',end);
 }
-function drawChef(c,x,y,s){c.save();c.translate(x,y+Math.sin(T*2)*2);const OL='#2a2d36',LW=s*.024;c.lineWidth=LW;c.strokeStyle=OL;c.lineJoin='round';
+function drawChef(c,x,y,s,noBubble,flip){c.save();c.translate(x,y+Math.sin(T*2)*2);if(flip)c.scale(-1,1);const OL='#2a2d36',LW=s*.024;c.lineWidth=LW;c.strokeStyle=OL;c.lineJoin='round';
   [[-.08],[.08]].forEach(([lx])=>{c.fillStyle='#3b4252';c.beginPath();c.roundRect(lx*s-s*.05,0,s*.1,s*.24,s*.04);c.fill();c.stroke();c.fillStyle='#1c1f26';c.beginPath();c.roundRect(lx*s-s*.065,s*.21,s*.13,s*.07,s*.03);c.fill()});
   c.fillStyle='#ffffff';c.beginPath();c.moveTo(-s*.17,-s*.32);c.quadraticCurveTo(-s*.22,-s*.05,-s*.19,s*.1);c.lineTo(s*.19,s*.1);c.quadraticCurveTo(s*.22,-s*.05,s*.17,-s*.32);c.quadraticCurveTo(0,-s*.38,-s*.17,-s*.32);c.closePath();c.fill();c.stroke();
   c.fillStyle='#59d62a';c.beginPath();c.moveTo(-s*.05,-s*.33);c.lineTo(0,-s*.18);c.lineTo(s*.05,-s*.33);c.fill();
@@ -487,7 +485,7 @@ function drawChef(c,x,y,s){c.save();c.translate(x,y+Math.sin(T*2)*2);const OL='#
   c.strokeStyle=OL;c.lineWidth=LW*.8;c.fillStyle='rgba(190,230,255,.5)';c.beginPath();c.arc(-s*.06,-s*.52,s*.045,0,7);c.fill();c.stroke();c.beginPath();c.arc(s*.06,-s*.52,s*.045,0,7);c.fill();c.stroke();c.beginPath();c.moveTo(-s*.015,-s*.52);c.lineTo(s*.015,-s*.52);c.stroke();
   c.fillStyle=OL;c.beginPath();c.arc(-s*.06,-s*.515,s*.013,0,7);c.arc(s*.06,-s*.515,s*.013,0,7);c.fill();
   c.fillStyle='#8f949e';c.beginPath();c.ellipse(-s*.04,-s*.43,s*.05,s*.02,.2,0,7);c.ellipse(s*.04,-s*.43,s*.05,s*.02,-.2,0,7);c.fill();
-  c.restore();
+  c.restore();if(noBubble)return;
   const bx=x-s*.35,by=y-s*.95;c.save();c.font='800 12px Nunito, system-ui';const t='Ruhestand?',tw=c.measureText(t).width;c.fillStyle='#fff';c.beginPath();c.roundRect(bx-tw/2-10,by-13,tw+20,26,13);c.fill();c.fillStyle='#1d2a22';c.textAlign='center';c.textBaseline='middle';c.fillText(t,bx,by+1);c.restore()}
 function updChefUI(){const P=S.plant,card=document.getElementById('chefCard');card.classList.toggle('on',!!P.chef);if(!P.chef)return;
   document.getElementById('chefTxt').textContent='„Eine deiner '+P.cows+' Mutterkühe hat sich den Ruhestand verdient. Ich zahle gut dafür!“';
@@ -542,7 +540,7 @@ const ATOM_SH=[["M1.8000000000000007 12.9a10.2 10.2 0 1 0 20.4 0a10.2 10.2 0 1 0
 // ---------- Zustand ----------
 let S={atom:0,dia:0,boostUntil:0,coins:250,cows:[],highest:1,buys:0,up:{crate:0,cap:0,income:0,crateLvl:0,magnet:0,wkFreq:0,wkPay:0},magnetOn:true,last:Date.now(),merged:0};
 try{const s=JSON.parse(localStorage.getItem('kuhEvo1'));if(s&&s.cows){S=Object.assign(S,s);S.up=Object.assign({crate:0,cap:0,income:0,crateLvl:0,magnet:0,wkFreq:0,wkPay:0},s.up)}}catch(e){}
-S.plant=Object.assign(defPlant(),S.plant||{});S.plant.up=Object.assign(defPlant().up,S.plant.up);if(!Array.isArray(S.plant.calves))S.plant.calves=[];S.plant.calves.forEach((c,i)=>{c.id=i+1;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2});if(S.plant.unlocked&&!S.plant.calves.length&&!S.plant.best)S.plant.best=1;
+S.plant=Object.assign(defPlant(),S.plant||{});S.plant.up=Object.assign(defPlant().up,S.plant.up);if(!Array.isArray(S.plant.calves))S.plant.calves=[];S.plant.chef=null;S.plant.calves.forEach((c,i)=>{c.id=i+1;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2});if(S.plant.unlocked&&!S.plant.calves.length&&!S.plant.best)S.plant.best=1;
 function save(){if(window.__reset)return;S.last=Date.now();try{localStorage.setItem('kuhEvo1',JSON.stringify(S))}catch(e){}}
 let coins=[],crates=[],parts=[],floats=[],crateT=0,uid=1;
 S.cows.forEach(c=>{c.id=uid++;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2;c.ph=Math.random()*COIN_EVERY});
@@ -768,6 +766,39 @@ function workerDrop(c){
   showToast('Verkauft! +'+n+' Atom-Münze'+(n>1?'n':'')+' · jetzt '+S.atom+' im Kraftwerk');
   wk.phase='out';wk.tx=1.15;wk.say='Danke! Die nehme ich mit.';wk.sayT=2.5;save();return true;
 }
+let ch=null,chT=8;
+function updateChef(dt){
+  if(!S.plant||!S.plant.unlocked)return;
+  if(!ch){if(S.cows.some(c=>c.lvl===MAXL)){chT-=dt;if(chT<=0){const y=.45+Math.random()*.3;ch={x:1.12,y,tx:.62+Math.random()*.2,ty:y,phase:'in',say:null,sayT:0}}}else chT=8;return}
+  if(ch.sayT>0)ch.sayT-=dt;
+  const dx=ch.tx-ch.x,dy=ch.ty-ch.y,d=Math.hypot(dx,dy);
+  if(d>.005){const sp=.12*dt;ch.x+=dx/d*Math.min(sp,d);ch.y+=dy/d*Math.min(sp,d);ch.walk=1;ch.flip=dx>0}else{ch.walk=0;
+    if(ch.phase==='in')ch.phase='wait';else if(ch.phase==='out'){ch=null;chT=8;return}}
+  if(ch.phase==='wait'&&!S.cows.some(c=>c.lvl===MAXL)){ch.phase='out';ch.tx=1.15;ch.say='Dann bis zum nächsten Mal!';ch.sayT=2}
+}
+function chefDrop(c){
+  if(!ch||ch.phase==='out')return false;const [cx0,cy0]=toPx(ch),[x,y]=toPx(c);
+  if(Math.hypot(x-cx0,y-(cy0-cowSize()*.3))>cowSize()*.8)return false;
+  if(c.lvl!==MAXL){ch.say='Ich hole nur Radioaktive Mutterkühe ab!';ch.sayT=2.2;c.wait=1;return true}
+  const r=chefReward();S.cows=S.cows.filter(o=>o!==c);S.atom=(S.atom||0)+r;
+  burst(x,y,'#7dff4a',24);rings.push({x,y,r:10,l:.6,col:'#7dff4a'});
+  showToast('Die Mutterkuh geht in den Ruhestand! +'+r+' Atom-Münzen');
+  ch.phase='out';ch.tx=1.15;ch.say='Danke – sie hat es sich verdient!';ch.sayT=2.5;save();return true;
+}
+function drawChefMeadow(){
+  if(!ch)return;const s=cowSize()*1.15,[x,y]=toPx(ch),c=cx;
+  if(drag&&drag.moved&&ch.phase==='wait'&&drag.c.lvl===MAXL){c.strokeStyle='rgba(125,255,74,.95)';c.lineWidth=3;c.setLineDash([6,5]);c.beginPath();c.ellipse(x,y-s*.25,s*.45,s*.65,0,0,7);c.stroke();c.setLineDash([])}
+  drawChef(c,x,y-(ch.walk?Math.abs(Math.sin(T*9))*s*.03:0),s,true,ch.flip);
+  const by=y-s*1.02;
+  if(ch.sayT>0&&ch.say){c.save();c.font='800 13px Nunito, system-ui';const tw=c.measureText(ch.say).width,w=tw+24,h=30,bx=Math.min(W-w/2-6,Math.max(w/2+6,x));
+    c.fillStyle='#fff';c.shadowColor='rgba(0,0,0,.2)';c.shadowBlur=8;c.beginPath();c.roundRect(bx-w/2,by-h/2,w,h,15);c.fill();c.shadowBlur=0;
+    c.fillStyle='#1d2a22';c.textAlign='center';c.textBaseline='middle';c.fillText(ch.say,bx,by+1);c.restore();return}
+  if(ch.phase==='out')return;
+  const w=148,h=58,bx=Math.min(W-w/2-6,Math.max(w/2+6,x));c.save();c.fillStyle='#fff';c.shadowColor='rgba(0,0,0,.22)';c.shadowBlur=10;c.beginPath();c.roundRect(bx-w/2,by-h/2,w,h,16);c.moveTo(x-8,by+h/2);c.lineTo(x,by+h/2+10);c.lineTo(x+8,by+h/2);c.fill();c.shadowBlur=0;
+  drawCow(c,bx-40,by+5,38,MAXL,T,false);
+  c.fillStyle='#1d2a22';c.font='800 11px Nunito, system-ui';c.textAlign='left';c.textBaseline='middle';c.fillText('Ruhestand für',bx-6,by-11);
+  c.font='900 17px Nunito, system-ui';const r='+'+chefReward();c.fillText(r,bx-6,by+9);shDraw(c,ATOM_SH,bx+c.measureText(r).width+4,by+9,.42);c.restore();
+}
 function drawWorker(){
   if(!wk)return;const s=cowSize()*1.1,[x,y]=toPx(wk),c=cx,bob=wk.walk?Math.abs(Math.sin(T*9))*s*.04:0,sw=wk.walk?Math.sin(T*9)*s*.05:0;
   c.save();c.translate(x,y-bob);
@@ -842,6 +873,7 @@ cv.addEventListener('pointermove',e=>{
 });
 function endDrag(){
   if(!drag)return;const c=drag.c;if(!drag.moved){drag=null;tapCow(c);return}if(overSell(c)){const ok=drag.sellT>=SELL_T,ox=drag.ox,oy=drag.oy;drag=null;if(ok){sell(c);return}c.x=c.tx=ox;c.y=c.ty=oy;c.wait=1;const [x,y]=toPx(c);floats.push({x,y:y-cowSize()*.6,t:'Zum Verkaufen 1 Sek. halten',l:1.6});return}drag=null;const s=cowSize();
+  if(chefDrop(c))return;
   if(workerDrop(c))return;
   const t=S.cows.find(o=>o!==c&&o.lvl===c.lvl&&Math.hypot((o.x-c.x)*W,(o.y-c.y)*H)<s*.6);
   if(t&&c.lvl<mergeCap())merge(c,t);
@@ -896,7 +928,7 @@ function loop(now){
       if(d<=sp+.012){magPull=null;merge(a,b)}else{a.x+=dx/d*sp;a.y+=dy/d*sp;a.tx=a.x;a.ty=a.y;a.flip=dx<0;a.mv=1}}}
   updMagUI();
   if(drag&&!drag.moved&&performance.now()-drag.t0>LP_MS){const c=drag.c;drag=null;openCowSheet(c)}
-  plantTick(dt);updateWorker(dt);if(plantOpen)drawPlant(dt);
+  plantTick(dt);updateWorker(dt);updateChef(dt);if(plantOpen)drawPlant(dt);
   if(S.test){if(S.coins<1e12)S.coins=1e12;if(S.dia<1e6)S.dia=1e6;if((S.atom||0)<1e4)S.atom=1e4}
   draw(dt);ui();
   requestAnimationFrame(loop);
@@ -917,6 +949,7 @@ function draw(dt){
     drawCow(cx,x,y,s*sc,c.lvl,T+c.id,c.flip,drag&&drag.moved&&drag.c===c,glow,c.mv&&!(drag&&drag.c===c));
     if(drag&&drag.c===c&&overSell(c)){cx.globalAlpha=.35;cx.fillStyle='#4dd9ff';cx.beginPath();cx.arc(x,y,s*.55,0,7);cx.fill();cx.globalAlpha=1;const n=diaFor(c.lvl),t='+'+n;cx.font='bold 20px Nunito, system-ui';cx.textAlign='center';cx.lineWidth=4;cx.strokeStyle='rgba(0,0,0,.45)';const tw=cx.measureText(t).width;cx.strokeText(t,x-10,y-s*.75);cx.fillStyle='#fff';cx.fillText(t,x-10,y-s*.75);drawDia(cx,x+tw/2-2,y-s*.77,11)}});
   drawWorker();
+  drawChefMeadow();
   drawNight();
   coins.forEach(k=>{const [x,y]=toPx(k);const a=k.age>5?6-k.age:1;drawCoin(cx,x,y-Math.min(1,k.age*3)*s*.15+Math.sin(T*4+k.x*9)*2,s*.13,a)});
   parts.forEach(p=>{cx.globalAlpha=Math.max(0,p.l*1.5);cx.fillStyle=p.col;cx.beginPath();cx.arc(p.x,p.y,4,0,7);cx.fill()});cx.globalAlpha=1;
