@@ -243,7 +243,7 @@ const LV=[
 const FACET=[1,.86,1.08,.9,1.05,.88,1.1,.92,1.02];
 function hx2(h){h=h.replace('#','');return [0,2,4].map(i=>parseInt(h.substr(i,2),16))}
 function shade(h,f){return 'rgb('+hx2(h).map(v=>Math.max(0,Math.min(255,Math.round(v*f)))).join(',')+')'}
-function outl(d){return d.cosmic?'#2a1f6e':d.crystal?'#2f7fa3':shade(d.body,.5)}
+function outl(d){if(d.ol)return d.ol;return d.cosmic?'#2a1f6e':d.crystal?'#2f7fa3':shade(d.body,.5)}
 function legFill(c,x,w,col){const g=c.createLinearGradient(x,0,x+w,0);g.addColorStop(0,shade(col,1.12));g.addColorStop(.5,col);g.addColorStop(1,shade(col,.75));return g}
 function el(c,x,y,rx,ry,col,rot){c.fillStyle=col;c.beginPath();c.ellipse(x,y,rx,ry,rot||0,0,Math.PI*2);c.fill()}
 function rr(c,x,y,w,h,r,col){c.fillStyle=col;c.beginPath();c.roundRect(x,y,w,h,r);c.fill()}
@@ -394,14 +394,14 @@ const IC={coin:shSvg('coin',COIN_SH),dia:shSvg('dia',DIA_SH),bolt:'<svg class="i
 document.getElementById('coinIcon').innerHTML=IC.coin;document.getElementById('diaIcon').innerHTML=IC.dia;
 // ---------- Endgame: Kernkraftwerk & Weltrettung ----------
 const CALF=[
- {n:'GLOW-Kälbchen',d:'Frisch geschlüpft und leuchtet schon zart.',body:'#ecffd6',spot:'#d6f7b0',leg:'#c4e8a0',mz:'#fbfff4',sc:.72,hs:1.35,bw:.85,legs:'short',calf:1,radio:1,noTre:1,soft:1,gspots:2,gl:.25,glow:'rgba(190,255,120,.9)'},
- {n:'Uran-Kalb',d:'Leuchtet schon ein bisschen heller.',body:'#dcffb2',spot:'#c4f590',leg:'#aee07c',mz:'#f8ffee',sc:.8,hs:1.25,legs:'short',calf:1,radio:1,noTre:1,soft:1,gspots:3,gl:.3,glow:'rgba(180,255,100,.9)'},
- {n:'Plutonium-Rind',d:'Die ersten Hörner – und ein kräftiges Glühen.',body:'#c8ff8c',spot:'#b0f06c',leg:'#96d65a',mz:'#f4ffe6',sc:.9,horns:1,radio:1,noTre:1,soft:1,gspots:4,gl:.35,glow:'rgba(170,255,90,.95)'},
- {n:'Thorium-Bulle',d:'Ein leuchtendes Kraftpaket.',body:'#b2ff6a',spot:'#98f04c',leg:'#80d03e',mz:'#f0ffdc',sc:1,bw:1.08,legs:'thick',horns:1,radio:1,noTre:1,soft:1,gspots:5,gl:.4,glow:'rgba(160,255,80,.95)'},
- {n:'Isotopen-Kuh',d:'Ihr Leuchten sieht man schon von Weitem.',body:'#9cff4c',spot:'#82ee32',leg:'#6ccc2c',mz:'#ecffd2',sc:1.05,horns:1,radio:1,noTre:1,soft:1,gspots:6,gl:.46,glow:'rgba(150,255,70,1)'},
- {n:'Reaktor-Kuh',d:'Strahlt so hell wie ein kleiner Reaktor.',body:'#84ff30',spot:'#6cec1c',leg:'#5ac81c',mz:'#e6ffc8',sc:1.1,horns:1,radio:1,noTre:1,soft:1,gspots:7,gl:.52,glow:'rgba(140,255,60,1)'},
- {n:'Fusions-Kuh',d:'So viel Energie, dass sie schwebt.',body:'#6cff18',spot:'#56ea08',leg:'#48c40a',mz:'#e0ffbe',sc:1.15,horns:1,radio:1,noTre:1,soft:1,gspots:8,float:1,gl:.6,glow:'rgba(130,255,50,1)'},
- {n:'Supernova-Kuh',d:'Das hellste Leuchten des Universums.',body:'#55ff00',spot:'#46e600',leg:'#3cc200',mz:'#dcffb4',sc:1.22,horns:1,radio:1,noTre:1,soft:1,gspots:8,float:1,gl:.72,glow:'rgba(150,255,60,1)'}
+ {n:'GLOW-Kälbchen',d:'Frisch geschlüpft und leuchtet schon im Dunkeln.',body:'#e2fbad',spot:'#c4e88a',leg:'#b0d47e',sc:.72,hs:1.35,bw:.85,legs:'short',calf:1,radio:1,gl:.28,glow:'rgba(160,255,110,.85)'},
+ {n:'Uran-Kalb',d:'Summt leise vor sich hin.',body:'#d2f78f',spot:'#b2e46a',leg:'#9cc862',sc:.8,hs:1.25,legs:'short',calf:1,radio:1,gl:.32,glow:'rgba(150,255,100,.85)'},
+ {n:'Plutonium-Rind',d:'Die ersten Hörner – und ein kräftiges Glühen.',body:'#c0f274',spot:'#a0de52',leg:'#86bd4c',sc:.9,horns:1,radio:1,gl:.36,glow:'rgba(140,255,90,.9)'},
+ {n:'Thorium-Bulle',d:'Ein strahlendes Kraftpaket.',body:'#aaee5c',spot:'#8cd840',leg:'#72b03c',sc:1,bw:1.08,legs:'thick',horns:1,radio:1,gl:.4,glow:'rgba(130,255,80,.92)'},
+ {n:'Isotopen-Kuh',d:'Ihr Leuchten sieht man schon von Weitem.',body:'#9aee48',spot:'#7cd82e',leg:'#62aa2e',sc:1.05,horns:1,radio:1,gl:.46,glow:'rgba(125,255,74,.95)'},
+ {n:'Reaktor-Kuh',d:'Strahlt so hell wie ein kleiner Reaktor.',body:'#8af03a',spot:'#6cd820',leg:'#559e24',sc:1.1,horns:1,radio:1,gl:.52,glow:'rgba(125,255,74,1)'},
+ {n:'Fusions-Kuh',d:'So viel Energie, dass sie schwebt.',body:'#80f838',spot:'#5ee01a',leg:'#4a9a1e',sc:1.15,horns:1,radio:1,float:1,gl:.6,glow:'rgba(125,255,74,1)'},
+ {n:'Supernova-Kuh',d:'Das hellste Leuchten des Universums.',body:'#7dff4a',spot:'#4fd41e',leg:'#3a8a22',sc:1.22,horns:1,radio:1,float:1,gl:.7,glow:'rgba(140,255,80,1)'}
 ];
 const CMAX=CALF.length;
 function calfMW(L){return .5*Math.pow(3,L-1)}
