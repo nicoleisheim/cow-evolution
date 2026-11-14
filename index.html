@@ -90,6 +90,7 @@ svg.ic.bolt{width:13px;height:13px;margin:0 2px 0 0;color:#ffe066}
 .sellbtn svg.ic{width:20px;height:20px;margin:0 0 0 4px}
 .sellbtn:disabled{background:#e5e9e6;color:#7a8580;box-shadow:none}
 #crateBtn{top:calc(146px + env(safe-area-inset-top))}
+#goldChip{position:absolute;left:46px;top:50%;transform:translateY(-50%);background:linear-gradient(135deg,#ffe27a,#ffbf1f);color:#6b4a00;font:900 10px Nunito,system-ui;font-style:normal;padding:2px 6px;border-radius:999px;box-shadow:0 2px 6px rgba(0,0,0,.18);border:1.5px solid #fff}
 #wkBtn{top:calc(218px + env(safe-area-inset-top));display:none}
 #wkBtn.show{display:block}
 #wkBtn.here span{background:#59d62a;color:#fff}
@@ -164,7 +165,7 @@ svg.ic.bolt{width:13px;height:13px;margin:0 2px 0 0;color:#ffe066}
     <canvas id="cv"></canvas>
     <button id="magBtn" class="fab" aria-label="Magnet an/aus"><svg class="ring" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3.5"/><circle id="magRing" cx="22" cy="22" r="19" fill="none" stroke="#ff5fa2" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="119.4" transform="rotate(-90 22 22)"/></svg><svg class="mg" viewBox="0 -1.5 24 24"><path d="M5 3h5v8a2 2 0 0 0 4 0V3h5v8a7 7 0 0 1-14 0z" fill="#ff5fa2"/><path d="M5 3h5v3.6H5zM14 3h5v3.6h-5z" fill="#eef1f4"/></svg><span id="magLbl">10s</span></button>
     <button id="wkBtn" aria-label="Nächster Mitarbeiter"><svg class="ring" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3.5"/><circle id="wkRing" cx="22" cy="22" r="19" fill="none" stroke="#7dff4a" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="119.4" transform="rotate(-90 22 22)"/></svg><svg class="mg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="#ffd23f" stroke="#7a5a00" stroke-width="1.2"/><ellipse cx="12.3" cy="11.3" rx="6.4" ry="5.2" fill="#bfe9ff" stroke="#2a2d36" stroke-width="1.2"/><ellipse cx="12.3" cy="12" rx="4.6" ry="3.8" fill="#ffd9c2"/><circle cx="10.6" cy="11.4" r=".9" fill="#2a2d36"/><circle cx="14.2" cy="11.4" r=".9" fill="#2a2d36"/><path d="M11 13.3q1.3 1.1 2.6 0" stroke="#2a2d36" stroke-width=".8" fill="none" stroke-linecap="round"/><circle cx="12.3" cy="18.4" r="2" fill="#8a93a5" stroke="#4a5160" stroke-width=".7"/></svg><span id="wkLbl">2m</span></button>
-    <button id="crateBtn" class="fab" aria-label="Kisten an/aus"><svg class="ring" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3.5"/><circle id="crateRing" cx="22" cy="22" r="19" fill="none" stroke="#ff5fa2" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="119.4" transform="rotate(-90 22 22)"/></svg><svg class="mg" viewBox="0 0 24 24"><rect x="4.5" y="9.5" width="15" height="10.5" rx="2.4" fill="#f6b26b"/><rect x="3.3" y="6.6" width="17.4" height="4.4" rx="1.8" fill="#ffc98a"/><rect x="10.7" y="6.6" width="2.6" height="13.4" fill="#ff5fa2"/><path d="M12 6.6C10.5 3.6 7 3.4 7 5.3c0 1.6 2.8 1.6 5 1.3zm0 0c1.5-3 5-3.2 5-1.3 0 1.6-2.8 1.6-5 1.3z" fill="#ff5fa2"/></svg><span id="crateLbl">35s</span></button>
+    <button id="crateBtn" class="fab" aria-label="Kisten an/aus"><svg class="ring" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3.5"/><circle id="crateRing" cx="22" cy="22" r="19" fill="none" stroke="#ff5fa2" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="119.4" transform="rotate(-90 22 22)"/></svg><svg class="mg" viewBox="0 0 24 24"><rect x="4.5" y="9.5" width="15" height="10.5" rx="2.4" fill="#f6b26b"/><rect x="3.3" y="6.6" width="17.4" height="4.4" rx="1.8" fill="#ffc98a"/><rect x="10.7" y="6.6" width="2.6" height="13.4" fill="#ff5fa2"/><path d="M12 6.6C10.5 3.6 7 3.4 7 5.3c0 1.6 2.8 1.6 5 1.3zm0 0c1.5-3 5-3.2 5-1.3 0 1.6-2.8 1.6-5 1.3z" fill="#ff5fa2"/></svg><span id="crateLbl">35s</span><i id="goldChip">0/20</i></button>
     <div id="hint" style="display:none"></div>
   </div>
   <div id="bar">
@@ -399,7 +400,7 @@ function plantTick(dt){const P=S.plant;if(!P.unlocked)return;
 }
 function radioArrive(n){
   const first=!S.plant.unlocked;
-  if(!first){setTimeout(()=>showToast('Eine Radioaktive Mutterkuh wartet auf der Weide – der Kraftwerk-Chef holt sie bald ab!'),1600);return}
+  if(!first)return;
   S.plant.cows++;S.plant.unlocked=true;pendingMap=true;addCalf(1,.35,.55);addCalf(1,.65,.6);
   updMapBtn();save();
   setTimeout(()=>{if(!S.cows.includes(n))return;const [x,y]=toPx(n);S.cows=S.cows.filter(o=>o!==n);
@@ -718,8 +719,9 @@ function updWkUI(){const b=document.getElementById('wkBtn'),un=!!(S.plant&&S.pla
 document.getElementById('wkBtn').onclick=()=>{showToast(wk?(wk.phase==='out'?'Der Mitarbeiter ist auf dem Rückweg.':'Ein Mitarbeiter wartet auf der Weide – er sucht eine '+LV[wk.want-1].n+'!'):'Der nächste Kraftwerk-Mitarbeiter kommt in '+fmtT(wkT)+'.')};
 function updCrateUI(){const on=S.cratesOn!==false,full=S.cows.length+crates.length>=cap(),b=document.getElementById('crateBtn');b.classList.toggle('off',!on);
   const iv=crateInt(S.up.crate),pr=!on?0:full?1:crateT/iv;document.getElementById('crateRing').style.strokeDashoffset=(119.4*(1-pr)).toFixed(1);
-  const l=document.getElementById('crateLbl'),t=!on?'AUS':full?'VOLL':Math.max(1,Math.ceil(iv-crateT))+'s';if(l.textContent!==t)l.textContent=t}
-document.getElementById('crateBtn').onclick=()=>{S.cratesOn=S.cratesOn===false;save()};
+  const l=document.getElementById('crateLbl'),t=!on?'AUS':full?'VOLL':Math.max(1,Math.ceil(iv-crateT))+'s';if(l.textContent!==t)l.textContent=t;
+  const g=document.getElementById('goldChip'),gt=((S.cratesOpened||0)%20)+'/20';if(g.textContent!==gt)g.textContent=gt}
+document.getElementById('crateBtn').onclick=e=>{if(e.target.id==='goldChip'){showToast('Noch '+(20-((S.cratesOpened||0)%20))+' Kisten bis zur nächsten Goldenen Kiste');return}S.cratesOn=S.cratesOn===false;save()};
 function updMagUI(){const on=S.magnetOn!==false,b=document.getElementById('magBtn');b.classList.toggle('off',!on);
   const pr=on?(magPull?1:magT/magInt(S.up.magnet)):0;document.getElementById('magRing').style.strokeDashoffset=(119.4*(1-pr)).toFixed(1);
   const l=document.getElementById('magLbl'),t=on?magInt(S.up.magnet)+'s':'AUS';if(l.textContent!==t)l.textContent=t}
@@ -746,7 +748,7 @@ function spawnWorker(){
   const hi=Math.min(MAXL-1,S.highest-1),lo=Math.max(2,hi-5);if(hi<2){wkT=60;return}
   const have=S.cows.filter(c=>c.lvl>=lo&&c.lvl<=hi).map(c=>c.lvl);
   const want=have.length&&Math.random()<.75?have[Math.floor(Math.random()*have.length)]:lo+Math.floor(Math.random()*(hi-lo+1));
-  const y=.42+Math.random()*.35;wk={x:-.12,y,tx:.18+Math.random()*.22,ty:y,want,phase:'in',t:45,flip:false,say:null,sayT:0};
+  const y=.56+Math.random()*.26;wk={x:-.12,y,tx:Math.min(.2,(cowSize()*.32+10)/W),ty:y,want,phase:'in',t:45,flip:false,say:null,sayT:0};
 }
 function updateWorker(dt){
   if(!S.plant||!S.plant.unlocked)return;
@@ -764,12 +766,12 @@ function workerDrop(c){
   const n=atomFor(c.lvl);S.cows=S.cows.filter(o=>o!==c);S.atom=(S.atom||0)+n;
   burst(x,y,'#7dff4a',22);rings.push({x,y,r:10,l:.6,col:'#7dff4a'});
   showToast('Verkauft! +'+n+' Atom-Münze'+(n>1?'n':'')+' · jetzt '+S.atom+' im Kraftwerk');
-  wk.phase='out';wk.tx=1.15;wk.say='Danke! Die nehme ich mit.';wk.sayT=2.5;save();return true;
+  wk.phase='out';wk.tx=-.15;wk.say='Danke! Die nehme ich mit.';wk.sayT=2.5;save();return true;
 }
 let ch=null,chT=8;
 function updateChef(dt){
   if(!S.plant||!S.plant.unlocked)return;
-  if(!ch){if(S.cows.some(c=>c.lvl===MAXL)){chT-=dt;if(chT<=0){const y=.45+Math.random()*.3;ch={x:1.12,y,tx:.62+Math.random()*.2,ty:y,phase:'in',say:null,sayT:0}}}else chT=8;return}
+  if(!ch){if(S.cows.some(c=>c.lvl===MAXL)){chT-=dt;if(chT<=0){const y=.56+Math.random()*.26;ch={x:1.12,y,tx:Math.max(.8,1-(cowSize()*.36+10)/W),ty:y,phase:'in',say:null,sayT:0}}}else chT=8;return}
   if(ch.sayT>0)ch.sayT-=dt;
   const dx=ch.tx-ch.x,dy=ch.ty-ch.y,d=Math.hypot(dx,dy);
   if(d>.005){const sp=.12*dt;ch.x+=dx/d*Math.min(sp,d);ch.y+=dy/d*Math.min(sp,d);ch.walk=1;ch.flip=dx>0}else{ch.walk=0;
@@ -894,7 +896,9 @@ function merge(a,b){
 }
 function burst(x,y,col,n){for(let i=0;i<n;i++){const a=Math.random()*7,v=rnd(60,220);parts.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-60,l:rnd(.4,.8),col})}}
 function collect(i){const k=coins[i];S.coins+=k.v;floats.push({x:k.x*W,y:k.y*H,t:'+'+fmt(k.v),l:1});flyers.push({x:k.x*W,y:k.y*H,t:0});coins.splice(i,1)}
-function openCrate(i){const k=crates[i];crates.splice(i,1);if(S.cows.length>=cap()){crates.push(k);floats.push({x:k.x*W,y:k.y*H,t:'Weide voll!',l:1.2});return}const c=addCow(k.lvl,k.x,k.y);c.pop=1;burst(k.x*W,k.y*H,'#c58a4a',12)}
+function openCrate(i){const k=crates[i];crates.splice(i,1);if(S.cows.length>=cap()){crates.push(k);floats.push({x:k.x*W,y:k.y*H,t:'Weide voll!',l:1.2});return}const c=addCow(k.lvl,k.x,k.y);c.pop=1;burst(k.x*W,k.y*H,k.gold?'#ffd84d':'#c58a4a',k.gold?24:12);
+  if(k.gold){rings.push({x:k.x*W,y:k.y*H,r:10,l:.6,col:'#ffd84d'});showToast('Goldene Kiste: '+LV[k.lvl-1].n+'!')}
+  else{S.cratesOpened=(S.cratesOpened||0)+1;if(S.cratesOpened%20===0){S.goldPending=(S.goldPending||0)+1;showToast('20 Kisten geöffnet – eine Goldene Kiste ist da!')}}save()}
 function spawnCrate(){crates.push({x:rnd(.12,.88),y:rnd(.33,.84),lvl:1+S.up.crateLvl,drop:0,age:0})}
 
 // ---------- Schleife ----------
@@ -903,6 +907,7 @@ function loop(now){
   const dt=Math.min(.05,(now-lastT)/1000);lastT=now;T+=dt;
   // Kisten
   if(S.cratesOn!==false&&S.cows.length+crates.length<cap()){crateT+=dt;if(crateT>=crateInt(S.up.crate)){crateT=0;spawnCrate()}}
+  if(S.goldPending>0&&S.cows.length+crates.length<cap()){S.goldPending--;const hi=Math.max(1,Math.min(S.highest,MAXL-1));crates.push({x:rnd(.25,.75),y:rnd(.4,.78),lvl:1+Math.floor(Math.random()*hi),drop:0,age:0,gold:1});save()}
   updCrateUI();updWkUI();
   crates.forEach(k=>{k.drop=Math.min(1,k.drop+dt*2.5);k.age+=dt;if(k.drop>=1&&!k.landed){k.landed=1;const [x,y]=toPx(k);for(let i=0;i<10;i++)parts.push({x:x+rnd(-20,20),y:y+cowSize()*.3,vx:rnd(-80,80),vy:rnd(-90,-30),l:rnd(.3,.5),col:'#e8dcb5'})}});
   // Kühe
@@ -995,8 +1000,7 @@ function renderShop(update){
 }
 const DSHOP=[
  {n:'Turbo-Gras',d:()=>'60 Sek. doppelte Einnahmen',cost:8,can:()=>true,buy:()=>{S.boostUntil=Math.max(Date.now(),S.boostUntil||0)+60000}},
- {n:'Münzsack',d:()=>'+'+fmt(sack())+' Münzen sofort',cost:6,can:()=>true,buy:()=>{S.coins+=sack()}},
- {n:'Goldene Kiste',d:()=>'Enthält eine '+LV[gold()-1].n,cost:25,can:()=>S.cows.length+crates.length<cap(),buy:()=>{crates.push({x:rnd(.2,.8),y:rnd(.4,.8),lvl:gold(),drop:0,age:0,gold:1})}}
+ {n:'Kistenregen',d:()=>'Bis zu 5 Geschenkboxen sofort',cost:6,can:()=>S.cows.length+crates.length<cap(),buy:()=>{const n=Math.min(5,cap()-S.cows.length-crates.length);for(let i=0;i<n;i++)setTimeout(spawnCrate,i*180)}}
 ];
 function sack(){return Math.max(250,rate()/boost()*300)}
 function gold(){return Math.max(1,S.highest-2)}
