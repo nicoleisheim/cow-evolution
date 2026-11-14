@@ -36,19 +36,19 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 #crateBar{position:absolute;z-index:2;left:calc(18px + env(safe-area-inset-left));width:110px;top:calc(58px + env(safe-area-inset-top));height:6px;background:rgba(0,0,0,.22);border-radius:6px;overflow:hidden;pointer-events:none}
 #crateFill{height:100%;width:0;background:linear-gradient(90deg,#fff,#ffe9a8);border-radius:6px}
 #hint{position:absolute;z-index:2;left:50%;bottom:calc(112px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--glass);border:1px solid var(--glassB);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;font-weight:800;pointer-events:none;white-space:nowrap;transition:opacity .5s}
-#bar{position:absolute;z-index:2;left:calc(12px + env(safe-area-inset-left));right:calc(12px + env(safe-area-inset-right));bottom:calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:6px;padding:7px;border-radius:28px;background:#fff;border:1px solid #f3e1ea;box-shadow:0 6px 20px rgba(120,40,80,.10)}
-#bar button{display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:21px;padding:9px 8px;font:800 14px 'Nunito',system-ui,sans-serif;color:var(--ink);background:transparent;cursor:pointer;line-height:1.15;transition:transform .12s}
-#bar button span{display:flex;flex-direction:column;align-items:flex-start;text-align:left}
-#bar button small{font-size:11.5px;font-weight:700;color:var(--muted)}
-#bar button svg{width:24px;height:24px;flex:none}
-#bar button:not(.primary) svg{color:#ff5fa2}
-#bar button small svg.ic{width:13px;height:13px;margin-right:3px;vertical-align:-2px}
-#bar button.primary{background:linear-gradient(135deg,#ffa8d2,#ff5fa2);color:#fff;box-shadow:0 6px 16px rgba(255,95,162,.4),inset 0 1px 0 rgba(255,255,255,.5)}
-#bar button.primary small{color:rgba(255,255,255,.85)}
-#bar button:not(.primary){flex-direction:column;gap:2px}
-#bar button:not(.primary) span{align-items:center;text-align:center}
-#bar button:active{transform:scale(.95)}
-#bar button:disabled{opacity:.55}
+#bar,#pbar{position:absolute;z-index:2;left:calc(12px + env(safe-area-inset-left));right:calc(12px + env(safe-area-inset-right));bottom:calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:6px;padding:7px;border-radius:28px;background:#fff;border:1px solid #f3e1ea;box-shadow:0 6px 20px rgba(120,40,80,.10)}
+#bar button,#pbar button{display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:21px;padding:9px 8px;font:800 14px 'Nunito',system-ui,sans-serif;color:var(--ink);background:transparent;cursor:pointer;line-height:1.15;transition:transform .12s}
+#bar button span,#pbar button span{display:flex;flex-direction:column;align-items:flex-start;text-align:left}
+#bar button small,#pbar button small{font-size:11.5px;font-weight:700;color:var(--muted)}
+#bar button svg,#pbar button svg{width:24px;height:24px;flex:none}
+#bar button:not(.primary) svg,#pbar button:not(.primary) svg{color:#ff5fa2}
+#bar button small svg.ic,#pbar button small svg.ic{width:13px;height:13px;margin-right:3px;vertical-align:-2px}
+#bar button.primary,#pbar button.primary{background:linear-gradient(135deg,#ffa8d2,#ff5fa2);color:#fff;box-shadow:0 6px 16px rgba(255,95,162,.4),inset 0 1px 0 rgba(255,255,255,.5)}
+#bar button.primary small,#pbar button.primary small{color:rgba(255,255,255,.85)}
+#bar button:not(.primary),#pbar button:not(.primary){flex-direction:column;gap:2px}
+#bar button:not(.primary) span,#pbar button:not(.primary) span{align-items:center;text-align:center}
+#bar button:active,#pbar button:active{transform:scale(.95)}
+#bar button:disabled,#pbar button:disabled{opacity:.55}
 .overlay{position:fixed;inset:0;background:rgba(10,20,15,.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center;z-index:10}
 .overlay.on{display:flex;animation:fade .2s ease-out}
 .overlay.center{align-items:center;padding:20px}
@@ -79,11 +79,11 @@ svg.ic.coin,svg.ic.dia{width:16px;height:16px;vertical-align:-3px;margin-right:4
 #coinIcon svg{width:28px;height:28px;margin:0}#diaIcon svg{width:22px;height:22px;margin:0 2px 0 6px}
 svg.ic.bolt{width:13px;height:13px;margin:0 2px 0 0;color:#ffe066}
 .row button svg.ic{filter:drop-shadow(0 1px 1px rgba(0,0,0,.15))}
-#magBtn,#crateBtn,#wkBtn{position:absolute;z-index:2;left:calc(12px + env(safe-area-inset-left));top:calc(74px + env(safe-area-inset-top));width:54px;height:54px;border-radius:50%;border:1px solid var(--glassB);background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 6px 20px rgba(0,0,0,.15);cursor:pointer;padding:0;transition:transform .12s}
-#magBtn:active,#crateBtn:active,#wkBtn:active{transform:scale(.92)}
-#magBtn .ring,#crateBtn .ring,#wkBtn .ring{position:absolute;inset:3px;width:46px;height:46px}
-#magBtn .mg,#crateBtn .mg,#wkBtn .mg{position:absolute;left:50%;top:50%;width:24px;height:24px;transform:translate(-50%,-50%)}
-#magBtn span,#crateBtn span,#wkBtn span{position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);background:#fff;color:#d6347f;font:900 10px Nunito,system-ui;padding:2px 6px;border-radius:999px;box-shadow:0 2px 6px rgba(0,0,0,.15);white-space:nowrap}
+#magBtn,#crateBtn,#wkBtn,#plantBack,#birthFab{position:absolute;z-index:2;left:calc(12px + env(safe-area-inset-left));top:calc(74px + env(safe-area-inset-top));width:54px;height:54px;border-radius:50%;border:1px solid var(--glassB);background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 6px 20px rgba(0,0,0,.15);cursor:pointer;padding:0;transition:transform .12s}
+#magBtn:active,#crateBtn:active,#wkBtn:active,#plantBack:active,#birthFab:active{transform:scale(.92)}
+#magBtn .ring,#crateBtn .ring,#wkBtn .ring,#plantBack .ring,#birthFab .ring{position:absolute;inset:3px;width:46px;height:46px}
+#magBtn .mg,#crateBtn .mg,#wkBtn .mg,#plantBack .mg,#birthFab .mg{position:absolute;left:50%;top:50%;width:24px;height:24px;transform:translate(-50%,-50%)}
+#magBtn span,#crateBtn span,#wkBtn span,#plantBack span,#birthFab span{position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);background:#fff;color:#d6347f;font:900 10px Nunito,system-ui;padding:2px 6px;border-radius:999px;box-shadow:0 2px 6px rgba(0,0,0,.15);white-space:nowrap}
 #magBtn.off .mg,#crateBtn.off .mg{filter:grayscale(1);opacity:.55}
 #magBtn.off span,#crateBtn.off span{color:#7a8580}
 .sellbtn{width:100%;border:0;border-radius:18px;padding:14px;font:800 16px Nunito,system-ui;background:linear-gradient(135deg,#7ae6ff,#2a8cf0);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:2px;box-shadow:0 6px 16px rgba(42,140,240,.35)}
@@ -151,6 +151,20 @@ svg.ic.bolt{width:13px;height:13px;margin:0 2px 0 0;color:#ffe066}
 .pscroll .row canvas{position:static;width:64px;height:52px;flex:none}
 .mrow .bar{height:6px;border-radius:6px;background:#e3e8e4;margin-top:6px;overflow:hidden}.mrow .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#9cff6a,#3fc41c);border-radius:6px}
 .mrow.done{background:#effbe8}.mrow.done button{background:#59d62a}.mrow.lockd{opacity:.55}
+.view.pv{padding:0;background:#eef9e4}
+#plantView #plantCv{position:absolute;left:0;top:0;width:100%;height:calc(100% - 98px - env(safe-area-inset-bottom));border-radius:0 0 26px 26px;touch-action:none;box-shadow:0 6px 18px rgba(30,80,20,.15)}
+.ptop{position:absolute;left:0;right:0;top:0;z-index:2;display:flex;justify-content:space-between;align-items:flex-start;padding:calc(10px + env(safe-area-inset-top)) 12px 0;pointer-events:none}
+.ptop .pbolt{width:26px;height:26px;margin-left:2px}
+#pAtomIc svg{width:26px;height:26px}
+#plantBack{top:calc(74px + env(safe-area-inset-top))}#birthFab{top:calc(146px + env(safe-area-inset-top))}
+#plantBack .mg{width:26px;height:26px}#birthFab .mg{width:28px;height:28px}
+#pbar button.primary{background:linear-gradient(135deg,#c6ff8a,#59d62a);color:#173d05;box-shadow:0 6px 16px rgba(110,240,60,.4),inset 0 1px 0 rgba(255,255,255,.6)}
+#pbar button.primary small{color:rgba(23,61,5,.8);display:flex;align-items:center;gap:2px}
+#pbar button.primary small svg.ic{width:13px;height:13px;margin:0}
+#pbar button:not(.primary) svg{color:#3fb11c}
+#pbar{border-color:#dbeecf}
+#pbar button:disabled{opacity:.5}
+.overlay.hi{z-index:30}
 .locked{filter:brightness(0) opacity(.25)}
 </style>
 </head>
@@ -187,15 +201,21 @@ svg.ic.bolt{width:13px;height:13px;margin:0 2px 0 0;color:#ffe066}
   </svg><div id="mapPins"></div></div>
   <p id="mapInfo"></p>
 </div>
-<div id="plantView" class="view dark">
-  <div class="vhead"><button class="vback" id="plantBack">‹ Karte</button><h2>Kernkraftwerk</h2><span></span></div>
-  <div class="ppills"><div class="pp"><b id="pMW">0</b><small>Strom</small></div><div class="pp"><b id="pOut">0</b><small>MW/Sek.</small></div><div class="pp"><b id="pCalf">0</b><small>Kälber</small></div><div class="pp"><b id="pAtom">0</b><small>Atom</small></div></div>
+<div id="plantView" class="view pv">
   <canvas id="plantCv"></canvas>
-  <p id="birthInfo"></p>
-  <div id="chefCard"><div class="ct"><b>Kraftwerk-Chef</b><span id="chefTxt"></span></div><div class="cb"><button id="chefNo">Nein danke</button><button id="chefYes"></button></div></div>
-  <div class="pbtns one"><button id="calfBuy">Kälbchen kaufen</button></div>
-  <div class="pscroll"><h3 id="missionHead">Weltrettung</h3><div id="missionList"></div><h3>Kraftwerk-Upgrades</h3><div id="pupList"></div><h3>Kalb-Stufen</h3><div id="calfLadder"></div></div>
+  <div class="ptop">
+    <div class="pills"><div class="pill"><svg class="pbolt" viewBox="0 0 24 24"><path d="M13.4 2.6 5.2 13.3h5.7l-1.1 8.1 8.2-11h-5.8z" fill="#ffe14d" stroke="#b8860b" stroke-width="1.2" stroke-linejoin="round"/></svg><span id="pMW">0</span></div><div class="pill"><span class="pi" id="pAtomIc"></span><span id="pAtom">0</span></div></div>
+    <div class="pill stat"><div><b id="pOut">0</b><small>MW/Sek.</small></div><div class="cap" id="pCalf">0/8 Kälber</div></div>
+  </div>
+  <button id="plantBack" aria-label="Zur Karte"><svg class="mg" viewBox="0 0 24 24"><path d="M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="#ffffff" opacity=".9"/><path d="M8.5 4v13.5M15.5 6.5V20M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="none" stroke="#3fb11c" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Karte</span></button>
+  <button id="birthFab" aria-label="Nächstes Kälbchen"><svg class="ring" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3.5"/><circle id="birthRing" cx="22" cy="22" r="19" fill="none" stroke="#7dff4a" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="119.4" transform="rotate(-90 22 22)"/></svg><svg class="mg" viewBox="0 0 24 24"><ellipse cx="11" cy="14" rx="7.5" ry="5" fill="#dcfa9e" stroke="#4f7a1c" stroke-width="1.2"/><circle cx="17.5" cy="10.5" r="4" fill="#dcfa9e" stroke="#4f7a1c" stroke-width="1.2"/><circle cx="18.6" cy="10" r=".8" fill="#2a2d36"/><path d="M19 3.5c-1 1.2-1 2.5 0 3.3" stroke="#59d62a" stroke-width="1.4" fill="none"/><circle cx="19.2" cy="3" r="1.4" fill="#7dff4a"/></svg><span id="birthLbl">30s</span></button>
+  <p id="birthInfo" style="display:none"></p>
+  <div id="chefCard" style="display:none"><div class="ct"><b>Kraftwerk-Chef</b><span id="chefTxt"></span></div><div class="cb"><button id="chefNo">Nein danke</button><button id="chefYes"></button></div></div>
+  <div id="pbar"><button id="calfBuy" class="primary">Kälbchen</button><button id="pMisBtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="currentColor" opacity=".2"/><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2.5 12h19M12 2.5c3 3 3 16 0 19M12 2.5c-3 3-3 16 0 19" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span>Welt&shy;rettung</span></button><button id="pUpBtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5" fill="currentColor" opacity=".18"/><path d="M13.4 4.6 7.2 13.3h4.5l-.9 6.1 6.2-8.7h-4.5z" fill="currentColor"/></svg><span>Upgrades</span></button><button id="pLadBtn"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2.6" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="2.6" fill="currentColor" opacity=".35"/><rect x="3" y="13" width="8" height="8" rx="2.6" fill="currentColor" opacity=".35"/><rect x="13" y="13" width="8" height="8" rx="2.6" fill="currentColor"/></svg><span>Stufen</span></button></div>
 </div>
+<div class="overlay hi" id="pMis"><div class="panel"><h2 id="missionHead">Weltrettung</h2><div id="missionList"></div><button class="close" data-close="pMis">Schließen</button></div></div>
+<div class="overlay hi" id="pUps"><div class="panel"><h2>Kraftwerk-Upgrades</h2><p style="color:var(--muted);font-weight:600;margin:-6px 0 10px;font-size:13px">Bezahlt wird mit gespeichertem Strom.</p><div id="pupList"></div><button class="close" data-close="pUps">Schließen</button></div></div>
+<div class="overlay hi" id="pLad"><div class="panel"><h2>Kalb-Stufen</h2><div id="calfLadder"></div><button class="close" data-close="pLad">Schließen</button></div></div>
 <div class="overlay" id="cowSheet"><div class="panel" style="text-align:center"><canvas id="cowCv" width="360" height="260" style="position:static;display:block;width:180px;height:130px;margin:0 auto 4px"></canvas><h2 id="cowName" style="margin-bottom:4px"></h2><p id="cowInfo" style="color:var(--muted);font-weight:600;margin-bottom:16px"></p><button id="sellBtn" class="sellbtn"></button><button class="close" data-close="cowSheet" style="background:#f3f6f2;color:var(--ink)">Abbrechen</button></div></div>
 <div class="overlay" id="buy"><div class="panel"><h2>Kuh kaufen</h2><div id="buyList"></div><p id="buyNote" style="font-size:13px;color:#6b5a3e;margin-top:4px"></p><button class="close" data-close="buy">Schließen</button></div></div>
 <div class="overlay" id="shop"><div class="panel"><h2>Upgrades</h2><div id="shopList"></div><h2 class="sec">Diamanten-Shop</h2><div id="diaList"></div><button class="close" data-close="shop">Schließen</button></div></div>
@@ -397,13 +417,13 @@ let plantOpen=false,pendingMap=false,pFloats=[],pDrag=null,pUid=1;
 function slots(){return 8+2*S.plant.up.slots}
 function birthInt(l){const m=Math.max(1,(typeof S!=='undefined'&&S&&S.plant)?S.plant.cows:1);return Math.max(2,30*Math.pow(.85,l)/m)}
 function plantOutput(){let o=0;S.plant.calves.forEach(c=>o+=calfMW(c.lvl));return o*(1+.25*S.plant.up.amp)}
-function addCalf(L,x,y){const c={lvl:L,x:x??(.15+Math.random()*.7),y:y??(.25+Math.random()*.6),id:pUid++,pop:1,wait:Math.random()*2};c.tx=c.x;c.ty=c.y;S.plant.calves.push(c);return c}
+function addCalf(L,x,y){const c={lvl:L,x:x??(.15+Math.random()*.7),y:y??(.46+Math.random()*.4),id:pUid++,pop:1,wait:Math.random()*2};c.tx=c.x;c.ty=c.y;S.plant.calves.push(c);return c}
 function plantTick(dt){const P=S.plant;if(!P.unlocked)return;
   P.mw+=plantOutput()*dt;
   if(P.calves.length<slots()){P.birthT+=dt;if(P.birthT>=birthInt(P.up.birth)){P.birthT=0;addCalf(1);if(plantOpen)pFloats.push({t:'Ein GLOW-Kälbchen ist geboren!',l:1.4,x:.5,y:.12})}}
   P.calves.forEach(c=>{if(c.pop)c.pop=Math.max(0,c.pop-dt*3);if(pDrag&&pDrag.c===c)return;
     const dx=c.tx-c.x,dy=c.ty-c.y,d=Math.hypot(dx,dy);
-    if(d<.005){c.wait-=dt;if(c.wait<=0){c.tx=Math.min(.9,Math.max(.1,c.x+(Math.random()-.5)*.3));c.ty=Math.min(.88,Math.max(.25,c.y+(Math.random()-.5)*.25));c.wait=1+Math.random()*3}c.mv=0}
+    if(d<.005){c.wait-=dt;if(c.wait<=0){c.tx=Math.min(.9,Math.max(.1,c.x+(Math.random()-.5)*.3));c.ty=Math.min(.9,Math.max(.44,c.y+(Math.random()-.5)*.25));c.wait=1+Math.random()*3}c.mv=0}
     else{const sp=.06*dt;c.x+=dx/d*Math.min(sp,d);c.y+=dy/d*Math.min(sp,d);c.flip=dx<0;c.mv=1}});
 }
 function radioArrive(n){
@@ -448,24 +468,60 @@ function mergeCalves(a,b){const P=S.plant,L=a.lvl+1,[x,y]=pPx(b);P.calves=P.calv
   for(let i=0;i<14;i++)pFloats.push({spark:1,x:b.x,y:b.y,vx:(Math.random()-.5)*.6,vy:(Math.random()-.8)*.5,l:.6,col:CALF[L-1].glow});
   if(L>P.best){P.best=L;showToast('Neue Stufe: '+CALF[L-1].n+'! '+CALF[L-1].d)}
   save();renderMissions(true)}
+let pbg=null,pbgW=0,pbgH=0,pTowers=[];
+const PHZ=.3;
+function buildPlantBg(){
+  pbgW=PW;pbgH=PH;const d=window.devicePixelRatio||1;pbg=pbg||document.createElement('canvas');pbg.width=PW*d;pbg.height=PH*d;
+  const g=pbg.getContext('2d');g.setTransform(d,0,0,d,0,0);g.clearRect(0,0,PW,PH);
+  const W2=PW,H2=PH,hz=H2*PHZ,r=srand(777);
+  // ferne Hügel
+  [['#9fdc6a',-30,26,95],['#7fcf4c',-12,18,60]].forEach(([col,off,amp,wl],k)=>{g.fillStyle=col;g.beginPath();g.moveTo(0,H2);for(let x=0;x<=W2+8;x+=6)g.lineTo(x,hz+off+Math.sin(x/wl+k*3)*amp*.5+Math.sin(x/21+k)*amp*.12);g.lineTo(W2,H2);g.fill()});
+  // Kernkraftwerk im Hintergrund
+  const base=hz+6;pTowers=[];
+  [[.66,.9],[.84,1]].forEach(([fx,sc])=>{const cx0=W2*fx,h=H2*.2*sc,w=W2*.11*sc;
+    g.fillStyle='#d9dde3';g.strokeStyle='#8a93a5';g.lineWidth=2;g.beginPath();g.moveTo(cx0-w*.62,base);g.quadraticCurveTo(cx0-w*.28,base-h*.55,cx0-w*.42,base-h);g.lineTo(cx0+w*.42,base-h);g.quadraticCurveTo(cx0+w*.28,base-h*.55,cx0+w*.62,base);g.closePath();g.fill();g.stroke();
+    g.fillStyle='rgba(0,0,0,.08)';g.beginPath();g.moveTo(cx0+w*.1,base);g.quadraticCurveTo(cx0+w*.3,base-h*.55,cx0+w*.2,base-h);g.lineTo(cx0+w*.42,base-h);g.quadraticCurveTo(cx0+w*.28,base-h*.55,cx0+w*.62,base);g.fill();
+    g.fillStyle='#ff5fa2';g.fillRect(cx0-w*.46,base-h*.86,w*.92,h*.05);
+    pTowers.push([cx0,base-h,w])});
+  const rx=W2*.3,rw=W2*.2,rh=H2*.09;
+  g.fillStyle='#c9ced8';g.strokeStyle='#8a93a5';g.lineWidth=2;g.beginPath();g.roundRect(rx-rw/2,base-rh,rw,rh,4);g.fill();g.stroke();
+  g.fillStyle='#e9ecf1';g.beginPath();g.arc(rx,base-rh,rw*.36,Math.PI,0);g.fill();g.stroke();
+  g.fillStyle='#8fa0b5';for(let i=0;i<4;i++)g.fillRect(rx-rw*.4+i*rw*.22,base-rh*.6,rw*.12,rh*.25);
+  shDraw(g,ATOM_SH,rx,base-rh-rw*.17,rw*.0085);
+  const ch=W2*.5;g.fillStyle='#fff';g.fillRect(ch-4,base-H2*.16,8,H2*.16);g.fillStyle='#ff5fa2';for(let i=0;i<4;i++)g.fillRect(ch-4,base-H2*.16+i*H2*.04,8,H2*.02);g.strokeStyle='#8a93a5';g.strokeRect(ch-4,base-H2*.16,8,H2*.16);
+  // radioaktive Wiese
+  const m=g.createLinearGradient(0,hz,0,H2);m.addColorStop(0,'#9cf05a');m.addColorStop(1,'#4fc21e');g.fillStyle=m;g.fillRect(0,hz+12,W2,H2);g.fillStyle='#9cf05a';g.fillRect(0,hz+8,W2,6);
+  for(let i=0;i<20;i++){g.fillStyle=i%2?'rgba(230,255,120,.12)':'rgba(20,90,10,.08)';g.beginPath();g.ellipse(r()*W2,hz+30+r()*(H2-hz),40+r()*90,14+r()*28,0,0,7);g.fill()}
+  // Warnzaun
+  const fy=hz+16;g.fillStyle='#2a2d36';g.fillRect(0,fy-14,W2,4);g.fillRect(0,fy-5,W2,4);
+  for(let x=10;x<W2;x+=38){g.fillStyle='#ffd23f';g.fillRect(x-3,fy-22,7,26);g.fillStyle='#2a2d36';g.fillRect(x-3,fy-16,7,4);g.fillRect(x-3,fy-6,7,4)}
+  // leuchtende Pfützen
+  for(let i=0;i<4;i++){const x=W2*(.12+r()*.76),y=hz+60+r()*(H2-hz-90),rx2=22+r()*20;g.save();g.shadowColor='#b8ff3a';g.shadowBlur=18;g.fillStyle='#c8ff4a';g.beginPath();g.ellipse(x,y,rx2,rx2*.38,0,0,7);g.fill();g.restore();g.fillStyle='rgba(255,255,255,.55)';g.beginPath();g.ellipse(x-rx2*.3,y-rx2*.1,rx2*.25,rx2*.07,0,0,7);g.fill()}
+  // Grasbüschel
+  const gn=Math.round(W2*H2/2200);g.lineCap='round';
+  for(let i=0;i<gn;i++){const x=r()*W2,y=hz+28+r()*(H2-hz-28),h=5+r()*6;g.strokeStyle=r()<.5?'rgba(40,120,20,.5)':'rgba(220,255,150,.65)';g.lineWidth=1.6;g.beginPath();g.moveTo(x,y);g.lineTo(x-3,y-h);g.moveTo(x,y);g.lineTo(x,y-h*1.2);g.moveTo(x,y);g.lineTo(x+3,y-h);g.stroke()}
+  // Fässer
+  [[.07,.5],[.93,.86]].forEach(([fx,fy2])=>{const x=W2*fx,y=hz+(H2-hz)*fy2*.85;g.fillStyle='#ffd23f';g.strokeStyle='#7a5a00';g.lineWidth=1.5;g.beginPath();g.roundRect(x-9,y-22,18,24,3);g.fill();g.stroke();g.fillStyle='#2a2d36';g.fillRect(x-9,y-16,18,2);g.fillRect(x-9,y-5,18,2);shDraw(g,ATOM_SH,x,y-10,.32)});
+}
 function drawPlant(dt){
   const c=pcx,W2=PW,H2=PH,P=S.plant;if(!c)return;
-  const bg=c.createRadialGradient(W2/2,H2*.55,20,W2/2,H2/2,Math.max(W2,H2)*.75);bg.addColorStop(0,'#2f3f63');bg.addColorStop(1,'#1d1a3d');c.fillStyle=bg;c.fillRect(0,0,W2,H2);
-  // leuchtendes Wabengitter
-  c.strokeStyle='rgba(125,255,74,.09)';c.lineWidth=1;const hs=26;
-  for(let y=0,r=0;y<H2+hs;y+=hs*.87,r++)for(let x=(r%2)*hs*.75;x<W2+hs;x+=hs*1.5){c.beginPath();for(let k=0;k<6;k++){const a=k*Math.PI/3;const px=x+Math.cos(a)*hs*.5,py=y+Math.sin(a)*hs*.5;k?c.lineTo(px,py):c.moveTo(px,py)}c.closePath();c.stroke()}
-  // Rahmen des Brutkastens
-  c.strokeStyle='rgba(125,255,74,.35)';c.lineWidth=3;c.setLineDash([10,8]);c.lineDashOffset=-T*12;c.beginPath();c.roundRect(8,8,W2-16,H2-16,18);c.stroke();c.setLineDash([]);
+  if(pbgW!==PW||pbgH!==PH||!pbg)buildPlantBg();
+  const hz=H2*PHZ,sk=c.createLinearGradient(0,0,0,hz+30);sk.addColorStop(0,'#7fd6a8');sk.addColorStop(1,'#e2fbc8');c.fillStyle=sk;c.fillRect(0,0,W2,hz+40);
+  const sx=W2*.18,sy=hz*.45,sg=c.createRadialGradient(sx,sy,4,sx,sy,50);sg.addColorStop(0,'rgba(230,255,140,.9)');sg.addColorStop(1,'rgba(230,255,140,0)');c.fillStyle=sg;c.beginPath();c.arc(sx,sy,50,0,7);c.fill();c.fillStyle='#e9ff7a';c.beginPath();c.arc(sx,sy,15,0,7);c.fill();
+  // Dampf aus den Kühltürmen
+  pTowers.forEach(([tx,ty,tw],j)=>{for(let i=0;i<6;i++){const k=((T*.18+i/6+j*.37)%1);c.fillStyle='rgba(255,255,255,'+(.75*(1-k))+')';c.beginPath();c.arc(tx+Math.sin(i*2+T*.7)*tw*.15+k*tw*.4,ty-6-k*hz*.55,tw*(.22+k*.45),0,7);c.fill()}});
+  c.drawImage(pbg,0,0,W2,H2);
+  // schwebende Leuchtpartikel
+  for(let i=0;i<16;i++){const x=W2*(.5+.48*Math.sin(T*.2*(1+(i%3)*.3)+i*1.9)),y=hz+30+(H2-hz-40)*(.5+.5*Math.sin(T*.15+i*2.7));c.fillStyle='rgba(210,255,90,'+(.35+.35*Math.sin(T*3+i))+')';c.beginPath();c.arc(x,y,2.2,0,7);c.fill()}
   // Kälber
   const s=calfSize(),order=[...P.calves].sort((a,b)=>a.y-b.y);if(pDrag){order.splice(order.indexOf(pDrag.c),1);order.push(pDrag.c)}
   order.forEach(k=>{const [x,y]=pPx(k),sc=1+(k.pop?Math.sin(k.pop*Math.PI)*.3:0),lift=pDrag&&pDrag.c===k&&pDrag.moved,
     glow=pDrag&&pDrag.moved&&pDrag.c!==k&&pDrag.c.lvl===k.lvl&&k.lvl<CMAX;
     drawCow(c,x,y,s*sc,CALF[k.lvl-1],T+k.id,k.flip,lift,glow,k.mv&&!lift)});
-  // Effekte
   pFloats.forEach(f=>{f.l-=dt;if(f.spark){f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy+=.9*dt}else f.y-=dt*.06});pFloats=pFloats.filter(f=>f.l>0);
   pFloats.forEach(f=>{if(f.spark){c.globalAlpha=Math.max(0,f.l*1.6);c.fillStyle=f.col;c.beginPath();c.arc(f.x*W2,f.y*H2,3.5,0,7);c.fill();return}
-    c.globalAlpha=Math.min(1,f.l*2);c.font='900 16px Nunito, system-ui';c.textAlign='center';c.lineWidth=4;c.strokeStyle='rgba(15,30,10,.75)';c.strokeText(f.t,W2*f.x,H2*f.y);c.fillStyle='#c8ff9a';c.fillText(f.t,W2*f.x,H2*f.y)});c.globalAlpha=1;
-  if(!P.calves.length){c.fillStyle='rgba(255,255,255,.6)';c.font='800 15px Nunito, system-ui';c.textAlign='center';c.fillText('Warte auf das erste GLOW-Kälbchen …',W2/2,H2/2)}
+    c.globalAlpha=Math.min(1,f.l*2);c.font='900 16px Nunito, system-ui';c.textAlign='center';const fw=c.measureText(f.t).width/2+8,fx=Math.min(W2-fw,Math.max(fw,W2*f.x));c.lineWidth=4;c.strokeStyle='rgba(15,40,10,.75)';c.strokeText(f.t,fx,H2*f.y);c.fillStyle='#ffffff';c.fillText(f.t,fx,H2*f.y)});c.globalAlpha=1;
+  if(!P.calves.length){c.fillStyle='rgba(20,60,10,.6)';c.font='800 15px Nunito, system-ui';c.textAlign='center';c.fillText('Warte auf das erste GLOW-Kälbchen …',W2/2,H2*.62)}
 }
 function plantPointer(){
   const cvp=document.getElementById('plantCv');
@@ -474,7 +530,7 @@ function plantPointer(){
     S.plant.calves.forEach(k=>{const [x,y]=pPx(k),d=Math.hypot(px-x,py-y);if(d<s*CALF[k.lvl-1].sc*.6&&d<bd){bd=d;best=k}});
     if(best){pDrag={c:best,dx:best.x*PW-px,dy:best.y*PH-py,sx:px,sy:py,moved:false};cvp.setPointerCapture(e.pointerId)}});
   cvp.addEventListener('pointermove',e=>{if(!pDrag)return;const [px,py]=pos(e);if(Math.hypot(px-pDrag.sx,py-pDrag.sy)>8)pDrag.moved=true;
-    if(pDrag.moved){const k=pDrag.c,m=calfSize()*CALF[k.lvl-1].sc*.7;k.x=Math.min(1-m/PW,Math.max(m/PW,(px+pDrag.dx)/PW));k.y=Math.min(1-m*.7/PH,Math.max(m/PH,(py+pDrag.dy)/PH));k.tx=k.x;k.ty=k.y}});
+    if(pDrag.moved){const k=pDrag.c,m=calfSize()*CALF[k.lvl-1].sc*.7;k.x=Math.min(1-m/PW,Math.max(m/PW,(px+pDrag.dx)/PW));k.y=Math.min(1-m*.7/PH,Math.max(.4,(py+pDrag.dy)/PH));k.tx=k.x;k.ty=k.y}});
   const end=()=>{if(!pDrag)return;const k=pDrag.c,moved=pDrag.moved;pDrag=null;k.wait=1.5;
     if(!moved){k.pop=.6;pFloats.push({t:fmtL(calfMW(k.lvl)*(1+.25*S.plant.up.amp))+' MW/Sek.',l:.9,x:k.x,y:k.y-.14});return}
     const s=calfSize(),t=S.plant.calves.find(o=>o!==k&&o.lvl===k.lvl&&Math.hypot((o.x-k.x)*PW,(o.y-k.y)*PH)<s*.6);
@@ -502,10 +558,11 @@ function updChefUI(){const P=S.plant,card=document.getElementById('chefCard');ca
 function updPlantUI(){const P=S.plant,out=plantOutput();updChefUI();
   document.getElementById('pMW').textContent=Math.floor(P.mw).toLocaleString('de-DE');
   document.getElementById('pOut').textContent=fmtL(out);
-  document.getElementById('pCalf').textContent=P.calves.length+' / '+slots();
+  document.getElementById('pCalf').textContent=P.calves.length+'/'+slots()+' Kälber';
   const iv=birthInt(P.up.birth),full=P.calves.length>=slots();
   document.getElementById('birthInfo').textContent=full?'Brutkasten voll – verschmelze Kälber!':'Nächstes Kälbchen in '+Math.max(1,Math.ceil(iv-P.birthT))+' s · '+P.cows+(P.cows===1?' Mutterkuh':' Mutterkühe');
-  const bb=document.getElementById('calfBuy');bb.disabled=full||(S.atom||0)<ATOM_CALF;bb.innerHTML='Kälbchen kaufen<small>'+IC.atom+ATOM_CALF+' Atom-Münzen</small>';document.getElementById('pAtom').textContent=(S.atom||0).toLocaleString('de-DE');
+  {const pr=full?1:Math.min(1,P.birthT/iv);document.getElementById('birthRing').style.strokeDashoffset=(119.4*(1-pr)).toFixed(1);const bl=document.getElementById('birthLbl'),bt=full?'VOLL':Math.max(1,Math.ceil(iv-P.birthT))+'s';if(bl.textContent!==bt)bl.textContent=bt}
+  const bb=document.getElementById('calfBuy');bb.disabled=full||(S.atom||0)<ATOM_CALF;const bh='<span>Kälbchen<small>'+IC.atom+ATOM_CALF+'</small></span>';if(bb.innerHTML!==bh)bb.innerHTML=bh;document.getElementById('pAtom').textContent=(S.atom||0).toLocaleString('de-DE');
   renderMissions(true);renderPup(true);
 }
 function renderMissions(update){const box=document.getElementById('missionList'),P=S.plant,out=plantOutput();
@@ -542,6 +599,11 @@ function initPlant(){
   document.getElementById('chefYes').onclick=()=>{const P=S.plant;if(!P.chef||P.cows<2)return;const r=P.chef.reward;P.cows--;S.atom=(S.atom||0)+r;P.chef=null;chefT=CHEF_INT;
     pFloats.push({t:'+'+r+' Atom-Münzen',l:1.3,x:.5,y:.2});showToast('Eine Mutterkuh genießt jetzt den Ruhestand! +'+r+' Atom-Münzen');updMapBtn();updChefUI();save()};
   document.getElementById('chefNo').onclick=()=>{S.plant.chef=null;chefT=CHEF_INT;updMapBtn();updChefUI();save()};
+  document.getElementById('pAtomIc').innerHTML=IC.atom;
+  document.getElementById('pMisBtn').onclick=()=>{renderMissions();open('pMis')};
+  document.getElementById('pUpBtn').onclick=()=>{renderPup();open('pUps')};
+  document.getElementById('pLadBtn').onclick=()=>{renderPup();open('pLad')};
+  document.getElementById('birthFab').onclick=()=>showToast(document.getElementById('birthInfo').textContent);
   plantPointer();updMapBtn();
 }
 
