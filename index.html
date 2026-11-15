@@ -184,7 +184,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 #planetModal .close{background:linear-gradient(135deg,#c6ff8a,#59d62a);color:#173d05}
 #mapPins .planet svg{width:54px;height:54px;filter:drop-shadow(0 0 8px rgba(125,255,74,.8))}
 .locked{filter:brightness(0) opacity(.25)}
-#coins,#dias{text-shadow:0 1px 2px rgba(150,20,80,.35);background:rgba(255,95,162,.5)!important;border:1.5px solid rgba(255,255,255,.55)!important;box-shadow:0 6px 20px rgba(214,52,127,.18)!important}
+#coins,#dias,#statPill{text-shadow:0 1px 2px rgba(150,20,80,.35);background:rgba(255,95,162,.5)!important;border:1.5px solid rgba(255,255,255,.55)!important;box-shadow:0 6px 20px rgba(214,52,127,.18)!important}
 </style>
 </head>
 <body>
@@ -192,7 +192,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 <div id="app">
   <div id="top">
     <div class="pills"><div class="pill" id="coins"><span class="pi" id="coinIcon"></span><span id="coinTxt">0</span></div><div class="pill" id="dias"><span class="pi" id="diaIcon"></span><span id="diaTxt">0</span></div></div>
-    <div class="pill stat"><div><b id="rateTxt">0</b><small>/ Sek.</small></div><div class="cap" id="capTxt">0/10 Kühe</div></div>
+    <div class="pill stat" id="statPill"><div><b id="rateTxt">0</b><small>/ Sek.</small></div><div class="cap" id="capTxt">0/10 Kühe</div></div>
   </div>
   <div id="field">
     <canvas id="cv"></canvas>
