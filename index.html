@@ -242,6 +242,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 .row button.ok{background:linear-gradient(135deg,#9ef07a,#3fbf2a)!important;color:#fff!important;opacity:1!important}
 .spend{position:fixed;z-index:60;transform:translateX(-50%);font:900 15px Nunito,system-ui;color:#d6347f;background:#fff;border:2.5px solid rgba(255,95,162,.55);border-radius:999px;padding:3px 10px;pointer-events:none;animation:spend 1.3s ease-out forwards}
 @keyframes spend{0%{opacity:0;transform:translate(-50%,-6px)}15%{opacity:1;transform:translate(-50%,0)}70%{opacity:1}100%{opacity:0;transform:translate(-50%,14px)}}
+@keyframes fabHit{0%{transform:scale(1)}35%{transform:scale(1.25)}100%{transform:scale(1)}}#birthFab.hit{animation:fabHit .5s ease-out}
 </style>
 </head>
 <body>
@@ -492,7 +493,7 @@ function plantTick(dt){const P=S.plant;if(!P.unlocked)return;
 }
 function radioArrive(n){
   const first=!S.plant.unlocked;
-  if(!first)return;
+  if(!first){n.fuelAt=performance.now()+1300;return}
   S.plant.cows++;S.plant.unlocked=true;pendingMap=true;addCalf(1,.35,.55);addCalf(1,.65,.6);
   updMapBtn();save();
   setTimeout(()=>{if(!S.cows.includes(n))return;const [x,y]=toPx(n);S.cows=S.cows.filter(o=>o!==n);
@@ -895,7 +896,7 @@ function updFuelUI(){const b=document.getElementById('birthFab'),un=!!(S.plant&&
   const l=fuelLeft();b.classList.toggle('on',l>0);b.classList.toggle('target',!!(drag&&drag.moved&&drag.c.lvl===MAXL));
   document.getElementById('fuelRing').style.strokeDashoffset=(119.4*(1-Math.min(1,l/FUEL_MAX))).toFixed(1);
   const t=l>0?'×3 '+(l<60?Math.ceil(l)+'s':Math.ceil(l/60)+'m'):'×1',e=document.getElementById('fuelLbl');if(e.textContent!==t)e.textContent=t}
-document.getElementById('birthFab').onclick=()=>{const l=fuelLeft();showToast(l>0?'Brennstab aktiv: Das Kraftwerk macht noch '+fmtT(l)+' lang dreimal so viel Strom.':'Zieh eine Radioaktive Kuh hierher: Sie wird zum Brennstab und das Kraftwerk macht 1 Minute lang dreimal so viel Strom.')};
+document.getElementById('birthFab').onclick=()=>{const l=fuelLeft();showToast(l>0?'Brennstab aktiv: Das Kraftwerk macht noch '+fmtT(l)+' lang dreimal so viel Strom.':'Jede neue Radioaktive Kuh wird automatisch zum Brennstab: Das Kraftwerk macht dann 1 Minute lang dreimal so viel Strom.')};
 function fuelDrop(c){if(!S.plant||!S.plant.unlocked||c.lvl!==MAXL)return false;const q=document.getElementById('birthFab').getBoundingClientRect(),cr=cv.getBoundingClientRect(),[x,y]=toPx(c),sx=x+cr.left,sy=y+cr.top,m=cowSize()*.45;
   if(sx<q.left-m||sx>q.right+m||sy<q.top-m||sy>q.bottom+m)return false;
   sfx('fuel');S.cows=S.cows.filter(o=>o!==c);S.fuelUntil=Date.now()+Math.min(FUEL_MAX,fuelLeft()+FUEL_SEC)*1000;
@@ -1098,7 +1099,7 @@ function loop(now){
         if(u>=1){magPull=null;merge(a,b)}}}}
   updMagUI();
   if(drag&&!drag.moved&&performance.now()-drag.t0>LP_MS){const c=drag.c;drag=null;openCowSheet(c)}
-  plantTick(dt);updateWorker(dt);if(plantOpen)drawPlant(dt);
+  plantTick(dt);updateWorker(dt);updateAutoFuel();if(plantOpen)drawPlant(dt);
   if(S.test){if(S.coins<1e12)S.coins=1e12;if(S.dia<1e6)S.dia=1e6;if((S.atom||0)<1e4)S.atom=1e4}
   draw(dt);ui();
   requestAnimationFrame(loop);
@@ -1120,6 +1121,7 @@ function draw(dt){
     if(drag&&drag.c===c&&overSell(c)){cx.globalAlpha=.35;cx.fillStyle='#4dd9ff';cx.beginPath();cx.arc(x,y,s*.55,0,7);cx.fill();cx.globalAlpha=1;const n=diaFor(c.lvl),t='+'+n;cx.font='bold 20px Nunito, system-ui';cx.textAlign='center';cx.lineWidth=4;cx.strokeStyle='rgba(0,0,0,.45)';const tw=cx.measureText(t).width;cx.strokeText(t,x-10,y-s*.75);cx.fillStyle='#fff';cx.fillText(t,x-10,y-s*.75);drawDia(cx,x+tw/2-2,y-s*.77,11)}});
   drawMagLine(true);
   try{drawIntro()}catch(e){}
+  drawFuelAnims();
   drawWorker();
   drawNight();
   coins.forEach(k=>{const [x,y]=toPx(k);const a=k.age>5?6-k.age:1;drawCoin(cx,x,y-Math.min(1,k.age*3)*s*.15+Math.sin(T*4+k.x*9)*2,s*.13,a)});
@@ -1298,6 +1300,7 @@ function sfx(k,v){if(!SND)return;const now=performance.now();if(now-(sfxLast[k]|
   else if(k==='dia'){tone(1568,.1,'sine',.12);tone(2093,.18,'sine',.1,.07)}
   else if(k==='crate'){tone(v?660:440,.1,'triangle',.14,0,v?990:660);if(v)tone(1320,.25,'sine',.1,.1)}
   else if(k==='buy'){tone(880,.07,'square',.05);tone(1175,.07,'square',.05,.07);tone(1568,.16,'triangle',.08,.14)}
+  else if(k==='morph'){tone(180,.7,'sine',.12,0,520);tone(360,.7,'triangle',.05,.05,1040)}
   else if(k==='fuel'){tone(220,.35,'sawtooth',.08,0,880)}
   else if(k==='discover'){[523,659,784,1047].forEach((f,i)=>tone(f,.25,'triangle',.16,i*.11));tone(1568,.5,'sine',.08,.45)}}
 function updSnd(){const b=document.getElementById('sndBtn');if(b)b.textContent='Töne: '+(SND?'an':'aus')}
@@ -1316,6 +1319,34 @@ function drawIntro(){if(!INTRO||drag)return;const g=S.cows.filter(c=>c.lvl===1);
   c.fillStyle='#fff';c.strokeStyle='rgba(255,95,162,.55)';c.lineWidth=3;c.beginPath();c.roundRect(mx-tw/2-14,yy-18,tw+28,36,18);c.fill();c.stroke();c.fillStyle='#d6347f';c.textAlign='center';c.textBaseline='middle';c.fillText(t,mx,yy+1);c.restore()}
 
 if('serviceWorker' in navigator&&location.protocol==='https:'){addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})})}
+
+// ----- Radioaktive Kuh wird automatisch zum Brennstab -----
+let fuelAnims=[];
+function updateAutoFuel(){if(!S.plant||!S.plant.unlocked)return;const now=performance.now();if(document.querySelector('.overlay.on'))return;
+  S.cows.forEach(c=>{if(c.lvl!==MAXL||(drag&&drag.c===c)||(magPull&&(magPull.a===c||magPull.b===c)))return;if(!c.fuelAt)c.fuelAt=now+1300;
+    if(now>=c.fuelAt){const [x,y]=toPx(c);S.cows=S.cows.filter(o=>o!==c);fuelAnims.push({x,y,t:0,s:cowSize()*LV[MAXL-1].sc});sfx('morph');save()}})}
+function fabCanvasPos(){const q=document.getElementById('birthFab').getBoundingClientRect(),cr=cv.getBoundingClientRect();return q.width?[q.left+q.width/2-cr.left,q.top+q.height/2-cr.top]:[40,300]}
+function drawRod(c,x,y,h,rot,glow){c.save();c.translate(x,y);c.rotate(rot||0);const w=h*.42;
+  if(glow){c.shadowColor='#b8ff3a';c.shadowBlur=h*.6*glow}
+  c.fillStyle='#7dff4a';c.strokeStyle='#3d4a6b';c.lineWidth=Math.max(2,h*.06);c.beginPath();c.roundRect(-w/2,-h/2,w,h,w*.4);c.fill();c.shadowBlur=0;c.stroke();
+  c.fillStyle='rgba(255,255,255,.7)';c.beginPath();c.roundRect(-w*.3,-h*.4,w*.18,h*.75,w*.09);c.fill();
+  c.fillStyle='#ffe14d';c.beginPath();c.arc(0,h*.06,w*.34,0,7);c.fill();c.lineWidth=Math.max(1.2,h*.035);c.stroke();
+  c.fillStyle='#3d4a6b';for(let i=0;i<3;i++){const a0=-Math.PI/2+i*2*Math.PI/3-Math.PI/6;c.beginPath();c.moveTo(0,h*.06);c.arc(0,h*.06,w*.28,a0,a0+Math.PI/3);c.closePath();c.fill()}
+  c.restore()}
+function drawFuelAnims(){if(!fuelAnims.length)return;const dt=1/60;
+  fuelAnims=fuelAnims.filter(a=>{a.t+=dt;const T1=.75,T2=1.45,[fx,fy]=fabCanvasPos();
+    if(a.t<T1){const u=a.t/T1,sh=1-u;
+      // Kuh leuchtet, zittert und schrumpft
+      cx.save();cx.globalAlpha=Math.max(0,1-u*1.3);const j=Math.sin(a.t*60)*a.s*.03*u;drawCow(cx,a.x+j,a.y,a.s/LV[MAXL-1].sc*Math.max(.05,sh*.9+.1),MAXL,T,false,false,false);cx.restore();
+      cx.save();cx.globalAlpha=.6*u;const g=cx.createRadialGradient(a.x,a.y,2,a.x,a.y,a.s*.8);g.addColorStop(0,'rgba(200,255,90,.9)');g.addColorStop(1,'rgba(200,255,90,0)');cx.fillStyle=g;cx.beginPath();cx.arc(a.x,a.y,a.s*.8,0,7);cx.fill();cx.restore();
+      if(u>.45)drawRod(cx,a.x,a.y,a.s*.55*Math.min(1,(u-.45)/.4)*(1+.15*Math.sin(u*20)),0,1);
+      if(Math.random()<.5)parts.push({x:a.x+rnd(-a.s*.4,a.s*.4),y:a.y+rnd(-a.s*.3,a.s*.3),vx:rnd(-40,40),vy:rnd(-90,-20),l:rnd(.3,.6),col:'#b8ff3a'});return true}
+    if(a.t<T2){const u=(a.t-T1)/(T2-T1),e=u*u*(3-2*u),x=a.x+(fx-a.x)*e,y=a.y+(fy-a.y)*e-Math.sin(e*Math.PI)*a.s*1.2,h=a.s*.55*(1-.45*e);
+      drawRod(cx,x,y,h,e*Math.PI*2,1);if(Math.random()<.7)parts.push({x,y,vx:rnd(-30,30),vy:rnd(-30,30),l:.35,col:Math.random()<.5?'#7dff4a':'#ffe14d'});return true}
+    // angekommen
+    S.fuelUntil=Date.now()+Math.min(FUEL_MAX,fuelLeft()+FUEL_SEC)*1000;sfx('fuel');burst(fx,fy,'#7dff4a',22);rings.push({x:fx,y:fy,r:10,l:.6,col:'#7dff4a'});
+    const b=document.getElementById('birthFab');b.classList.remove('hit');void b.offsetWidth;b.classList.add('hit');
+    floats.push({x:Math.min(W-60,Math.max(60,fx+70)),y:fy,t:'Strom ×3',l:1,gold:1,ic:'atom'});updFuelUI();save();return false})}
 </script>
 </body>
 </html>
