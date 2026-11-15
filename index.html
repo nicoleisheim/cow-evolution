@@ -276,7 +276,6 @@ function drawKawaii(c,x,y,s,t,flip,lifted,glow,walk,d){
   if(glow){c.strokeStyle='rgba(255,255,255,.95)';c.lineWidth=3;c.setLineDash([6,5]);c.beginPath();c.ellipse(0,s*.05,s*.62,s*.55,0,0,7);c.stroke();c.setLineDash([])}
   if(lifted)c.translate(0,-s*.14);
   if(d.float)c.translate(0,-s*.14+Math.sin(t*2)*s*.03);
-  if(flip)c.scale(-1,1);
   const b=walk?-Math.abs(Math.sin(t*9))*s*.03:Math.sin(t*3)*s*.012,W2=d.wide||1;
   c.lineWidth=LW;c.strokeStyle=OL;c.lineJoin='round';c.lineCap='round';
   const blob=(cx,cy,r)=>{c.beginPath();[[0,0,1],[.6,-.3,.7],[-.6,-.2,.75],[.3,.5,.7],[-.4,.45,.6]].forEach(([u,v,k])=>{c.moveTo(cx+u*r+r*k,cy+v*r);c.arc(cx+u*r,cy+v*r,r*k,0,7)});c.fill()};
@@ -311,7 +310,7 @@ function drawKawaii(c,x,y,s,t,flip,lifted,glow,walk,d){
   if(d.crystal){c.strokeStyle='rgba(255,255,255,.95)';c.lineWidth=LW*.6;c.beginPath();[[-.33,-.1],[-.15,-.1],[.1,-.1],[.33,0],[.33,.2],[.05,.28],[-.25,.28],[-.33,.12]].forEach(([u,v])=>{c.moveTo(0,s*.09+b);c.lineTo(u*s,v*s+b)});c.stroke();c.strokeStyle=OL;c.lineWidth=LW}
   if(d.cosmic){c.fillStyle='#ffe680';c.beginPath();c.arc(-s*.12,s*.09+b,s*.075,0,7);c.fill();c.fillStyle=WH;c.beginPath();c.arc(-s*.09,s*.065+b,s*.065,0,7);c.fill();
     [[.12,-.01,.04],[.2,.17,.03],[-.26,.2,.025],[.02,.2,.02]].forEach(([u,v,r],i)=>star4(u*s,v*s+b,r*s*(.8+.2*Math.sin(t*3+i)),'#ffe680'))}
-  if(d.radio){const hx=-s*.08,hy2=s*.1+b,R=s*.1;c.fillStyle='#ffe14d';c.beginPath();c.arc(hx,hy2,R,0,7);c.fill();c.lineWidth=LW*.7;c.stroke();c.fillStyle='#1d1d1d';
+  if(d.radio){const hx=0,hy2=s*.1+b,R=s*.1;c.fillStyle='#ffe14d';c.beginPath();c.arc(hx,hy2,R,0,7);c.fill();c.lineWidth=LW*.7;c.stroke();c.fillStyle='#1d1d1d';
     for(let i=0;i<3;i++){const a0=-Math.PI/2+i*2*Math.PI/3-Math.PI/6;c.beginPath();c.moveTo(hx,hy2);c.arc(hx,hy2,R*.82,a0,a0+Math.PI/3);c.closePath();c.fill()}c.fillStyle='#ffe14d';c.beginPath();c.arc(hx,hy2,R*.26,0,7);c.fill();c.fillStyle='#1d1d1d';c.beginPath();c.arc(hx,hy2,R*.15,0,7);c.fill();c.lineWidth=LW}
   c.restore();bp();c.stroke();
   // ---- vordere Beine ----
