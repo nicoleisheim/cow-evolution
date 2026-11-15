@@ -681,8 +681,8 @@ let S={atom:0,dia:0,boostUntil:0,coins:12000,cows:[],highest:1,buys:0,up:{crate:
 try{const s=JSON.parse(localStorage.getItem('kuhEvo1'));if(s&&s.cows){S=Object.assign(S,s);S.up=Object.assign({crate:0,cap:0,income:0,crateLvl:0,gold:0,magnet:0,wkFreq:0,wkPay:0},s.up)}}catch(e){}
 S.up.crate=Math.min(S.up.crate||0,5);if(S.goldCnt==null)S.goldCnt=(S.cratesOpened||0)%20;S.up.crateLvl=0;
 S.plant=Object.assign(defPlant(),S.plant||{});S.plant.up=Object.assign(defPlant().up,S.plant.up);if(!Array.isArray(S.plant.calves))S.plant.calves=[];S.plant.chef=null;S.plant.calves.forEach((c,i)=>{c.id=i+1;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2});if(S.plant.unlocked&&!S.plant.calves.length&&!S.plant.best)S.plant.best=1;
-function save(){if(window.__reset)return;S.last=Date.now();try{localStorage.setItem('kuhEvo1',JSON.stringify(S))}catch(e){}}
-let coins=[],crates=[],parts=[],floats=[],crateT=0,uid=1;
+function save(){if(window.__reset)return;S.last=Date.now();try{S.crates=crates.map(k=>({x:+k.x.toFixed(3),y:+k.y.toFixed(3),lvl:k.lvl,gold:k.gold?1:0}));localStorage.setItem('kuhEvo1',JSON.stringify(S))}catch(e){}}
+let coins=[],crates=(Array.isArray(S.crates)?S.crates:[]).map(k=>({x:k.x,y:k.y,lvl:k.lvl||1,gold:!!k.gold,drop:1,landed:1,age:9})),parts=[],floats=[],crateT=0,uid=1;
 S.cows.forEach(c=>{c.id=uid++;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2;c.ph=Math.random()*COIN_EVERY});
 function cap(){return Math.min(16,10+S.up.cap)}
 function priceOf(L){return Math.round(12000*Math.pow(4.4,L-1)/10)*10}
@@ -1056,7 +1056,7 @@ function collect(i){const k=coins[i];S.coins+=k.v;floats.push({x:k.x*W,y:k.y*H,t
 function openCrate(i){const k=crates[i];crates.splice(i,1);if(S.cows.length<cap())sfx('crate',k.gold);if(S.cows.length>=cap()){crates.push(k);floats.push({x:k.x*W,y:k.y*H,t:'Weide voll!',l:1.2});return}const c=addCow(k.lvl,k.x,k.y);c.pop=1;burst(k.x*W,k.y*H,k.gold?'#ffd84d':'#c58a4a',k.gold?24:12);
   if(k.gold){rings.push({x:k.x*W,y:k.y*H,r:10,l:.6,col:'#ffd84d'});showToast('Goldene Kiste: '+LV[k.lvl-1].n+'!')}
   else{S.cratesOpened=(S.cratesOpened||0)+1;S.goldCnt=(S.goldCnt||0)+1;if(S.goldCnt>=goldInt(S.up.gold)){S.goldCnt=0;S.goldPending=(S.goldPending||0)+1;showToast(goldInt(S.up.gold)+' Kisten geöffnet – eine Goldene Kiste ist da!')}}save()}
-function spawnCrate(){const y=rnd(.33,.84),s=cowSize();crates.push({x:avoidFab(rnd(.12,.88),y,s*.35,s*.35),y,lvl:1,drop:0,age:0})}
+function spawnCrate(){const y=rnd(.33,.84),s=cowSize();crates.push({x:avoidFab(rnd(.12,.88),y,s*.35,s*.35),y,lvl:1,drop:0,age:0});save()}
 
 // ---------- Schleife ----------
 let lastT=performance.now(),T=0;
