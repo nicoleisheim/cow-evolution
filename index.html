@@ -236,6 +236,9 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 .savebtns button+button{background:#fde7f1;color:#d6347f}
 #saveCode{width:100%;height:110px;box-sizing:border-box;border:2px solid #f3dbe7;border-radius:14px;padding:10px;font:600 11px ui-monospace,Menlo,monospace;color:#3d4a6b;resize:none;word-break:break-all;background:#fff}
 #saveSheet .close{position:static;box-shadow:none}#saveSheet .savebtns{margin-top:10px}
+#cloudForm{display:flex;flex-direction:column;gap:8px}#cloudForm input{width:100%;box-sizing:border-box;border:2px solid #f3dbe7;border-radius:14px;padding:12px;font:700 16px Nunito,system-ui;color:#3d4a6b;background:#fff;outline:none}#cloudForm input:focus{border-color:#ff8fbf}
+#cloudSheet .close{position:static;box-shadow:none}#cloudSheet .savebtns{margin-top:10px}
+#cloudBox.on{background:#effbe9;border-color:#c9efb5}
 </style>
 </head>
 <body>
@@ -291,9 +294,10 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 <div class="overlay" id="cowSheet"><div class="panel" style="text-align:center"><canvas id="cowCv" width="360" height="260" style="position:static;display:block;width:180px;height:130px;margin:0 auto 4px"></canvas><h2 id="cowName" style="margin-bottom:4px"></h2><p id="cowInfo" style="color:var(--muted);font-weight:600;margin-bottom:16px"></p><button id="sellBtn" class="sellbtn"></button><button class="close" data-close="cowSheet" style="background:#f3f6f2;color:var(--ink)">Abbrechen</button></div></div>
 <div class="overlay" id="buy"><div class="panel"><h2>Kuh kaufen</h2><div id="buyList"></div><p id="buyNote" style="font-size:13px;color:#6b5a3e;margin-top:4px"></p><button class="close" data-close="buy">Schließen</button></div></div>
 <div class="overlay" id="shop"><div class="panel"><h2>Upgrades</h2><div id="shopList"></div><h2 class="sec">Diamanten-Shop</h2><div id="diaList"></div><button class="close" data-close="shop">Schließen</button></div></div>
-<div class="overlay" id="dex"><div class="panel"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px"><h2 style="margin:0">Sammlung</h2><button id="testBtn" style="border:0;border-radius:999px;background:#eef1f4;color:#1d2a22;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;margin-left:auto;white-space:nowrap">Test aus</button><button id="resetBtn" style="display:flex;align-items:center;gap:6px;border:0;border-radius:999px;background:#fde7f1;color:#d6347f;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;white-space:nowrap"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v5h5"/></svg><span>Neu starten</span></button></div><div id="dexList"></div><div class="savebox"><b>Spielstand</b><span>Sichere deinen Fortschritt als Code, z.B. in deinen Notizen. So kannst du ihn jederzeit wiederherstellen.</span><div class="savebtns"><button id="saveExp">Sichern</button><button id="saveImp">Laden</button></div></div><button class="close" data-close="dex">Schließen</button></div></div>
+<div class="overlay" id="dex"><div class="panel"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px"><h2 style="margin:0">Sammlung</h2><button id="testBtn" style="border:0;border-radius:999px;background:#eef1f4;color:#1d2a22;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;margin-left:auto;white-space:nowrap">Test aus</button><button id="resetBtn" style="display:flex;align-items:center;gap:6px;border:0;border-radius:999px;background:#fde7f1;color:#d6347f;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;white-space:nowrap"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v5h5"/></svg><span>Neu starten</span></button></div><div id="dexList"></div><div class="savebox" id="cloudBox"><b>☁️ Cloud-Speicherung</b><span id="cloudStat">Dein Spielstand wird automatisch online gesichert und lässt sich auf jedem Gerät wieder laden.</span><div class="savebtns"><button id="cloudBtn">Einrichten</button><button id="cloudOut" style="display:none">Abmelden</button></div></div><div class="savebox"><b>Spielstand-Code</b><span>Sichere deinen Fortschritt als Code, z.B. in deinen Notizen. So kannst du ihn jederzeit wiederherstellen.</span><div class="savebtns"><button id="saveExp">Sichern</button><button id="saveImp">Laden</button></div></div><button class="close" data-close="dex">Schließen</button></div></div>
 <div class="overlay center" id="discover"><div class="panel"><h2>Neue Kuh entdeckt!</h2><canvas id="discCv" width="400" height="320"></canvas><h2 id="discName"></h2><p id="discDesc"></p><button class="close" data-close="discover">Weiter</button></div></div>
 <div class="overlay center" id="saveSheet"><div class="panel"><h2 id="saveTitle">Spielstand sichern</h2><p id="saveInfo" style="color:#6b5a3e;margin:0 0 8px;font-weight:600;font-size:14px"></p><textarea id="saveCode" spellcheck="false" autocomplete="off"></textarea><div class="savebtns"><button id="saveAct">Kopieren</button><button id="saveShare">Teilen</button></div><button class="close" data-close="saveSheet">Schließen</button></div></div>
+<div class="overlay center" id="cloudSheet"><div class="panel"><h2 id="cloudTitle">Cloud-Speicherung</h2><p id="cloudInfo" style="color:#6b5a3e;margin:0 0 10px;font-weight:600;font-size:14px">Wähle einen Spielernamen und eine Geheimzahl. Merke sie dir gut – damit holst du deinen Spielstand auf jedes Gerät.</p><div id="cloudForm"><input id="cloudName" placeholder="Spielername" autocomplete="off" autocapitalize="off"><input id="cloudPin" placeholder="Geheimzahl (mind. 4 Ziffern)" inputmode="numeric" autocomplete="off"></div><div class="savebtns" id="cloudBtns"><button id="cloudGo">Verbinden</button></div><button class="close" data-close="cloudSheet">Schließen</button></div></div>
 <div class="overlay center" id="offline"><div class="panel" style="text-align:center"><h2>Willkommen zurück!</h2><p id="offTxt" style="color:#6b5a3e;margin-bottom:6px"></p><button class="close" data-close="offline">Einsammeln</button></div></div>
 
 <script>
@@ -1343,7 +1347,7 @@ function renderDia(update){
 }
 function buyUpg(i){const u=UPG[i],l=S.up[u.k];if(l>=u.max||(u.need&&S.highest<u.need(l))||S.coins<u.cost(l))return;S.coins-=u.cost(l);S.up[u.k]++;renderShop(true);save()}
 function miniCow(L,w,h,locked){const c=document.createElement('canvas');c.width=w*2;c.height=h*2;const g=c.getContext('2d');g.scale(2,2);drawCow(g,w*.45,h*.55,h*.75,L,1,false);if(locked)c.className='locked';return c}
-function renderDex(){
+function renderDex(){try{updCloudUI()}catch(e){}
   const box=document.getElementById('dexList');box.innerHTML='';
   LV.forEach((d,i)=>{const L=i+1,known=L<=S.highest;const r=document.createElement('div');r.className='row';r.appendChild(miniCow(L,64,52,!known));
     const t=document.createElement('div');t.className='txt';t.innerHTML='<b>'+(known?L+'. '+d.n:L+'. ???')+'</b><span>'+(known?d.d+'<br>'+IC.coin+perSec(L)+'/s · '+IC.dia+diaFor(L):'Noch nicht entdeckt')+'</span>';r.appendChild(t);box.appendChild(r)});
@@ -1404,6 +1408,42 @@ document.getElementById('saveAct').onclick=async()=>{const t=document.getElement
     if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='Wirklich laden?';setTimeout(()=>{b.dataset.sure='';if(saveMode==='imp')b.textContent='Laden'},3000);return}
     window.__reset=true;localStorage.setItem('kuhEvo1',JSON.stringify(st));for(const k in flags)localStorage.setItem(k,flags[k]);location.reload()}
   catch(e){showToast('Der Code ist ungültig.')}};
+
+// ----- Cloud-Speicherung (Firebase Firestore) -----
+const FB={key:'AIzaSyBQrlxHyWvftVfUC2kYPCYFfINDDWT7k0c',project:'kuh-evolution'};
+let CLOUD=null;try{CLOUD=JSON.parse(localStorage.getItem('kuhEvoCloud')||'null')}catch(e){}
+let cloudLast=0,cloudBusy=false,cloudErr=false,cloudPending=null;
+function cloudUrl(id){return 'https://firestore.googleapis.com/v1/projects/'+FB.project+'/databases/(default)/documents/saves/'+id+'?key='+FB.key}
+async function cloudId(name,pin){const d=new TextEncoder().encode('kuh|'+name.trim().toLowerCase()+'|'+pin.trim());const h=await crypto.subtle.digest('SHA-256',d);return Array.from(new Uint8Array(h),b=>b.toString(16).padStart(2,'0')).join('')}
+async function cloudGet(id){const r=await fetch(cloudUrl(id));if(r.status===404)return null;if(!r.ok)throw new Error('net');const j=await r.json();const f=j.fields||{};return {d:f.d&&f.d.stringValue,t:+(f.t&&f.t.integerValue||0),hi:+(f.hi&&f.hi.integerValue||0)}}
+function cloudBody(){return JSON.stringify({fields:{d:{stringValue:packState()},t:{integerValue:String(Date.now())},hi:{integerValue:String(S.highest||1)}}})}
+async function cloudPut(keep){if(!CLOUD||window.__reset)return;cloudBusy=true;
+  try{const r=await fetch(cloudUrl(CLOUD.id),{method:'PATCH',headers:{'Content-Type':'application/json'},body:cloudBody(),keepalive:!!keep});if(!r.ok)throw 0;cloudLast=Date.now();cloudErr=false}catch(e){cloudErr=true}
+  cloudBusy=false;updCloudUI()}
+function updCloudUI(){const box=document.getElementById('cloudBox');if(!box)return;box.classList.toggle('on',!!CLOUD);
+  document.getElementById('cloudBtn').textContent=CLOUD?'Jetzt sichern':'Einrichten';document.getElementById('cloudOut').style.display=CLOUD?'':'none';
+  document.getElementById('cloudStat').textContent=!CLOUD?'Dein Spielstand wird automatisch online gesichert und lässt sich auf jedem Gerät wieder laden.':
+    'Verbunden als „'+CLOUD.name+'“ · '+(cloudErr?'Keine Verbindung – wird später erneut versucht.':cloudLast?'zuletzt gesichert um '+new Date(cloudLast).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr':'wird gleich gesichert …')}
+function cloudFormMode(){document.getElementById('cloudTitle').textContent='Cloud-Speicherung';document.getElementById('cloudInfo').textContent='Wähle einen Spielernamen und eine Geheimzahl. Merke sie dir gut – damit holst du deinen Spielstand auf jedes Gerät.';
+  document.getElementById('cloudForm').style.display='';document.getElementById('cloudBtns').innerHTML='<button id="cloudGo">Verbinden</button>';document.getElementById('cloudGo').onclick=cloudConnect}
+async function cloudConnect(){const n=document.getElementById('cloudName').value.trim(),p=document.getElementById('cloudPin').value.trim(),b=document.getElementById('cloudGo');
+  if(n.length<2){showToast('Bitte einen Spielernamen eingeben.');return}if(!/^\d{4,}$/.test(p)){showToast('Die Geheimzahl braucht mindestens 4 Ziffern.');return}
+  b.textContent='Verbinde …';b.disabled=true;
+  try{const id=await cloudId(n,p),doc=await cloudGet(id);
+    if(!doc||!doc.d){CLOUD={id,name:n};localStorage.setItem('kuhEvoCloud',JSON.stringify(CLOUD));await cloudPut();document.getElementById('cloudSheet').classList.remove('on');showToast('Cloud-Speicherung ist eingerichtet!');updCloudUI();return}
+    cloudPending={id,name:n,doc};document.getElementById('cloudTitle').textContent='Spielstand gefunden';
+    document.getElementById('cloudInfo').textContent='Unter diesem Namen gibt es schon einen Spielstand (beste Kuh: '+(LV[(doc.hi||1)-1]||LV[0]).n+', gesichert am '+new Date(doc.t).toLocaleDateString('de-DE')+'). Welchen möchtest du behalten?';
+    document.getElementById('cloudForm').style.display='none';
+    document.getElementById('cloudBtns').innerHTML='<button id="cloudLoad">Cloud laden</button><button id="cloudKeep">Diesen behalten</button>';
+    document.getElementById('cloudLoad').onclick=()=>{const c=cloudPending;try{const [st,flags]=unpackState(c.doc.d);window.__reset=true;localStorage.setItem('kuhEvo1',JSON.stringify(st));for(const k in flags)localStorage.setItem(k,flags[k]);localStorage.setItem('kuhEvoCloud',JSON.stringify({id:c.id,name:c.name}));location.reload()}catch(e){showToast('Der Cloud-Spielstand konnte nicht geladen werden.')}};
+    document.getElementById('cloudKeep').onclick=async()=>{const c=cloudPending;CLOUD={id:c.id,name:c.name};localStorage.setItem('kuhEvoCloud',JSON.stringify(CLOUD));await cloudPut();document.getElementById('cloudSheet').classList.remove('on');showToast('Dein aktueller Spielstand ist jetzt in der Cloud.');updCloudUI()};
+  }catch(e){showToast('Keine Verbindung zum Internet.');b.textContent='Verbinden';b.disabled=false}}
+document.getElementById('cloudBtn').onclick=()=>{if(CLOUD){cloudPut().then(()=>showToast(cloudErr?'Sichern hat nicht geklappt.':'Gesichert!'));return}cloudFormMode();open('cloudSheet')};
+document.getElementById('cloudOut').onclick=()=>{const b=document.getElementById('cloudOut');if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='Sicher?';setTimeout(()=>{b.dataset.sure='';b.textContent='Abmelden'},3000);return}
+  CLOUD=null;try{localStorage.removeItem('kuhEvoCloud')}catch(e){}b.dataset.sure='';b.textContent='Abmelden';updCloudUI();showToast('Abgemeldet. Dein Spielstand bleibt in der Cloud erhalten.')};
+setInterval(()=>{if(CLOUD&&!cloudBusy&&Date.now()-cloudLast>30000)cloudPut()},5000);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&CLOUD)cloudPut(true)});
+updCloudUI();setTimeout(()=>{if(CLOUD)cloudPut()},3000);
 </script>
 </body>
 </html>
