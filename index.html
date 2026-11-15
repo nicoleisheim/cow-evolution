@@ -916,7 +916,6 @@ function buildBg(){
     [fy-15,fy-6].forEach(ry=>{g.beginPath();g.roundRect(-4,ry,W+8,5,2.5);g.fill();g.stroke()});
     for(let x=10;x<W;x+=38){g.fillStyle=post;g.beginPath();g.roundRect(x-4,fy-24,8,28,[4,4,2,2]);g.fill();if(V==='C'){g.save();g.clip();g.fillStyle='#ff8fbf';for(let k=0;k<4;k++)g.fillRect(x-4,fy-22+k*7,8,3);g.restore()}g.stroke()}}
   // Steine
-  if(V==='A'||V==='B')for(let i=0;i<5;i++){const x=r()*W,y=hz+50+r()*(H-hz-60);g.fillStyle='#c9cfda';g.strokeStyle=BOL;g.lineWidth=1.5;g.beginPath();g.ellipse(x,y,6+r()*6,4+r()*3,0,0,7);g.fill();g.stroke()}
   // Gras
   if(V==='A'||V==='B'){const gn=Math.round(W*H/2200);g.lineCap='round';
     for(let i=0;i<gn;i++){const x=r()*W,y=hz+28+r()*(H-hz-28),h=5+r()*6;g.strokeStyle=r()<.5?'rgba(205,85,145,.45)':'rgba(255,230,242,.75)';g.lineWidth=1.6;g.beginPath();g.moveTo(x,y);g.lineTo(x-3,y-h);g.moveTo(x,y);g.lineTo(x,y-h*1.2);g.moveTo(x,y);g.lineTo(x+3,y-h);g.stroke()}}
