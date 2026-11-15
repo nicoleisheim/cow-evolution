@@ -536,7 +536,7 @@ function drawHead(c,s,d,t,seed){
 
 const MAXL=LV.length;
 const UPG=[
- {k:'crate',n:'Schnellere Kisten',d:l=>'Kiste alle '+crateInt(l).toFixed(1)+' s',cost:l=>450*Math.pow(2.6,l),max:8},
+ {k:'crate',n:'Schnellere Kisten',d:l=>'Kiste alle '+crateInt(l)+' s',cost:l=>450*Math.pow(3.2,l),max:5},
  {k:'cap',n:'Größere Weide',d:l=>Math.min(16,10+l)+' Kühe Platz',cost:l=>1200*Math.pow(2.4,l),max:6},
  {k:'income',n:'Saftigeres Gras',d:l=>'+'+(l*20)+'% Ertrag',cost:l=>750*Math.pow(2,l),max:30},
  {k:'crateLvl',n:'Bessere Kisten',d:l=>'Kisten enthalten '+LV[l].n,cost:l=>12000*Math.pow(12,l),max:3,need:l=>l+4},
@@ -545,7 +545,7 @@ const UPG=[
  {k:'wkPay',n:'Bessere Atom-Preise',d:l=>'+'+(l*25)+' % Atom-Münzen',cost:l=>3e6*Math.pow(2.6,l),max:10,need:l=>MAXL}
 ];
 function magInt(l){return 10-l}
-function crateInt(l){return 35*Math.pow(.88,l)}
+function crateInt(l){return Math.max(5,30-5*l)}
 const COIN_EVERY=5;
 function boost(){return Date.now()<(S.boostUntil||0)?2:1}
 function income(L){return Math.pow(2,L-1)*(1+.2*S.up.income)*boost()*worldBonus()}
@@ -814,6 +814,7 @@ const ATOM_SH=[["M1.8000000000000007 12.9a10.2 10.2 0 1 0 20.4 0a10.2 10.2 0 1 0
 // ---------- Zustand ----------
 let S={atom:0,dia:0,boostUntil:0,coins:250,cows:[],highest:1,buys:0,up:{crate:0,cap:0,income:0,crateLvl:0,magnet:0,wkFreq:0,wkPay:0},magnetOn:true,last:Date.now(),merged:0};
 try{const s=JSON.parse(localStorage.getItem('kuhEvo1'));if(s&&s.cows){S=Object.assign(S,s);S.up=Object.assign({crate:0,cap:0,income:0,crateLvl:0,magnet:0,wkFreq:0,wkPay:0},s.up)}}catch(e){}
+S.up.crate=Math.min(S.up.crate||0,5);
 S.plant=Object.assign(defPlant(),S.plant||{});S.plant.up=Object.assign(defPlant().up,S.plant.up);if(!Array.isArray(S.plant.calves))S.plant.calves=[];S.plant.chef=null;S.plant.calves.forEach((c,i)=>{c.id=i+1;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2});if(S.plant.unlocked&&!S.plant.calves.length&&!S.plant.best)S.plant.best=1;
 function save(){if(window.__reset)return;S.last=Date.now();try{localStorage.setItem('kuhEvo1',JSON.stringify(S))}catch(e){}}
 let coins=[],crates=[],parts=[],floats=[],crateT=0,uid=1;
