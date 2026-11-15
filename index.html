@@ -353,7 +353,7 @@ function drawCow(c,x,y,s,L,t,flip,lifted,glow,walk){
 function drawHead(c,s,d,t,seed){
   const OL=outl(d),LW=s*.022;
   if(!d.robot&&!d.crystal){el(c,-s*.13,-s*.1,s*.09,s*.04,d.body,-.5);c.strokeStyle=OL;c.lineWidth=LW;c.stroke();el(c,-s*.13,-s*.1,s*.05,s*.02,'#f6b6b6',-.5)}
-  if(d.horns){const hc=d.cosmic?'#ffd600':d.crystal?'#e9fbff':'#f1e2bb';c.strokeStyle=OL;c.lineWidth=LW*.8;c.fillStyle=shade(hc.length===7?hc:'#f1e2bb',.88);c.beginPath();c.moveTo(s*.13,-s*.13);c.quadraticCurveTo(s*.17,-s*.3,s*.07,-s*.27);c.lineTo(s*.07,-s*.15);c.closePath();c.fill();c.stroke();c.fillStyle=hc;c.beginPath();c.moveTo(-s*.08,-s*.13);c.quadraticCurveTo(-s*.12,-s*.3,-s*.02,-s*.27);c.lineTo(-s*.02,-s*.15);c.closePath();c.fill();c.stroke()}
+  
   if(d.mohawk){const sp=[[-.15,-.33,'#ff3d8b'],[-.08,-.4,'#ff6fb0'],[0,-.42,'#ff3d8b'],[.08,-.38,'#ff6fb0']];c.strokeStyle=OL;c.lineWidth=LW*.8;sp.forEach(([x0,yt,col])=>{const yb=-s*(.17*Math.sqrt(Math.max(0,1-Math.pow(x0/.19,2)))-.05);c.fillStyle=col;c.beginPath();c.moveTo(x0*s-s*.045,yb);c.quadraticCurveTo(x0*s-s*.02,(yt+.1)*s,x0*s+s*.01,(yt+.03)*s);c.quadraticCurveTo(x0*s+s*.02,(yt+.14)*s,x0*s+s*.045,yb);c.closePath();c.fill();c.stroke()})}
   const hp=()=>{if(d.robot){c.beginPath();c.roundRect(-s*.19,-s*.17,s*.38,s*.32,s*.05)}else if(d.crystal)facetPath(c,0,0,s*.2,s*.17);else{c.beginPath();c.ellipse(0,0,s*.19,s*.17,0,0,7)}};
   if(d.robot){rr(c,-s*.24,-s*.08,s*.06,s*.12,s*.02,'#7f909c');c.strokeStyle=OL;c.lineWidth=LW;c.stroke()}
