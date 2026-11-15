@@ -996,13 +996,13 @@ function sell(c){
 function drawTapBadge(f){
   const age=.9-f.l,a=Math.min(1,f.l*3),sc=age<.1?.55+age/.1*.55:age<.18?1.1-(age-.1)/.08*.1:1;
   cx.save();cx.globalAlpha=a;cx.translate(f.x,f.y);cx.scale(sc,sc);
-  cx.font=f.grey?'800 14px Nunito, system-ui':'800 17px Nunito, system-ui';const tw=cx.measureText(f.t).width,h=30,w=tw+(f.grey?28:46),x0=-w/2;
+  cx.font=f.grey?'800 14px Nunito, system-ui':'800 17px Nunito, system-ui';const tw=cx.measureText(f.t).width,h=30,w=tw+(f.grey?28:44),x0=-w/2;
   cx.shadowColor='rgba(0,0,0,.22)';cx.shadowBlur=10;cx.shadowOffsetY=3;
   cx.fillStyle='rgba(255,255,255,.96)';cx.beginPath();cx.roundRect(x0,-h/2,w,h,h/2);cx.fill();
   cx.shadowColor='transparent';
   if(f.grey){cx.fillStyle='#7a8580';cx.font='800 14px Nunito, system-ui';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(f.t,0,1);cx.restore();return}
   if(f.ic==='atom')shDraw(cx,ATOM_SH,x0+17,0,.85);else if(f.ic==='dia')shDraw(cx,DIA_SH,x0+17,0,.85);else drawCoin(cx,x0+17,0,10,1);
-  cx.fillStyle='#d6347f';cx.font='800 17px Nunito, system-ui';cx.textAlign='left';cx.fillText(f.t,x0+32,1);
+  cx.fillStyle='#d6347f';cx.font='800 17px Nunito, system-ui';cx.textAlign='left';cx.textBaseline='middle';cx.fillText(f.t,x0+33,1);
   cx.restore();
 }
 function fmtTap(n){return n<100&&n%1?n.toFixed(1).replace('.',','):fmt(n)}
