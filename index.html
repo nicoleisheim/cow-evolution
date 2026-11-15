@@ -934,23 +934,24 @@ function drawSky(dt){
   if(V==='C'){g.addColorStop(0,mix('#9fd8ff','#2c3d86',n));g.addColorStop(.6,mix('#e2d4ff','#5a5aa8',n));g.addColorStop(1,mix('#ffe1ef','#7584c4',n))}
   else{g.addColorStop(0,mix('#4fb0f0','#2c3d86',n));g.addColorStop(1,mix('#d4f0ff','#7584c4',n))}
   cx.fillStyle=g;cx.fillRect(0,0,W,hz+40);
-  if(n>0){for(let i=0;i<45;i++){const x=(Math.abs(Math.sin(i*91.7)*7919)%1)*W,y=(Math.abs(Math.sin(i*37.3)*3571)%1)*hz;cx.fillStyle='rgba(255,255,255,'+(n*(.4+.6*Math.abs(Math.sin(T*1.5+i))))+')';cx.fillRect(x,y,1.6,1.6)}}
+  if(n>0){for(let i=0;i<28;i++){const x=(Math.abs(Math.sin(i*91.7)*7919)%1)*W,y=(Math.abs(Math.sin(i*37.3)*3571)%1)*hz,k=(1.6+(i%3))*(.6+.4*Math.abs(Math.sin(T*1.5+i)));cx.fillStyle='rgba(255,250,220,'+n+')';cx.beginPath();cx.moveTo(x,y-k*1.6);cx.quadraticCurveTo(x,y,x+k*1.6,y);cx.quadraticCurveTo(x,y,x,y+k*1.6);cx.quadraticCurveTo(x,y,x-k*1.6,y);cx.quadraticCurveTo(x,y,x,y-k*1.6);cx.fill()}}
   const q=(p+.5)%1;
   if(q>.12&&q<.88){const u=(q-.12)/.76,sx=W*(.06+.88*u),sy=hz*(1.05-.8*Math.sin(Math.PI*u));
     const sg=cx.createRadialGradient(sx,sy,4,sx,sy,48);sg.addColorStop(0,'rgba(255,240,150,.9)');sg.addColorStop(1,'rgba(255,240,150,0)');cx.fillStyle=sg;cx.beginPath();cx.arc(sx,sy,48,0,7);cx.fill();
     cx.fillStyle=mix('#ffe066','#ffa24d',Math.max(0,1-Math.sin(Math.PI*u)*2.2));cx.beginPath();cx.arc(sx,sy,V==='D'?16:19,0,7);cx.fill();
     if(V!=='D'){cx.strokeStyle=BOL;cx.lineWidth=2;cx.stroke()}if(V==='A'||V==='C')bgFace(cx,sx,sy+1,19)}
   if(p>.28&&p<.72){const u=(p-.28)/.44,mx=W*(.06+.88*u),my=hz*(1.05-.8*Math.sin(Math.PI*u));
-    const mg=cx.createRadialGradient(mx,my,8,mx,my,44);mg.addColorStop(0,'rgba(255,248,220,.45)');mg.addColorStop(1,'rgba(255,248,220,0)');cx.fillStyle=mg;cx.beginPath();cx.arc(mx,my,44,0,7);cx.fill();cx.save();cx.beginPath();cx.rect(0,0,W,H);cx.moveTo(mx+19,my-5);cx.arc(mx+7,my-5,12,0,Math.PI*2,true);cx.closePath();cx.clip('evenodd');cx.fillStyle='#fff6d6';cx.beginPath();cx.arc(mx,my,14,0,7);cx.fill();cx.restore()}
+    const mg=cx.createRadialGradient(mx,my,8,mx,my,44);mg.addColorStop(0,'rgba(255,248,220,.45)');mg.addColorStop(1,'rgba(255,248,220,0)');cx.fillStyle=mg;cx.beginPath();cx.arc(mx,my,44,0,7);cx.fill();const R=17,ix=mx+8,iy=my-6,ir=14;cx.save();cx.beginPath();cx.rect(0,0,W,H);cx.moveTo(ix+ir,iy);cx.arc(ix,iy,ir,0,Math.PI*2,true);cx.closePath();cx.clip('evenodd');cx.fillStyle='#fff3c4';cx.strokeStyle=BOL;cx.lineWidth=2;cx.beginPath();cx.arc(mx,my,R,0,7);cx.fill();cx.stroke();cx.restore();
+    cx.save();cx.beginPath();cx.arc(mx,my,R,0,7);cx.clip();cx.strokeStyle=BOL;cx.lineWidth=2;cx.beginPath();cx.arc(ix,iy,ir,0,7);cx.stroke();cx.restore()}
   if(!clouds.length)for(let i=0;i<4;i++)clouds.push({x:(i+Math.random()*.6)/4*W,y:(.12+Math.random()*.4)*hz,s:.6+Math.random()*.7,v:4+Math.random()*8});
   clouds.forEach(c=>{c.x+=c.v*dt;if(c.x>W+90)c.x=-90;const B=[[-22,4,16],[0,-4,22],[22,3,16],[8,8,14],[-8,8,14]];
     if(V!=='D'){cx.strokeStyle=BOL;cx.lineWidth=4;B.forEach(([dx,dy,r])=>{cx.beginPath();cx.arc(c.x+dx*c.s,c.y+dy*c.s,r*c.s,0,7);cx.stroke()})}
-    cx.fillStyle=V==='D'?'rgba(255,255,255,'+(.9-.3*n)+')':mix('#ffffff','#c9d0f0',n);B.forEach(([dx,dy,r])=>{cx.beginPath();cx.arc(c.x+dx*c.s,c.y+dy*c.s,r*c.s,0,7);cx.fill()});
+    cx.fillStyle=V==='D'?'rgba(255,255,255,'+(.9-.3*n)+')':mix('#ffffff','#eef0ff',n);B.forEach(([dx,dy,r])=>{cx.beginPath();cx.arc(c.x+dx*c.s,c.y+dy*c.s,r*c.s,0,7);cx.fill()});
     if(V==='A'||V==='C')bgFace(cx,c.x,c.y+4*c.s,16*c.s,n>.5)});
 }
 function drawNight(){
   const n=night();if(n<=0)return;
-  cx.fillStyle='rgba(30,40,100,'+(.16*n)+')';cx.fillRect(0,0,W,H);
+  {const hz0=H*HZ,gr=cx.createLinearGradient(0,hz0-50,0,hz0+20);gr.addColorStop(0,'rgba(30,40,100,0)');gr.addColorStop(1,'rgba(30,40,100,'+(.16*n)+')');cx.fillStyle=gr;cx.fillRect(0,hz0-50,W,H-hz0+50)}
   cx.save();cx.shadowColor='#f4ff81';cx.shadowBlur=10;
   for(let i=0;i<14;i++){const x=W*(.5+.46*Math.sin(T*.25*(1+(i%3)*.25)+i*1.7)),y=H*(.32+.6*Math.abs(Math.sin(T*.17+i*2.3)));
     cx.fillStyle='rgba(240,255,130,'+(n*(.4+.6*Math.abs(Math.sin(T*3+i))))+')';cx.beginPath();cx.arc(x,y,2.4,0,7);cx.fill()}
