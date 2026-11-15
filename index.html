@@ -539,11 +539,13 @@ const UPG=[
  {k:'crate',n:'Schnellere Kisten',d:l=>'Kiste alle '+crateInt(l)+' s',cost:l=>7200*Math.pow(3.2,l),max:5},
  {k:'cap',n:'Größere Weide',d:l=>Math.min(16,10+l)+' Kühe Platz',cost:l=>19200*Math.pow(2.4,l),max:6},
  {k:'income',n:'Saftigeres Gras',d:l=>'+'+(l*20)+'% Ertrag',cost:l=>12000*Math.pow(2,l),max:30},
+ {k:'gold',n:'Goldene Kiste öfter',d:l=>'alle '+goldInt(l)+' Kisten',cost:l=>60000*Math.pow(3,l),max:5},
  {k:'magnet',n:'Stärkerer Magnet',d:l=>'Magnet alle '+magInt(l)+' s',cost:l=>24000*Math.pow(2.3,l),max:7},
  {k:'wkFreq',n:'Häufigere Mitarbeiter-Besuche',d:l=>'Besuch alle '+fmtT(wkInt(l)),cost:l=>4e7*Math.pow(2.5,l),max:8,need:l=>MAXL},
  {k:'wkPay',n:'Bessere Atom-Preise',d:l=>'+'+(l*25)+' % Atom-Münzen',cost:l=>6e7*Math.pow(2.6,l),max:10,need:l=>MAXL}
 ];
 function magInt(l){return 10-l}
+function goldInt(l){return 20-2*l}
 function crateInt(l){return Math.max(5,30-5*l)}
 const COIN_EVERY=5;
 function boost(){return Date.now()<(S.boostUntil||0)?2:1}
@@ -812,9 +814,9 @@ function initPlant(){
 
 const ATOM_SH=[["M1.8000000000000007 12.9a10.2 10.2 0 1 0 20.4 0a10.2 10.2 0 1 0 -20.4 0z", "#2f8f12"], ["M1.8000000000000007 11.6a10.2 10.2 0 1 0 20.4 0a10.2 10.2 0 1 0 -20.4 0z", "#7dff4a"], ["M4.6 11.6a7.4 7.4 0 1 0 14.8 0a7.4 7.4 0 1 0 -14.8 0z", "#b8ff8a"], ["M12 11.6L8.80 6.06A6.4 6.4 0 0 1 15.20 6.06z", "#1d3a0a"], ["M12 11.6L18.40 11.60A6.4 6.4 0 0 1 15.20 17.14z", "#1d3a0a"], ["M12 11.6L8.80 17.14A6.4 6.4 0 0 1 5.60 11.60z", "#1d3a0a"], ["M10.1 11.6a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0z", "#b8ff8a"], ["M10.9 11.6a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0 -2.2 0z", "#1d3a0a"]];
 // ---------- Zustand ----------
-let S={atom:0,dia:0,boostUntil:0,coins:8000,cows:[],highest:1,buys:0,up:{crate:0,cap:0,income:0,crateLvl:0,magnet:0,wkFreq:0,wkPay:0},magnetOn:true,last:Date.now(),merged:0};
-try{const s=JSON.parse(localStorage.getItem('kuhEvo1'));if(s&&s.cows){S=Object.assign(S,s);S.up=Object.assign({crate:0,cap:0,income:0,crateLvl:0,magnet:0,wkFreq:0,wkPay:0},s.up)}}catch(e){}
-S.up.crate=Math.min(S.up.crate||0,5);S.up.crateLvl=0;
+let S={atom:0,dia:0,boostUntil:0,coins:8000,cows:[],highest:1,buys:0,up:{crate:0,cap:0,income:0,crateLvl:0,gold:0,magnet:0,wkFreq:0,wkPay:0},magnetOn:true,last:Date.now(),merged:0};
+try{const s=JSON.parse(localStorage.getItem('kuhEvo1'));if(s&&s.cows){S=Object.assign(S,s);S.up=Object.assign({crate:0,cap:0,income:0,crateLvl:0,gold:0,magnet:0,wkFreq:0,wkPay:0},s.up)}}catch(e){}
+S.up.crate=Math.min(S.up.crate||0,5);if(S.goldCnt==null)S.goldCnt=(S.cratesOpened||0)%20;S.up.crateLvl=0;
 S.plant=Object.assign(defPlant(),S.plant||{});S.plant.up=Object.assign(defPlant().up,S.plant.up);if(!Array.isArray(S.plant.calves))S.plant.calves=[];S.plant.chef=null;S.plant.calves.forEach((c,i)=>{c.id=i+1;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2});if(S.plant.unlocked&&!S.plant.calves.length&&!S.plant.best)S.plant.best=1;
 function save(){if(window.__reset)return;S.last=Date.now();try{localStorage.setItem('kuhEvo1',JSON.stringify(S))}catch(e){}}
 let coins=[],crates=[],parts=[],floats=[],crateT=0,uid=1;
@@ -1038,8 +1040,8 @@ document.getElementById('wkBtn').onclick=()=>{showToast(wk?(wk.phase==='out'?'De
 function updCrateUI(){const on=S.cratesOn!==false,full=S.cows.length+crates.length>=cap(),b=document.getElementById('crateBtn');b.classList.toggle('off',!on);
   const iv=crateInt(S.up.crate),pr=!on?0:full?1:crateT/iv;document.getElementById('crateRing').style.strokeDashoffset=(119.4*(1-pr)).toFixed(1);
   const l=document.getElementById('crateLbl'),t=!on?'AUS':full?'VOLL':Math.max(1,Math.ceil(iv-crateT))+'s';if(l.textContent!==t)l.textContent=t;
-  const g=document.getElementById('goldChip'),gt=((S.cratesOpened||0)%20)+'/20';if(g.textContent!==gt)g.textContent=gt}
-document.getElementById('crateBtn').onclick=e=>{if(e.target.id==='goldChip'){showToast('Noch '+(20-((S.cratesOpened||0)%20))+' Kisten bis zur nächsten Goldenen Kiste');return}S.cratesOn=S.cratesOn===false;save()};
+  const g=document.getElementById('goldChip'),gt=(S.goldCnt||0)+'/'+goldInt(S.up.gold);if(g.textContent!==gt)g.textContent=gt}
+document.getElementById('crateBtn').onclick=e=>{if(e.target.id==='goldChip'){showToast('Noch '+(goldInt(S.up.gold)-(S.goldCnt||0))+' Kisten bis zur nächsten Goldenen Kiste');return}S.cratesOn=S.cratesOn===false;save()};
 function updMagUI(){const on=S.magnetOn!==false,b=document.getElementById('magBtn');b.classList.toggle('off',!on);
   const pr=on?(magPull?1:magT/magInt(S.up.magnet)):0;document.getElementById('magRing').style.strokeDashoffset=(119.4*(1-pr)).toFixed(1);
   const l=document.getElementById('magLbl'),t=!on?'AUS':magPull?'zieht':magT>=magInt(S.up.magnet)?'bereit':Math.max(1,Math.ceil(magInt(S.up.magnet)-magT))+'s';if(l.textContent!==t)l.textContent=t}
@@ -1216,7 +1218,7 @@ function burst(x,y,col,n){for(let i=0;i<n;i++){const a=Math.random()*7,v=rnd(60,
 function collect(i){const k=coins[i];S.coins+=k.v;floats.push({x:k.x*W,y:k.y*H,t:'+'+fmt(k.v),l:1});flyers.push({x:k.x*W,y:k.y*H,t:0});coins.splice(i,1)}
 function openCrate(i){const k=crates[i];crates.splice(i,1);if(S.cows.length>=cap()){crates.push(k);floats.push({x:k.x*W,y:k.y*H,t:'Weide voll!',l:1.2});return}const c=addCow(k.lvl,k.x,k.y);c.pop=1;burst(k.x*W,k.y*H,k.gold?'#ffd84d':'#c58a4a',k.gold?24:12);
   if(k.gold){rings.push({x:k.x*W,y:k.y*H,r:10,l:.6,col:'#ffd84d'});showToast('Goldene Kiste: '+LV[k.lvl-1].n+'!')}
-  else{S.cratesOpened=(S.cratesOpened||0)+1;if(S.cratesOpened%20===0){S.goldPending=(S.goldPending||0)+1;showToast('20 Kisten geöffnet – eine Goldene Kiste ist da!')}}save()}
+  else{S.cratesOpened=(S.cratesOpened||0)+1;S.goldCnt=(S.goldCnt||0)+1;if(S.goldCnt>=goldInt(S.up.gold)){S.goldCnt=0;S.goldPending=(S.goldPending||0)+1;showToast(goldInt(S.up.gold)+' Kisten geöffnet – eine Goldene Kiste ist da!')}}save()}
 function spawnCrate(){const y=rnd(.33,.84),s=cowSize();crates.push({x:avoidFab(rnd(.12,.88),y,s*.35,s*.35),y,lvl:1,drop:0,age:0})}
 
 // ---------- Schleife ----------
