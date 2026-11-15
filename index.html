@@ -1128,7 +1128,7 @@ cv.addEventListener('pointerdown',e=>{
 });
 cv.addEventListener('pointermove',e=>{
   const [px,py]=pos(e);
-  if(drag&&Math.hypot(px-drag.sx,py-drag.sy)>8)drag.moved=true;
+  if(drag&&Math.hypot(px-drag.sx,py-drag.sy)>8&&!(magPull&&(drag.c===magPull.a||drag.c===magPull.b)))drag.moved=true;
   if(drag&&drag.moved){[drag.c.x,drag.c.y]=clampXY(drag.c.lvl,(px+drag.dx)/W,(py+drag.dy)/H);drag.c.tx=drag.c.x;drag.c.ty=drag.c.y}
   // Münzen beim Drüberwischen einsammeln
   for(let i=coins.length-1;i>=0;i--){const [x,y]=toPx(coins[i]);if(Math.hypot(px-x,py-y)<cowSize()*.3&&e.buttons)collect(i)}
@@ -1188,7 +1188,7 @@ function loop(now){
   if(drag){if(drag.moved&&overSell(drag.c))drag.sellT+=dt;else drag.sellT=0}
   if(S.magnetOn!==false&&!magPull){const iv=magInt(S.up.magnet);magT=Math.min(iv,magT+dt);if(magT>=iv){startMagnet();if(magPull)magT=0}}
   if(magPull){const {a,b}=magPull;
-    if(!S.cows.includes(a)||!S.cows.includes(b)||a.lvl!==b.lvl||(drag&&(drag.c===a||drag.c===b)))magPull=null;
+    if(!S.cows.includes(a)||!S.cows.includes(b)||a.lvl!==b.lvl||(drag&&drag.moved&&(drag.c===a||drag.c===b)))magPull=null;
     else{const m=magPull;m.t+=dt;b.wait=Math.max(b.wait,.4);b.tx=b.x;b.ty=b.y;b.mv=0;const HOLD=.45,d0=Math.hypot(b.x-m.x0,b.y-m.y0),dur=.35+Math.min(.45,d0*.9);
       if(m.t<HOLD){a.x=m.x0+Math.sin(m.t*55)*.006*(m.t/HOLD);a.y=m.y0;a.mv=0;a.wait=1}
       else{const u=Math.min(1,(m.t-HOLD)/dur),e=u*u*(1.6-.6*u);a.x=m.x0+(b.x-m.x0)*e;a.y=m.y0+(b.y-m.y0)*e-Math.sin(u*Math.PI)*.05;a.tx=a.x;a.ty=a.y;a.flip=b.x<m.x0;a.mv=1;
