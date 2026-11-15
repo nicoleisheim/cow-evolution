@@ -837,7 +837,7 @@ function updCrateUI(){const on=S.cratesOn!==false,full=S.cows.length+crates.leng
 document.getElementById('crateBtn').onclick=e=>{if(e.target.id==='goldChip'){showToast('Noch '+(20-((S.cratesOpened||0)%20))+' Kisten bis zur nächsten Goldenen Kiste');return}S.cratesOn=S.cratesOn===false;save()};
 function updMagUI(){const on=S.magnetOn!==false,b=document.getElementById('magBtn');b.classList.toggle('off',!on);
   const pr=on?(magPull?1:magT/magInt(S.up.magnet)):0;document.getElementById('magRing').style.strokeDashoffset=(119.4*(1-pr)).toFixed(1);
-  const l=document.getElementById('magLbl'),t=on?magInt(S.up.magnet)+'s':'AUS';if(l.textContent!==t)l.textContent=t}
+  const l=document.getElementById('magLbl'),t=!on?'AUS':magPull?'zieht':magT>=magInt(S.up.magnet)?'bereit':Math.max(1,Math.ceil(magInt(S.up.magnet)-magT))+'s';if(l.textContent!==t)l.textContent=t}
 function drawMagLine(){if(!magPull)return;const [ax,ay]=toPx(magPull.a),[bx,by]=toPx(magPull.b);
   cx.save();cx.strokeStyle='rgba(255,95,162,.85)';cx.lineWidth=3;cx.setLineDash([2,8]);cx.lineDashOffset=-T*40;cx.lineCap='round';cx.beginPath();cx.moveTo(ax,ay);cx.lineTo(bx,by);cx.stroke();cx.restore()}
 document.getElementById('magBtn').onclick=()=>{S.magnetOn=S.magnetOn===false;if(!S.magnetOn)magPull=null;save()};
@@ -1039,7 +1039,7 @@ function loop(now){
   parts.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=400*dt;p.l-=dt});parts=parts.filter(p=>p.l>0);
   floats.forEach(f=>{f.y-=(f.gold?22:40)*dt;f.l-=dt});floats=floats.filter(f=>f.l>0);
   if(drag){if(drag.moved&&overSell(drag.c))drag.sellT+=dt;else drag.sellT=0}
-  if(S.magnetOn!==false&&!magPull){magT+=dt;if(magT>=magInt(S.up.magnet)){magT=0;startMagnet()}}
+  if(S.magnetOn!==false&&!magPull){const iv=magInt(S.up.magnet);magT=Math.min(iv,magT+dt);if(magT>=iv){startMagnet();if(magPull)magT=0}}
   if(magPull){const {a,b}=magPull;
     if(!S.cows.includes(a)||!S.cows.includes(b)||a.lvl!==b.lvl||(drag&&(drag.c===a||drag.c===b)))magPull=null;
     else{const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy),sp=Math.max(.5,d*3.5)*dt;b.wait=Math.max(b.wait,.4);b.tx=b.x;b.ty=b.y;
