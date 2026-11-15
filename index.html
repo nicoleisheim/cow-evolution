@@ -989,10 +989,14 @@ function chefDrop(c){
   showToast('Die Mutterkuh geht in den Ruhestand! +'+r+' Atom-Münzen');
   ch.phase='out';ch.tx=1.15;ch.say='Danke – sie hat es sich verdient!';ch.sayT=2.5;save();return true;
 }
+function drawWantSign(c,x,y,s,L){c.save();const hy=y-s*1.06+Math.sin(T*2.5)*s*.03;
+  c.fillStyle='#fff';c.shadowColor='rgba(0,0,0,.2)';c.shadowBlur=8;c.beginPath();c.arc(x,hy,s*.27,0,7);c.fill();c.shadowBlur=0;
+  c.strokeStyle=L===MAXL?'#7dff4a':'#ff5fa2';c.lineWidth=3;c.stroke();drawCow(c,x,hy+s*.02,s*.4,L,T,false);c.restore()}
 function drawChefMeadow(){
   if(!ch)return;const s=cowSize()*1.15,[x,y]=toPx(ch),c=cx;
   if(drag&&drag.moved&&ch.phase==='wait'&&drag.c.lvl===MAXL){c.strokeStyle='rgba(125,255,74,.95)';c.lineWidth=3;c.setLineDash([6,5]);c.beginPath();c.ellipse(x,y-s*.25,s*.45,s*.65,0,0,7);c.stroke();c.setLineDash([])}
   drawChef(c,x,y-(ch.walk?Math.abs(Math.sin(T*9))*s*.03:0),s,true,ch.flip);
+  if(ch.phase!=='out')drawWantSign(c,x,y-s*.14,s,MAXL);
 }
 function drawWorker(){
   if(!wk)return;const s=cowSize()*1.1,[x,y]=toPx(wk),c=cx,bob=wk.walk?Math.abs(Math.sin(T*9))*s*.04:0,sw=wk.walk?Math.sin(T*9)*s*.05:0;
@@ -1034,6 +1038,7 @@ function drawWorker(){
   // Lampe oben
   c.fillStyle='#2a2d36';c.beginPath();c.roundRect(-s*.035,-s*.735,s*.07,s*.04,s*.015);c.fill();c.fillStyle=Math.sin(T*4)>0?'#7dff4a':'#3d7a24';c.beginPath();c.arc(0,-s*.745,s*.022,0,7);c.fill();
   c.restore();
+  if(wk.phase!=='out')drawWantSign(c,x,y-bob,s,wk.want);
 }
 // ---------- Eingabe ----------
 
