@@ -1003,7 +1003,9 @@ function chefDrop(c){
 
 function drawWantSign(c,x,y,s,L){c.save();const hy=y-s*1.06+Math.sin(T*2.5)*s*.03;
   c.fillStyle='#fff';c.shadowColor='rgba(0,0,0,.2)';c.shadowBlur=8;c.beginPath();c.arc(x,hy,s*.27,0,7);c.fill();c.shadowBlur=0;
-  c.strokeStyle=L===MAXL?'#7dff4a':'#ff5fa2';c.lineWidth=3;c.stroke();drawCow(c,x,hy+s*.02,s*.4,L,T,false);c.restore()}
+  c.strokeStyle=L===MAXL?'#7dff4a':'#ff5fa2';c.lineWidth=3;c.stroke();const bx=cowBox(L),k=s*.4/bx.m;drawCow(c,x-bx.cx*k,hy-bx.cy*k,k,L,0,false);c.restore()}
+const CBOX={};function cowBox(L){if(CBOX[L])return CBOX[L];const N=240,cv=document.createElement('canvas');cv.width=cv.height=N;const g=cv.getContext('2d');drawCow(g,N/2,N/2,100,L,0,false);const d=g.getImageData(0,0,N,N).data;let x0=N,y0=N,x1=0,y1=0;for(let y=0;y<N;y++)for(let x=0;x<N;x++)if(d[(y*N+x)*4+3]>140){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}
+  const r=x1>x0?{cx:((x0+x1)/2-N/2)/100,cy:((y0+y1)/2-N/2)/100,m:Math.max(x1-x0,y1-y0)/100}:{cx:0,cy:0,m:1};return CBOX[L]=r}
 function drawChefMeadow(){
   if(!ch)return;const s=cowSize()*1.15,[x,y]=toPx(ch),c=cx;
   if(drag&&drag.moved&&ch.phase==='wait'&&drag.c.lvl===MAXL){c.strokeStyle='rgba(125,255,74,.95)';c.lineWidth=3;c.setLineDash([6,5]);c.beginPath();c.ellipse(x,y-s*.25,s*.45,s*.65,0,0,7);c.stroke();c.setLineDash([])}
