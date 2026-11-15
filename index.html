@@ -610,7 +610,7 @@ function drawPlant(dt){
   // schwebende Leuchtpartikel
   for(let i=0;i<16;i++){const x=W2*(.5+.48*Math.sin(T*.2*(1+(i%3)*.3)+i*1.9)),y=hz+30+(H2-hz-40)*(.5+.5*Math.sin(T*.15+i*2.7));c.fillStyle='rgba(210,255,90,'+(.35+.35*Math.sin(T*3+i))+')';c.beginPath();c.arc(x,y,2.2,0,7);c.fill()}
   // Kälber
-  const s=calfSize(),order=[...P.calves].sort((a,b)=>a.y-b.y);if(pDrag){order.splice(order.indexOf(pDrag.c),1);order.push(pDrag.c)}
+  const s=calfSize(),order=[...P.calves].sort((a,b)=>a.y-b.y);if(pDrag){const i=order.indexOf(pDrag.c);if(i>=0){order.splice(i,1);order.push(pDrag.c)}else pDrag=null}
   order.forEach(k=>{const [x,y]=pPx(k),sc=1+(k.pop?Math.sin(k.pop*Math.PI)*.3:0),lift=pDrag&&pDrag.c===k&&pDrag.moved,
     glow=pDrag&&pDrag.moved&&pDrag.c!==k&&pDrag.c.lvl===k.lvl&&k.lvl<CMAX;
     drawCow(c,x,y,s*sc,CALF[k.lvl-1],T+k.id,k.flip,lift,glow,k.mv&&!lift)});
@@ -888,7 +888,7 @@ let tapHintDone=false;
 function hideHint2(){if(!tapHintDone){tapHintDone=true;try{localStorage.setItem('kuhEvoTap','1')}catch(e){}}}
 let magT=0,magPull=null;
 function startMagnet(){
-  for(let L=1;L<mergeCap();L++){const g=S.cows.filter(c=>c.lvl===L&&!(drag&&drag.c===c));if(g.length<2)continue;
+  for(let L=1;L<mergeCap();L++){const g=S.cows.filter(c=>c.lvl===L&&!(drag&&drag.c===c)&&c!==sheetCow);if(g.length<2)continue;
     let best=null,bd=9;for(let i=0;i<g.length;i++)for(let j=i+1;j<g.length;j++){const d=Math.hypot(g[i].x-g[j].x,g[i].y-g[j].y);if(d<bd){bd=d;best=[g[i],g[j]]}}
     magPull={a:best[0],b:best[1],t:0,x0:best[0].x,y0:best[0].y};return}
 }
@@ -930,7 +930,7 @@ function drawMagLine(front){if(!magPull)return;const m=magPull,s=cowSize(),[ax,a
   drawMagnetIcon(cx,mx,my+Math.sin(T*4)*3,s*.5*Math.max(.01,pop),ang)}
 document.getElementById('magBtn').onclick=()=>{S.magnetOn=S.magnetOn===false;if(!S.magnetOn)magPull=null;save()};
 const LP_MS=550;let sheetCow=null;
-function openCowSheet(c){if(c.lvl>=MAXL)return;sheetCow=c;const d=LV[c.lvl-1],g=document.getElementById('cowCv').getContext('2d');g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,360,260);drawCow(g,170,170,190,c.lvl,1,false);
+function openCowSheet(c){if(c.lvl>=MAXL||!S.cows.includes(c))return;sheetCow=c;const d=LV[c.lvl-1],g=document.getElementById('cowCv').getContext('2d');g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,360,260);drawCow(g,170,170,190,c.lvl,1,false);
   document.getElementById('cowName').textContent=d.n;
   document.getElementById('cowInfo').innerHTML='Stufe '+c.lvl+' · verdient '+IC.coin+perSec(c.lvl)+'/s';
   const last=S.cows.length<=1,b=document.getElementById('sellBtn');b.disabled=last;
@@ -1114,7 +1114,7 @@ function draw(dt){
   const s=cowSize();
   crates.forEach(k=>{const [x,y]=toPx(k);const e=1-Math.pow(1-k.drop,3);drawCrate(cx,x,y-(1-e)*H*.4,s,k.gold,k.drop>=1?Math.sin(T*3.2+k.x*20)*.06:0)});
   const order=[...S.cows].sort((a,b)=>a.y-b.y);
-  if(drag){const dc=drag.c;order.splice(order.indexOf(dc),1);order.push(dc)}
+  if(drag){const dc=drag.c,i=order.indexOf(dc);if(i>=0){order.splice(i,1);order.push(dc)}else drag=null}
   order.forEach(c=>{const [x,y]=toPx(c);const sc=1+(c.pop?Math.sin(c.pop*Math.PI)*.35:0)+(c.tap?Math.sin(c.tap*Math.PI)*.06:0);
     const glow=drag&&drag.moved&&drag.c!==c&&drag.c.lvl===c.lvl&&c.lvl<mergeCap();
     drawCow(cx,x,y,s*sc,c.lvl,T+c.id,c.flip,drag&&drag.moved&&drag.c===c,glow,c.mv&&!(drag&&drag.c===c));
