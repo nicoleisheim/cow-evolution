@@ -391,7 +391,7 @@ function drawHead(c,s,d,t,seed){
 const MAXL=LV.length;
 const UPG=[
  {k:'crate',n:'Schnellere Kisten',d:l=>'Kiste alle '+crateInt(l).toFixed(1)+' s',cost:l=>450*Math.pow(2.6,l),max:8},
- {k:'cap',n:'Größere Weide',d:l=>(10+l)+' Kühe Platz',cost:l=>1200*Math.pow(2.4,l),max:10},
+ {k:'cap',n:'Größere Weide',d:l=>Math.min(16,10+l)+' Kühe Platz',cost:l=>1200*Math.pow(2.4,l),max:6},
  {k:'income',n:'Saftigeres Gras',d:l=>'+'+(l*20)+'% Ertrag',cost:l=>750*Math.pow(2,l),max:30},
  {k:'crateLvl',n:'Bessere Kisten',d:l=>'Kisten enthalten '+LV[l].n,cost:l=>12000*Math.pow(12,l),max:3,need:l=>l+4},
  {k:'magnet',n:'Stärkerer Magnet',d:l=>'Magnet alle '+magInt(l)+' s',cost:l=>1500*Math.pow(2.3,l),max:7},
@@ -431,7 +431,7 @@ const MISSIONS=[
  {n:'Meteor-Schutzschild',d:'Ein riesiger Meteor rast auf die Erde zu!',need:1000,dia:250,bonus:.25,x:80,y:9}
 ];
 const PUP=[
- {k:'slots',n:'Größerer Brutkasten',d:l=>(8+2*l)+' Plätze',cost:l=>500*Math.pow(3,l),max:6},
+ {k:'slots',n:'Größerer Brutkasten',d:l=>Math.min(16,8+2*l)+' Plätze',cost:l=>500*Math.pow(3,l),max:4},
  {k:'amp',n:'Reaktor-Verstärker',d:l=>'+'+(l*25)+' % Leistung',cost:l=>300*Math.pow(2.2,l),max:20}
 ];
 const CALF_PRICE=250000;
@@ -441,7 +441,7 @@ function chefReward(){return Math.round(25*(1+.25*((typeof S!=='undefined'&&S.up
 function defPlant(){return {accident:false,chef:null,unlocked:false,cows:0,mw:0,calves:[],best:1,missions:0,birthT:0,up:{birth:0,slots:0,amp:0}}}
 function worldBonus(){let b=1;const m=(typeof S!=='undefined'&&S&&S.plant)?S.plant.missions:0;for(let i=0;i<m;i++)b+=MISSIONS[i].bonus;return b}
 let plantOpen=false,pendingMap=false,pFloats=[],pDrag=null,pUid=1;
-function slots(){return 8+2*S.plant.up.slots}
+function slots(){return Math.min(16,8+2*S.plant.up.slots)}
 function birthInt(l){const m=Math.max(1,(typeof S!=='undefined'&&S&&S.plant)?S.plant.cows:1);return Math.max(2,30*Math.pow(.85,l)/m)}
 function plantOutput(){let o=0;S.plant.calves.forEach(c=>o+=calfMW(c.lvl));return o*(1+.25*S.plant.up.amp)}
 function addCalf(L,x,y){const c={lvl:L,x:x??(.15+Math.random()*.7),y:y??(.46+Math.random()*.4),id:pUid++,pop:1,wait:Math.random()*2};c.tx=c.x;c.ty=c.y;S.plant.calves.push(c);return c}
@@ -658,7 +658,7 @@ S.plant=Object.assign(defPlant(),S.plant||{});S.plant.up=Object.assign(defPlant(
 function save(){if(window.__reset)return;S.last=Date.now();try{localStorage.setItem('kuhEvo1',JSON.stringify(S))}catch(e){}}
 let coins=[],crates=[],parts=[],floats=[],crateT=0,uid=1;
 S.cows.forEach(c=>{c.id=uid++;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2;c.ph=Math.random()*COIN_EVERY});
-function cap(){return 10+S.up.cap}
+function cap(){return Math.min(16,10+S.up.cap)}
 function priceOf(L){return Math.round(250*Math.pow(3.2,L-1)/10)*10}
 function maxBuy(){return Math.max(1,S.highest-1)}
 function buyCost(){return priceOf(1)}
