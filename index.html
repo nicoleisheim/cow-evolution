@@ -548,7 +548,8 @@ function magInt(l){return 10-l}
 function crateInt(l){return Math.max(5,30-5*l)}
 const COIN_EVERY=5;
 function boost(){return Date.now()<(S.boostUntil||0)?2:1}
-function income(L){return Math.pow(2,L-1)*(1+.2*S.up.income)*boost()*worldBonus()}
+function perSec(L){const v=income(L)/COIN_EVERY;return v<100?v.toLocaleString('de-DE',{maximumFractionDigits:1}):fmt(v)}
+function income(L){return Math.pow(3,L-1)*(1+.2*S.up.income)*boost()*worldBonus()}
 function diaFor(L){return Math.round(Math.pow(1.8,L-1))}
 
 const COIN_SH=[["M2 12a10 10 0 1 0 20 0a10 10 0 1 0 -20 0z","#ffc928","#3d4a6b",1.7],["M5.6 12a6.4 6.4 0 1 0 12.8 0a6.4 6.4 0 1 0 -12.8 0z","#ffdb5c"],["M6.2 7.6a2.4 1.3 -35 1 0 3.9 -2.8a2.4 1.3 -35 1 0 -3.9 2.8z","#fff6c8"]],DIA_SH=[["M6 3.5h12l4.5 5.8L12 21.5 1.5 9.3z","#5fc8ff","#3d4a6b",1.7],["M6 3.5h12l4.5 5.8h-21z","#a8e6ff"],["M7 5.2h3l-1.6 3.2h-3z","#ffffff"]];
@@ -812,7 +813,7 @@ function initPlant(){
 
 const ATOM_SH=[["M1.8000000000000007 12.9a10.2 10.2 0 1 0 20.4 0a10.2 10.2 0 1 0 -20.4 0z", "#2f8f12"], ["M1.8000000000000007 11.6a10.2 10.2 0 1 0 20.4 0a10.2 10.2 0 1 0 -20.4 0z", "#7dff4a"], ["M4.6 11.6a7.4 7.4 0 1 0 14.8 0a7.4 7.4 0 1 0 -14.8 0z", "#b8ff8a"], ["M12 11.6L8.80 6.06A6.4 6.4 0 0 1 15.20 6.06z", "#1d3a0a"], ["M12 11.6L18.40 11.60A6.4 6.4 0 0 1 15.20 17.14z", "#1d3a0a"], ["M12 11.6L8.80 17.14A6.4 6.4 0 0 1 5.60 11.60z", "#1d3a0a"], ["M10.1 11.6a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0z", "#b8ff8a"], ["M10.9 11.6a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0 -2.2 0z", "#1d3a0a"]];
 // ---------- Zustand ----------
-let S={atom:0,dia:0,boostUntil:0,coins:250,cows:[],highest:1,buys:0,up:{crate:0,cap:0,income:0,crateLvl:0,magnet:0,wkFreq:0,wkPay:0},magnetOn:true,last:Date.now(),merged:0};
+let S={atom:0,dia:0,boostUntil:0,coins:1000,cows:[],highest:1,buys:0,up:{crate:0,cap:0,income:0,crateLvl:0,magnet:0,wkFreq:0,wkPay:0},magnetOn:true,last:Date.now(),merged:0};
 try{const s=JSON.parse(localStorage.getItem('kuhEvo1'));if(s&&s.cows){S=Object.assign(S,s);S.up=Object.assign({crate:0,cap:0,income:0,crateLvl:0,magnet:0,wkFreq:0,wkPay:0},s.up)}}catch(e){}
 S.up.crate=Math.min(S.up.crate||0,5);
 S.plant=Object.assign(defPlant(),S.plant||{});S.plant.up=Object.assign(defPlant().up,S.plant.up);if(!Array.isArray(S.plant.calves))S.plant.calves=[];S.plant.chef=null;S.plant.calves.forEach((c,i)=>{c.id=i+1;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2});if(S.plant.unlocked&&!S.plant.calves.length&&!S.plant.best)S.plant.best=1;
@@ -820,8 +821,7 @@ function save(){if(window.__reset)return;S.last=Date.now();try{localStorage.setI
 let coins=[],crates=[],parts=[],floats=[],crateT=0,uid=1;
 S.cows.forEach(c=>{c.id=uid++;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2;c.ph=Math.random()*COIN_EVERY});
 function cap(){return Math.min(16,10+S.up.cap)}
-function mergeReward(L){return Math.max(1,Math.round(priceOf(L)*.05*(1+.2*S.up.income)*worldBonus()))}
-function priceOf(L){return Math.round(250*Math.pow(3.2,L-1)/10)*10}
+function priceOf(L){return Math.round(1000*Math.pow(4.8,L-1)/10)*10}
 function maxBuy(){return Math.max(1,S.highest-1)}
 function buyCost(){return priceOf(1)}
 function rate(){return S.cows.reduce((a,c)=>a+income(c.lvl),0)/COIN_EVERY}
@@ -1062,7 +1062,7 @@ document.getElementById('magBtn').onclick=()=>{S.magnetOn=S.magnetOn===false;if(
 const LP_MS=550;let sheetCow=null;
 function openCowSheet(c){if(c.lvl>=MAXL)return;sheetCow=c;const d=LV[c.lvl-1],g=document.getElementById('cowCv').getContext('2d');g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,360,260);drawCow(g,170,170,190,c.lvl,1,false);
   document.getElementById('cowName').textContent=d.n;
-  document.getElementById('cowInfo').innerHTML='Stufe '+c.lvl+' · verdient '+IC.coin+fmt(income(c.lvl))+' / '+COIN_EVERY+' s';
+  document.getElementById('cowInfo').innerHTML='Stufe '+c.lvl+' · verdient '+IC.coin+perSec(c.lvl)+'/s';
   const last=S.cows.length<=1,b=document.getElementById('sellBtn');b.disabled=last;
   b.innerHTML=last?'Die letzte Kuh bleibt':'Verkaufen für '+diaFor(c.lvl)+' '+IC.dia;
   try{localStorage.setItem('kuhEvoSell','1')}catch(e){}hideHint();open('cowSheet')}
@@ -1207,8 +1207,7 @@ function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
 function merge(a,b){
   const L=a.lvl+1,x=b.x,y=b.y;
   S.cows=S.cows.filter(o=>o!==a&&o!==b);
-  const n=addCow(L,x,y);n.pop=1;n.wait=1.5;S.merged++;
-  {const mr=mergeReward(L);S.coins+=mr;const px=x*W,py=y*H;floats.push({x:Math.min(W-60,Math.max(60,px)),y:py-cowSize()*.7,t:'+'+fmt(mr),l:.9,gold:1});for(let i=0;i<5;i++)flyers.push({x:px+rnd(-15,15),y:py+rnd(-15,15),t:-i*.06})}if(L===MAXL)radioArrive(n);rings.push({x:x*W,y:y*H,r:10,l:.6,col:LV[L-1].ring});
+  const n=addCow(L,x,y);n.pop=1;n.wait=1.5;S.merged++;if(L===MAXL)radioArrive(n);rings.push({x:x*W,y:y*H,r:10,l:.6,col:LV[L-1].ring});
   burst(x*W,y*H,LV[L-1].cosmic?'#ffe680':'#fff',22);
   hideHint();
   if(L>S.highest){S.highest=L;setTimeout(()=>discover(L),350)}
@@ -1305,7 +1304,7 @@ function renderBuy(update){
     const t=document.createElement('div');t.className='txt';t.innerHTML='<b>'+L+'. '+LV[L-1].n+'</b><span></span>';r.appendChild(t);
     const b=document.createElement('button');b.onclick=()=>buyLevel(L);r.appendChild(b);box.appendChild(r)}}
   const full=S.cows.length>=cap();
-  for(let L=1;L<=n;L++){const r=box.children[L-1];r.querySelector('span').innerHTML=IC.coin+fmt(income(L))+' / '+COIN_EVERY+' s';const b=r.querySelector('button');b.innerHTML=full?'Voll':IC.coin+fmt(priceOf(L));b.disabled=full||S.coins<priceOf(L)}
+  for(let L=1;L<=n;L++){const r=box.children[L-1];r.querySelector('span').innerHTML=IC.coin+perSec(L)+'/s';const b=r.querySelector('button');b.innerHTML=full?'Voll':IC.coin+fmt(priceOf(L));b.disabled=full||S.coins<priceOf(L)}
   document.getElementById('buyNote').textContent=(full?'Deine Weide ist voll. ':'')+'Kaufbar sind alle entdeckten Stufen außer deiner höchsten ('+LV[S.highest-1].n+').';
 }
 
@@ -1339,7 +1338,7 @@ function miniCow(L,w,h,locked){const c=document.createElement('canvas');c.width=
 function renderDex(){
   const box=document.getElementById('dexList');box.innerHTML='';
   LV.forEach((d,i)=>{const L=i+1,known=L<=S.highest;const r=document.createElement('div');r.className='row';r.appendChild(miniCow(L,64,52,!known));
-    const t=document.createElement('div');t.className='txt';t.innerHTML='<b>'+(known?L+'. '+d.n:L+'. ???')+'</b><span>'+(known?d.d+'<br>'+IC.coin+fmt(income(L))+' / '+COIN_EVERY+' s · '+IC.dia+diaFor(L):'Noch nicht entdeckt')+'</span>';r.appendChild(t);box.appendChild(r)});
+    const t=document.createElement('div');t.className='txt';t.innerHTML='<b>'+(known?L+'. '+d.n:L+'. ???')+'</b><span>'+(known?d.d+'<br>'+IC.coin+perSec(L)+'/s · '+IC.dia+diaFor(L):'Noch nicht entdeckt')+'</span>';r.appendChild(t);box.appendChild(r)});
 }
 let discAnim=null;
 function discover(L){
