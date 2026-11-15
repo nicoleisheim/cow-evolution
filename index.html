@@ -819,6 +819,7 @@ function save(){if(window.__reset)return;S.last=Date.now();try{localStorage.setI
 let coins=[],crates=[],parts=[],floats=[],crateT=0,uid=1;
 S.cows.forEach(c=>{c.id=uid++;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2;c.ph=Math.random()*COIN_EVERY});
 function cap(){return Math.min(16,10+S.up.cap)}
+function mergeReward(L){return Math.max(1,Math.round(priceOf(L)*.05*(1+.2*S.up.income)*worldBonus()))}
 function priceOf(L){return Math.round(250*Math.pow(3.2,L-1)/10)*10}
 function maxBuy(){return Math.max(1,S.highest-1)}
 function buyCost(){return priceOf(1)}
@@ -1205,7 +1206,8 @@ function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
 function merge(a,b){
   const L=a.lvl+1,x=b.x,y=b.y;
   S.cows=S.cows.filter(o=>o!==a&&o!==b);
-  const n=addCow(L,x,y);n.pop=1;n.wait=1.5;S.merged++;if(L===MAXL)radioArrive(n);rings.push({x:x*W,y:y*H,r:10,l:.6,col:LV[L-1].ring});
+  const n=addCow(L,x,y);n.pop=1;n.wait=1.5;S.merged++;
+  {const mr=mergeReward(L);S.coins+=mr;const px=x*W,py=y*H;floats.push({x:Math.min(W-60,Math.max(60,px)),y:py-cowSize()*.7,t:'+'+fmt(mr),l:.9,gold:1});for(let i=0;i<5;i++)flyers.push({x:px+rnd(-15,15),y:py+rnd(-15,15),t:-i*.06})}if(L===MAXL)radioArrive(n);rings.push({x:x*W,y:y*H,r:10,l:.6,col:LV[L-1].ring});
   burst(x*W,y*H,LV[L-1].cosmic?'#ffe680':'#fff',22);
   hideHint();
   if(L>S.highest){S.highest=L;setTimeout(()=>discover(L),350)}
