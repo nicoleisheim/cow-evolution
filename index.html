@@ -237,6 +237,11 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 @media (max-width:360px){.pill{font-size:15px!important;height:36px!important}#coinIcon svg{width:24px!important;height:24px!important}#diaIcon svg{width:19px!important;height:19px!important;margin:0 0 0 4px!important}#statPill{font-size:13px!important;padding:4px 9px!important}#statPill small,#statPill .cap{font-size:10px!important}}
 @media (max-width:340px){.pill{font-size:13px!important;height:32px!important;padding:0 9px 0 4px!important}#coinIcon svg{width:20px!important;height:20px!important}#diaIcon svg{width:16px!important;height:16px!important}#statPill{font-size:12px!important}#statPill small,#statPill .cap{font-size:9px!important}}
 #toast{border-radius:20px!important;width:max-content;max-width:min(88vw,340px)!important;font-size:14px!important;line-height:1.3;background:#fff!important;color:#d6347f!important;border:3px solid rgba(255,95,162,.55);box-shadow:0 6px 20px rgba(214,52,127,.25)!important}
+@keyframes boughtRow{0%{transform:scale(1)}30%{transform:scale(1.03);background:#effbe9}100%{transform:scale(1)}}
+.row.bought{animation:boughtRow .6s ease-out}
+.row button.ok{background:linear-gradient(135deg,#9ef07a,#3fbf2a)!important;color:#fff!important;opacity:1!important}
+.spend{position:fixed;z-index:60;transform:translateX(-50%);font:900 15px Nunito,system-ui;color:#d6347f;background:#fff;border:2.5px solid rgba(255,95,162,.55);border-radius:999px;padding:3px 10px;pointer-events:none;animation:spend 1.3s ease-out forwards}
+@keyframes spend{0%{opacity:0;transform:translate(-50%,-6px)}15%{opacity:1;transform:translate(-50%,0)}70%{opacity:1}100%{opacity:0;transform:translate(-50%,14px)}}
 </style>
 </head>
 <body>
@@ -681,7 +686,7 @@ let S={atom:0,dia:0,boostUntil:0,coins:12000,cows:[],highest:1,buys:0,up:{crate:
 try{const s=JSON.parse(localStorage.getItem('kuhEvo1'));if(s&&s.cows){S=Object.assign(S,s);S.up=Object.assign({crate:0,cap:0,income:0,crateLvl:0,gold:0,magnet:0,wkFreq:0,wkPay:0},s.up)}}catch(e){}
 S.up.crate=Math.min(S.up.crate||0,5);if(S.goldCnt==null)S.goldCnt=(S.cratesOpened||0)%20;S.up.crateLvl=0;
 S.plant=Object.assign(defPlant(),S.plant||{});S.plant.up=Object.assign(defPlant().up,S.plant.up);if(!Array.isArray(S.plant.calves))S.plant.calves=[];S.plant.chef=null;S.plant.calves.forEach((c,i)=>{c.id=i+1;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2});if(S.plant.unlocked&&!S.plant.calves.length&&!S.plant.best)S.plant.best=1;
-function save(){if(window.__reset)return;S.last=Date.now();try{S.crates=crates.map(k=>({x:+k.x.toFixed(3),y:+k.y.toFixed(3),lvl:k.lvl,gold:k.gold?1:0}));localStorage.setItem('kuhEvo1',JSON.stringify(S))}catch(e){}}
+function save(){if(window.__reset)return;S.last=Date.now();try{S.wk=(wk&&wk.phase!=='out')?{y:+wk.y.toFixed(3),tx:+wk.tx.toFixed(3),want:wk.want,right:!!wk.right}:null;S.wkT=Math.round(wkT);S.crates=crates.map(k=>({x:+k.x.toFixed(3),y:+k.y.toFixed(3),lvl:k.lvl,gold:k.gold?1:0}));localStorage.setItem('kuhEvo1',JSON.stringify(S))}catch(e){}}
 let coins=[],crates=(Array.isArray(S.crates)?S.crates:[]).map(k=>({x:k.x,y:k.y,lvl:k.lvl||1,gold:!!k.gold,drop:1,landed:1,age:9})),parts=[],floats=[],crateT=0,uid=1;
 S.cows.forEach(c=>{c.id=uid++;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2;c.ph=Math.random()*COIN_EVERY});
 function cap(){return Math.min(16,10+S.up.cap)}
@@ -934,7 +939,7 @@ document.getElementById('sellBtn').onclick=()=>{const c=sheetCow;sheetCow=null;d
 // ---------- Kraftwerk-Mitarbeiter auf der Weide ----------
 IC.atom=shSvg('atom',ATOM_SH);
 const ATOM_CALF=5;
-let wk=null,wkT=20;
+let wk=(S.wk&&S.wk.want&&S.plant&&S.plant.unlocked)?{x:S.wk.tx,y:S.wk.y,tx:S.wk.tx,ty:S.wk.y,want:S.wk.want,right:!!S.wk.right,phase:'wait',t:45,flip:!!S.wk.right,say:null,sayT:0}:null,wkT=typeof S.wkT==='number'&&S.wkT>0?S.wkT:20;
 function atomFor(L){return Math.max(1,Math.round((L<4?1:2*Math.pow(1.5,L-4))*(1+.25*(S.up.wkPay||0))))}
 function wkInt(l){return 120*Math.pow(.88,l||0)}
 function fmtT(t){t=Math.ceil(t);return t<60?t+' s':Math.floor(t/60)+':'+String(t%60).padStart(2,'0')+' Min.'}
@@ -1135,14 +1140,18 @@ function ui(){
   if(document.getElementById('shop').classList.contains('on'))renderShop(true);if(document.getElementById('buy').classList.contains('on'))renderBuy(true);
 }
 document.getElementById('buyBtn').onclick=()=>{if(S.cows.length>=cap())return;renderBuy();open('buy')};
-function buyLevel(L){const pr=priceOf(L);if(L>maxBuy()||S.coins<pr||S.cows.length>=cap())return;S.coins-=pr;S.buys++;const c=addCow(L);c.pop=1;burst(c.x*W,c.y*H,'#ffd84a',10);renderBuy(true);save()}
+function buyLevel(L,btn){const pr=priceOf(L);if(L>maxBuy()||S.coins<pr||S.cows.length>=cap())return;S.coins-=pr;S.buys++;const c=addCow(L);c.pop=1;burst(c.x*W,c.y*H,'#ffd84a',14);starBurst(c.x*W,c.y*H,8);sfx('buy');
+  const [x,y]=toPx(c);floats.push({x:Math.min(W-70,Math.max(70,x)),y:y-cowSize()*.6,t:'Neu: '+LV[L-1].n,l:1.2,gold:1,grey:1});spendFx(pr);
+  if(btn){const r=btn.parentElement;r.classList.remove('bought');void r.offsetWidth;r.classList.add('bought');btn.dataset.ok=Date.now()}renderBuy(true);save()}
+function spendFx(pr){const p=document.getElementById('coins');p.classList.remove('bump');void p.offsetWidth;p.classList.add('bump');const q=p.getBoundingClientRect(),e=document.createElement('div');e.className='spend';e.textContent='−'+fmt(pr);e.style.left=(q.left+q.width/2)+'px';e.style.top=(q.bottom+4)+'px';document.body.appendChild(e);setTimeout(()=>e.remove(),1300)}
+function starBurst(x,y,n){const C=['#ffe14d','#ff5fa2','#5fd0ff','#ffffff','#7dff4a'];for(let i=0;i<n;i++){const a=i/n*Math.PI*2,v=rnd(110,190);parts.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-80,l:rnd(.5,.8),col:C[i%C.length]})}}
 function renderBuy(update){
   const box=document.getElementById('buyList'),n=maxBuy();
   if(!update||box.children.length!==n){box.innerHTML='';for(let L=1;L<=n;L++){const r=document.createElement('div');r.className='row';r.appendChild(miniCow(L,84,70,false));
     const t=document.createElement('div');t.className='txt';t.innerHTML='<b>'+L+'. '+LV[L-1].n+'</b><span></span>';r.appendChild(t);
-    const b=document.createElement('button');b.onclick=()=>buyLevel(L);r.appendChild(b);box.appendChild(r)}}
+    const b=document.createElement('button');b.onclick=()=>buyLevel(L,b);r.appendChild(b);box.appendChild(r)}}
   const full=S.cows.length>=cap();
-  for(let L=1;L<=n;L++){const r=box.children[L-1];r.querySelector('span').innerHTML=IC.coin+perSec(L)+'/s';const b=r.querySelector('button');b.innerHTML=full?'Voll':IC.coin+fmt(priceOf(L));b.disabled=full||S.coins<priceOf(L)}
+  for(let L=1;L<=n;L++){const r=box.children[L-1];r.querySelector('span').innerHTML=IC.coin+perSec(L)+'/s';const b=r.querySelector('button'),ok=Date.now()-(+b.dataset.ok||0)<900,h=ok?'✓ Gekauft':full?'Voll':IC.coin+fmt(priceOf(L));if(b.innerHTML!==h)b.innerHTML=h;b.classList.toggle('ok',ok);b.disabled=!ok&&(full||S.coins<priceOf(L))}
   document.getElementById('buyNote').textContent=(full?'Deine Weide ist voll. ':'')+'Kaufbar sind alle entdeckten Stufen außer deiner höchsten ('+LV[S.highest-1].n+').';
 }
 
@@ -1288,6 +1297,7 @@ function sfx(k,v){if(!SND)return;const now=performance.now();if(now-(sfxLast[k]|
   else if(k==='coin'){tone(1320,.08,'square',.05);tone(1760,.12,'square',.05,.06)}
   else if(k==='dia'){tone(1568,.1,'sine',.12);tone(2093,.18,'sine',.1,.07)}
   else if(k==='crate'){tone(v?660:440,.1,'triangle',.14,0,v?990:660);if(v)tone(1320,.25,'sine',.1,.1)}
+  else if(k==='buy'){tone(880,.07,'square',.05);tone(1175,.07,'square',.05,.07);tone(1568,.16,'triangle',.08,.14)}
   else if(k==='fuel'){tone(220,.35,'sawtooth',.08,0,880)}
   else if(k==='discover'){[523,659,784,1047].forEach((f,i)=>tone(f,.25,'triangle',.16,i*.11));tone(1568,.5,'sine',.08,.45)}}
 function updSnd(){const b=document.getElementById('sndBtn');if(b)b.textContent='Töne: '+(SND?'an':'aus')}
