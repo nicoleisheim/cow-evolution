@@ -882,7 +882,7 @@ function sell(c){
   if(S.cows.length<=1){floats.push({x,y:y-30,t:'Die letzte Kuh bleibt!',l:1.4});c.wait=1;return}
   const n=diaFor(c.lvl);S.cows=S.cows.filter(o=>o!==c);S.dia+=n;
   burst(x,y,'#4dd9ff',18);rings.push({x,y,r:10,l:.5,col:'#4dd9ff'});
-  floats.push({x,y:y-20,t:'+'+n+' Diamant'+(n>1?'en':''),l:1.3});
+  floats.push({x:Math.min(W-60,Math.max(60,x)),y:y-cowSize()*.55,t:'+'+n,l:.9,gold:1,ic:'dia'});
   for(let i=0;i<Math.min(n,8);i++)flyers.push({x:x+rnd(-15,15),y:y+rnd(-15,15),t:-i*.07,k:'dia'});
   save();
 }
@@ -894,7 +894,7 @@ function drawTapBadge(f){
   cx.fillStyle='rgba(255,255,255,.96)';cx.beginPath();cx.roundRect(x0,-h/2,w,h,h/2);cx.fill();
   cx.shadowColor='transparent';
   if(f.grey){cx.fillStyle='#7a8580';cx.font='800 14px Nunito, system-ui';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(f.t,0,1);cx.restore();return}
-  drawCoin(cx,x0+17,0,10,1);
+  if(f.ic==='atom')shDraw(cx,ATOM_SH,x0+17,0,.85);else if(f.ic==='dia')shDraw(cx,DIA_SH,x0+17,0,.85);else drawCoin(cx,x0+17,0,10,1);
   cx.fillStyle='#d6347f';cx.font='800 17px Nunito, system-ui';cx.textAlign='left';cx.fillText(f.t,x0+32,1);
   cx.restore();
 }
@@ -967,7 +967,7 @@ function workerDrop(c){
   if(c.lvl!==wk.want){showToast('Der Mitarbeiter sucht eine '+LV[wk.want-1].n+'!');c.wait=1;return true}
   const n=atomFor(c.lvl);S.cows=S.cows.filter(o=>o!==c);S.atom=(S.atom||0)+n;
   burst(x,y,'#7dff4a',22);rings.push({x,y,r:10,l:.6,col:'#7dff4a'});
-  showToast('Verkauft! +'+n+' Atom-Münze'+(n>1?'n':'')+' · jetzt '+S.atom+' im Kraftwerk');
+  floats.push({x:Math.min(W-60,Math.max(60,x)),y:y-cowSize()*.55,t:'+'+n,l:.9,gold:1,ic:'atom'});
   wk.phase='out';wk.tx=-.15;wk.say='Danke! Die nehme ich mit.';wk.sayT=2.5;save();return true;
 }
 let ch=null,chT=8;
@@ -986,7 +986,7 @@ function chefDrop(c){
   if(c.lvl!==MAXL){showToast('Der Chef holt nur Radioaktive Kühe ab!');c.wait=1;return true}
   const r=chefReward();S.cows=S.cows.filter(o=>o!==c);S.atom=(S.atom||0)+r;
   burst(x,y,'#7dff4a',24);rings.push({x,y,r:10,l:.6,col:'#7dff4a'});
-  showToast('Die Mutterkuh geht in den Ruhestand! +'+r+' Atom-Münzen');
+  floats.push({x:Math.min(W-60,Math.max(60,x)),y:y-cowSize()*.55,t:'+'+r,l:.9,gold:1,ic:'atom'});
   ch.phase='out';ch.tx=1.15;ch.say='Danke – sie hat es sich verdient!';ch.sayT=2.5;save();return true;
 }
 function drawWantSign(c,x,y,s,L){c.save();const hy=y-s*1.06+Math.sin(T*2.5)*s*.03;
