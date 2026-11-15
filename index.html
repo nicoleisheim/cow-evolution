@@ -943,7 +943,7 @@ function spawnWorker(){
   const hi=Math.min(MAXL-1,S.highest-1),lo=Math.max(2,hi-5);if(hi<2){wkT=60;return}
   const have=S.cows.filter(c=>c.lvl>=lo&&c.lvl<=hi).map(c=>c.lvl);
   const want=have.length&&Math.random()<.75?have[Math.floor(Math.random()*have.length)]:lo+Math.floor(Math.random()*(hi-lo+1));
-  const y=.56+Math.random()*.26;wk={x:-.12,y,tx:Math.min(.2,(cowSize()*.32+10)/W),ty:y,want,phase:'in',t:45,flip:false,say:null,sayT:0};
+  try{updFZ()}catch(e){}const ymin=Math.max(.56,H?(FZ.b+cowSize()*1.1*1.4)/H:0),right=ymin>.86,y=right?.56+Math.random()*.26:ymin+Math.random()*(.86-ymin),m=(cowSize()*.32+10)/W;wk={x:right?1.12:-.12,y,tx:right?Math.max(.8,1-m):Math.min(.2,m),ty:y,right,want,phase:'in',t:45,flip:false,say:null,sayT:0};
 }
 function updateWorker(dt){
   if(!S.plant||!S.plant.unlocked)return;
@@ -961,7 +961,7 @@ function workerDrop(c){
   const n=atomFor(c.lvl);S.cows=S.cows.filter(o=>o!==c);S.atom=(S.atom||0)+n;
   burst(x,y,'#7dff4a',22);rings.push({x,y,r:10,l:.6,col:'#7dff4a'});
   floats.push({x:Math.min(W-60,Math.max(60,x)),y:y-cowSize()*.55,t:'+'+n,l:.9,gold:1,ic:'atom'});
-  wk.phase='out';wk.tx=-.15;wk.say='Danke! Die nehme ich mit.';wk.sayT=2.5;save();return true;
+  wk.phase='out';wk.tx=wk.right?1.15:-.15;wk.say='Danke! Die nehme ich mit.';wk.sayT=2.5;save();return true;
 }
 function drawWantSign(c,x,y,s,L){c.save();const hy=y-s*1.06+Math.sin(T*2.5)*s*.03;
   c.fillStyle='#fff';c.shadowColor='rgba(0,0,0,.2)';c.shadowBlur=8;c.beginPath();c.arc(x,hy,s*.27,0,7);c.fill();c.shadowBlur=0;
