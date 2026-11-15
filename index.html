@@ -1373,9 +1373,20 @@ initPlant();
 requestAnimationFrame(loop);
 
 // ----- Spielstand sichern / laden -----
-function saveCodeStr(){save();const o={v:1,s:JSON.parse(localStorage.getItem('kuhEvo1')||'null')};['kuhEvoTap','kuhEvoSell'].forEach(k=>{try{const v=localStorage.getItem(k);if(v!=null)o[k]=v}catch(e){}});return 'KUH1-'+btoa(unescape(encodeURIComponent(JSON.stringify(o))))}
+function b64u(u8){let s='';u8.forEach(c=>s+=String.fromCharCode(c));return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+function ub64(t){t=t.replace(/-/g,'+').replace(/_/g,'/');const s=atob(t);return Uint8Array.from(s,c=>c.charCodeAt(0))}
+async function zip_(str,inflate){const cs=inflate?new DecompressionStream('deflate-raw'):new CompressionStream('deflate-raw');const data=inflate?str:new TextEncoder().encode(str);const out=new Response(new Blob([data]).stream().pipeThrough(cs));return inflate?await out.text():new Uint8Array(await out.arrayBuffer())}
+function packState(){save();const o=JSON.parse(JSON.stringify(S)),r=v=>typeof v==='number'?(Math.abs(v)>=1e6?Math.round(v):Math.round(v*100)/100):v;
+  delete o.testBackup;delete o.test;delete o.last;if(o.test&&S.testBackup){}if(S.test&&S.testBackup){o.coins=S.testBackup.coins;o.dia=S.testBackup.dia;o.atom=S.testBackup.atom}
+  o.cows=S.cows.map(c=>c.lvl);if(o.plant){o.plant.calves=(S.plant.calves||[]).map(c=>c.lvl);delete o.plant.chef;delete o.plant.birthT}
+  const walk=x=>{if(Array.isArray(x))return x.map(walk);if(x&&typeof x==='object'){const y={};for(const k in x){const v=x[k];if(v===0||v==null)continue;y[k]=walk(v)}return y}return r(x)};
+  const p=walk(o);['kuhEvoTap','kuhEvoSell'].forEach(k=>{try{if(localStorage.getItem(k)!=null)p['_'+k]=1}catch(e){}});return JSON.stringify(p)}
+function unpackState(j){const p=JSON.parse(j);if(!p||!Array.isArray(p.cows))throw 0;const flags={};['kuhEvoTap','kuhEvoSell'].forEach(k=>{if(p['_'+k]){flags[k]='1'}delete p['_'+k]});
+  p.cows=p.cows.map(l=>({lvl:l,x:.15+Math.random()*.7,y:.4+Math.random()*.45}));if(p.plant&&Array.isArray(p.plant.calves))p.plant.calves=p.plant.calves.map(l=>({lvl:l,x:.15+Math.random()*.7,y:.5+Math.random()*.35}));
+  p.last=Date.now();return [p,flags]}
+async function saveCodeStr(){const j=packState();try{return 'KUH2-'+b64u(await zip_(j))}catch(e){return 'KUH3-'+b64u(new TextEncoder().encode(j))}}
 let saveMode='exp';
-document.getElementById('saveExp').onclick=()=>{saveMode='exp';const c=saveCodeStr(),t=document.getElementById('saveCode');t.value=c;t.readOnly=true;
+document.getElementById('saveExp').onclick=async()=>{saveMode='exp';const c=await saveCodeStr(),t=document.getElementById('saveCode');t.value=c;t.readOnly=true;
   document.getElementById('saveTitle').textContent='Spielstand sichern';document.getElementById('saveInfo').textContent='Kopiere diesen Code und bewahre ihn gut auf, z.B. in der Notizen-App.';
   document.getElementById('saveAct').textContent='Kopieren';document.getElementById('saveShare').style.display=navigator.share?'':'none';open('saveSheet')};
 document.getElementById('saveImp').onclick=()=>{saveMode='imp';const t=document.getElementById('saveCode');t.value='';t.readOnly=false;
@@ -1385,9 +1396,13 @@ document.getElementById('saveShare').onclick=()=>{try{navigator.share({title:'Ku
 document.getElementById('saveAct').onclick=async()=>{const t=document.getElementById('saveCode');
   if(saveMode==='exp'){let ok=false;try{await navigator.clipboard.writeText(t.value);ok=true}catch(e){try{t.select();ok=document.execCommand('copy')}catch(e2){}}showToast(ok?'Code kopiert!':'Bitte den Code markieren und kopieren.');return}
   const b=document.getElementById('saveAct');
-  try{const raw=t.value.trim().replace(/\s/g,'');if(!raw.startsWith('KUH1-'))throw 0;const o=JSON.parse(decodeURIComponent(escape(atob(raw.slice(5)))));if(!o||!o.s||!Array.isArray(o.s.cows))throw 0;
+  try{const raw=t.value.trim().replace(/\s/g,'');let st,flags={};
+    if(raw.startsWith('KUH1-')){const o=JSON.parse(decodeURIComponent(escape(atob(raw.slice(5)))));if(!o||!o.s||!Array.isArray(o.s.cows))throw 0;st=o.s;['kuhEvoTap','kuhEvoSell'].forEach(k=>{if(o[k]!=null)flags[k]=o[k]})}
+    else if(raw.startsWith('KUH2-')){[st,flags]=unpackState(await zip_(ub64(raw.slice(5)),true))}
+    else if(raw.startsWith('KUH3-')){[st,flags]=unpackState(new TextDecoder().decode(ub64(raw.slice(5))))}
+    else throw 0;
     if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='Wirklich laden?';setTimeout(()=>{b.dataset.sure='';if(saveMode==='imp')b.textContent='Laden'},3000);return}
-    window.__reset=true;localStorage.setItem('kuhEvo1',JSON.stringify(o.s));['kuhEvoTap','kuhEvoSell'].forEach(k=>{if(o[k]!=null)localStorage.setItem(k,o[k])});location.reload()}
+    window.__reset=true;localStorage.setItem('kuhEvo1',JSON.stringify(st));for(const k in flags)localStorage.setItem(k,flags[k]);location.reload()}
   catch(e){showToast('Der Code ist ungültig.')}};
 </script>
 </body>
