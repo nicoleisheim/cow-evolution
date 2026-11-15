@@ -248,7 +248,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 const LV=[
  {n:'Kälbchen',d:'Klein, tapsig und schon ganz neugierig.',body:'#fffaf6',spot:'#ff8fbf',leg:'#fffaf6',ring:'#ffffff',sc:.8,kawaii:1},
  {n:'Milchkuh',d:'Der Klassiker. Muht pünktlich um sieben.',body:'#ffffff',spot:'#1d1d1d',leg:'#f2f2f2',ring:'#9e9e9e',sc:.85,horns:1,bell:1,udder:1,spots:'big'},
- {n:'Schokokuh',d:'Gerüchten zufolge gibt sie Kakao.',body:'#a0673a',spot:'#3e1f0d',leg:'#7a4a26',ring:'#8d5524',sc:.92,horns:1,choco:1},
+ {n:'Schokokuh',d:'Gerüchten zufolge gibt sie Kakao.',body:'#b07448',spot:'#b07448',leg:'#b07448',mz:'#f6cfae',ear:'#f6cfae',hoof:'#5a321b',horn:'#fff1c9',glaze:'#5a321b',ring:'#8d5524',sc:.88,kawaii:1,choco:1,cherry:1},
  {n:'Muskelkuh',d:'Stemmt Heuballen zum Frühstück.',body:'#e8b06e',spot:'#b9783a',leg:'#d29a5c',ring:'#ff7043',sc:1.02,bw:1.08,bh:1.08,legs:'thick',horns:1,band:1,muscle:1},
  {n:'Rockerkuh',d:'Rockt die Weide mit Irokese und Blitz.',body:'#2f2f3a',spot:'#ff3d8b',leg:'#22222b',ring:'#ff3d8b',sc:1.0,horns:1,shades:1,mohawk:1,bolt:1,rocker:1},
  {n:'Roboterkuh',d:'Läuft mit Solarstrom und Gras-Updates.',body:'#b4c3cd',spot:'#7f909c',leg:'#5f6f7a',ring:'#29b6f6',sc:1.05,shape:'box',legs:'wheels',robot:1,antenna:1},
@@ -269,7 +269,10 @@ function facetPath(c,cx,cy,rx,ry){c.beginPath();FACET.forEach((f,i)=>{const a=i/
 function crystalFill(c,s){const g=c.createLinearGradient(-s*.4,-s*.3,s*.4,s*.3);g.addColorStop(0,'#b8f6ff');g.addColorStop(.5,'#6fd8ff');g.addColorStop(1,'#b48cff');return g}
 
 function drawKawaii(c,x,y,s,t,flip,lifted,glow,walk,d){
-  d=d||{};const OL='#3d4a6b',LW=Math.max(1.6,s*.028),PK=d.spot||'#ff8fbf',WH=d.body||'#fffaf6',HN='#ffd84d';
+  d=d||{};const OL=d.ol||'#3d4a6b',LW=Math.max(1.6,s*.028),PK=d.spot||'#ff8fbf',WH=d.body||'#fffaf6',HN=d.horn||'#ffd84d',MZ=d.mz||PK,EAR=d.ear||PK,HF=d.hoof||PK,GL=d.glaze||'#5a321b';
+  const SPR=['#ff5fa2','#ffe14d','#5fd0ff','#7dff4a','#ffffff'];
+  const glaze=(top,bot,x0,x1,seed,k=1)=>{c.fillStyle=GL;c.fillRect(x0,top,x1-x0,bot-top);for(let i=0;i<6;i++){const dx=x0+(x1-x0)*(i+.5)/6,l=s*(.04+((i*7+seed)%5)*.018)*k;c.beginPath();c.roundRect(dx-s*.025,bot-s*.02,s*.05,l,s*.025);c.fill()}
+    for(let i=0;i<10;i++){c.save();c.translate(x0+(x1-x0)*(((i*.37+seed*.11)%1)),top+(bot-top)*(.25+((i*.53)%1)*.6));c.rotate(i*1.3);c.fillStyle=SPR[i%5];c.beginPath();c.roundRect(-s*.018,-s*.005,s*.036,s*.01,s*.005);c.fill();c.restore()}};
   c.save();c.translate(x,y);
   if(glow){c.strokeStyle='rgba(255,255,255,.95)';c.lineWidth=3;c.setLineDash([6,5]);c.beginPath();c.ellipse(0,s*.05,s*.62,s*.55,0,0,7);c.stroke();c.setLineDash([])}
   if(lifted)c.translate(0,-s*.14);
@@ -278,33 +281,34 @@ function drawKawaii(c,x,y,s,t,flip,lifted,glow,walk,d){
   c.lineWidth=LW;c.strokeStyle=OL;c.lineJoin='round';c.lineCap='round';
   // Schwanz
   c.beginPath();c.moveTo(-s*.3,s*.02+b);c.bezierCurveTo(-s*.42,-s*.02+b,-s*.4,s*.12+b,-s*.46,s*.08+b);c.stroke();
-  c.fillStyle=PK;c.beginPath();c.ellipse(-s*.47,s*.06+b,s*.045,s*.06,-.6,0,7);c.fill();c.stroke();
+  c.fillStyle=d.choco?GL:PK;c.beginPath();c.ellipse(-s*.47,s*.06+b,s*.045,s*.06,-.6,0,7);c.fill();c.stroke();
   // hintere Beine
-  [[-.2],[.2]].forEach(([lx])=>{c.fillStyle=WH;c.beginPath();c.roundRect(lx*s-s*.06,s*.18+b*.3,s*.12,s*.2,s*.04);c.fill();c.stroke();c.fillStyle=PK;c.beginPath();c.roundRect(lx*s-s*.06,s*.33,s*.12,s*.06,[0,0,s*.035,s*.035]);c.fill();c.stroke()});
+  [[-.2],[.2]].forEach(([lx])=>{c.fillStyle=WH;c.beginPath();c.roundRect(lx*s-s*.06,s*.18+b*.3,s*.12,s*.2,s*.04);c.fill();c.stroke();c.fillStyle=HF;c.beginPath();c.roundRect(lx*s-s*.06,s*.33,s*.12,s*.06,[0,0,s*.035,s*.035]);c.fill();c.stroke()});
   // Körper
   const bp=()=>{c.beginPath();c.roundRect(-s*.33,-s*.1+b,s*.66,s*.38,s*.17)};
   c.fillStyle=WH;bp();c.fill();
-  c.save();bp();c.clip();c.fillStyle=PK;
+  c.save();bp();c.clip();c.fillStyle=PK;if(d.choco)glaze(-s*.12+b,-s*.0+b,-s*.34,s*.34,1);
   const blob=(cx,cy,r)=>{c.beginPath();[[0,0,1],[.6,-.3,.7],[-.6,-.2,.75],[.3,.5,.7],[-.4,.45,.6]].forEach(([u,v,k])=>{c.moveTo(cx+u*r+r*k,cy+v*r);c.arc(cx+u*r,cy+v*r,r*k,0,7)});c.fill()};
-  blob(-s*.2,s*.06+b,s*.08);blob(s*.18,s*.16+b,s*.07);blob(-s*.02,s*.22+b,s*.05);blob(s*.27,-s*.02+b,s*.05);
+  if(!d.choco){blob(-s*.2,s*.06+b,s*.08);blob(s*.18,s*.16+b,s*.07);blob(-s*.02,s*.22+b,s*.05);blob(s*.27,-s*.02+b,s*.05)}
   c.restore();bp();c.stroke();
   // vordere Beine
-  [[-.1],[.1]].forEach(([lx])=>{c.fillStyle=WH;c.beginPath();c.roundRect(lx*s-s*.065,s*.22+b,s*.13,s*.18-b,s*.045);c.fill();c.stroke();c.fillStyle=PK;c.beginPath();c.roundRect(lx*s-s*.065,s*.34,s*.13,s*.065,[0,0,s*.04,s*.04]);c.fill();c.stroke()});
+  [[-.1],[.1]].forEach(([lx])=>{c.fillStyle=WH;c.beginPath();c.roundRect(lx*s-s*.065,s*.22+b,s*.13,s*.18-b,s*.045);c.fill();c.stroke();c.fillStyle=HF;c.beginPath();c.roundRect(lx*s-s*.065,s*.34,s*.13,s*.065,[0,0,s*.04,s*.04]);c.fill();c.stroke()});
   // Kopf
   const hy=-s*.26+b;
-  [[-1],[1]].forEach(([k])=>{c.fillStyle=WH;c.beginPath();c.ellipse(k*s*.3,hy-s*.03,s*.11,s*.06,k*-.25,0,7);c.fill();c.stroke();c.fillStyle=PK;c.beginPath();c.ellipse(k*s*.31,hy-s*.03,s*.06,s*.028,k*-.25,0,7);c.fill()});
+  [[-1],[1]].forEach(([k])=>{c.fillStyle=WH;c.beginPath();c.ellipse(k*s*.3,hy-s*.03,s*.11,s*.06,k*-.25,0,7);c.fill();c.stroke();c.fillStyle=EAR;c.beginPath();c.ellipse(k*s*.31,hy-s*.03,s*.06,s*.028,k*-.25,0,7);c.fill()});
   [[-1],[1]].forEach(([k])=>{c.fillStyle=HN;c.beginPath();c.moveTo(k*s*.12,hy-s*.15);c.quadraticCurveTo(k*s*.14,hy-s*.27,k*s*.2,hy-s*.25);c.quadraticCurveTo(k*s*.21,hy-s*.17,k*s*.17,hy-s*.13);c.closePath();c.fill();c.stroke()});
   const hp=()=>{c.beginPath();c.ellipse(0,hy,s*.24,s*.19,0,0,7)};
-  c.fillStyle=WH;hp();c.fill();c.save();hp();c.clip();c.fillStyle=PK;blob(-s*.13,hy-s*.1,s*.065);c.restore();hp();c.stroke();
+  c.fillStyle=WH;hp();c.fill();c.save();hp();c.clip();c.fillStyle=PK;if(d.choco)glaze(hy-s*.2,hy-s*.12,-s*.25,s*.25,3,.45);else blob(-s*.13,hy-s*.1,s*.065);c.restore();hp();c.stroke();
   // Blume am Ohr
-  if(d.flower!==0){c.save();c.translate(s*.27,hy-s*.1);c.rotate(t*.3);c.fillStyle=d.flower||'#ffd84d';c.lineWidth=LW*.8;
+  if(d.cherry){c.save();c.translate(-s*.02,hy-s*.2);c.strokeStyle='#3fb11c';c.lineWidth=LW*.8;c.beginPath();c.moveTo(0,-s*.02);c.quadraticCurveTo(s*.02,-s*.08,s*.06,-s*.1);c.stroke();c.fillStyle='#ff3d5a';c.strokeStyle=OL;c.lineWidth=LW;c.beginPath();c.arc(0,0,s*.045,0,7);c.fill();c.stroke();c.fillStyle='rgba(255,255,255,.75)';c.beginPath();c.arc(-s*.015,-s*.015,s*.012,0,7);c.fill();c.restore();c.lineWidth=LW}
+  if(d.flower!==0&&!d.cherry){c.save();c.translate(s*.27,hy-s*.1);c.rotate(t*.3);c.fillStyle=d.flower||'#ffd84d';c.lineWidth=LW*.8;
     for(let i=0;i<5;i++){c.save();c.rotate(i*Math.PI*2/5);c.beginPath();c.ellipse(0,-s*.045,s*.033,s*.04,0,0,7);c.fill();c.stroke();c.restore()}
     c.fillStyle='#ffb02e';c.beginPath();c.arc(0,0,s*.025,0,7);c.fill();c.stroke();c.restore();c.lineWidth=LW}
   // Augen (fröhlich geschlossen) + Bäckchen
   c.lineWidth=LW*1.1;[[-1],[1]].forEach(([k])=>{c.beginPath();c.arc(k*s*.09,hy-s*.02,s*.035,Math.PI*1.1,Math.PI*1.9);c.stroke()});
   c.fillStyle='rgba(255,120,160,.55)';[[-1],[1]].forEach(([k])=>{c.beginPath();c.ellipse(k*s*.17,hy+s*.05,s*.04,s*.025,0,0,7);c.fill()});
   // Schnauze
-  c.lineWidth=LW;c.fillStyle=PK;c.beginPath();c.ellipse(0,hy+s*.08,s*.13,s*.08,0,0,7);c.fill();c.stroke();
+  c.lineWidth=LW;c.fillStyle=MZ;c.beginPath();c.ellipse(0,hy+s*.08,s*.13,s*.08,0,0,7);c.fill();c.stroke();
   c.fillStyle=OL;[[-1],[1]].forEach(([k])=>{c.beginPath();c.ellipse(k*s*.045,hy+s*.075,s*.016,s*.024,0,0,7);c.fill()});
   c.restore();
 }
