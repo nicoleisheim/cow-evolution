@@ -964,7 +964,7 @@ function updateWorker(dt){
 function workerDrop(c){
   if(!wk||wk.phase==='out')return false;const [wx,wy]=toPx(wk),[x,y]=toPx(c);
   if(Math.hypot(x-wx,y-(wy-cowSize()*.3))>cowSize()*.75)return false;
-  if(c.lvl!==wk.want){wk.say='Ich suche eine '+LV[wk.want-1].n+'!';wk.sayT=2.2;c.wait=1;return true}
+  if(c.lvl!==wk.want){showToast('Der Mitarbeiter sucht eine '+LV[wk.want-1].n+'!');c.wait=1;return true}
   const n=atomFor(c.lvl);S.cows=S.cows.filter(o=>o!==c);S.atom=(S.atom||0)+n;
   burst(x,y,'#7dff4a',22);rings.push({x,y,r:10,l:.6,col:'#7dff4a'});
   showToast('Verkauft! +'+n+' Atom-Münze'+(n>1?'n':'')+' · jetzt '+S.atom+' im Kraftwerk');
@@ -983,7 +983,7 @@ function updateChef(dt){
 function chefDrop(c){
   if(!ch||ch.phase==='out')return false;const [cx0,cy0]=toPx(ch),[x,y]=toPx(c);
   if(Math.hypot(x-cx0,y-(cy0-cowSize()*.3))>cowSize()*.8)return false;
-  if(c.lvl!==MAXL){ch.say='Ich hole nur Radioaktive Mutterkühe ab!';ch.sayT=2.2;c.wait=1;return true}
+  if(c.lvl!==MAXL){showToast('Der Chef holt nur Radioaktive Kühe ab!');c.wait=1;return true}
   const r=chefReward();S.cows=S.cows.filter(o=>o!==c);S.atom=(S.atom||0)+r;
   burst(x,y,'#7dff4a',24);rings.push({x,y,r:10,l:.6,col:'#7dff4a'});
   showToast('Die Mutterkuh geht in den Ruhestand! +'+r+' Atom-Münzen');
@@ -993,15 +993,6 @@ function drawChefMeadow(){
   if(!ch)return;const s=cowSize()*1.15,[x,y]=toPx(ch),c=cx;
   if(drag&&drag.moved&&ch.phase==='wait'&&drag.c.lvl===MAXL){c.strokeStyle='rgba(125,255,74,.95)';c.lineWidth=3;c.setLineDash([6,5]);c.beginPath();c.ellipse(x,y-s*.25,s*.45,s*.65,0,0,7);c.stroke();c.setLineDash([])}
   drawChef(c,x,y-(ch.walk?Math.abs(Math.sin(T*9))*s*.03:0),s,true,ch.flip);
-  const by=y-s*1.2;
-  if(ch.sayT>0&&ch.say){c.save();c.font='800 13px Nunito, system-ui';const tw=c.measureText(ch.say).width,w=tw+24,h=30,bx=Math.min(W-w/2-6,Math.max(w/2+6,x));
-    c.fillStyle='#fff';c.shadowColor='rgba(0,0,0,.2)';c.shadowBlur=8;c.beginPath();c.roundRect(bx-w/2,by-h/2,w,h,15);c.fill();c.shadowBlur=0;
-    c.fillStyle='#1d2a22';c.textAlign='center';c.textBaseline='middle';c.fillText(ch.say,bx,by+1);c.restore();return}
-  if(ch.phase==='out')return;
-  const w=148,h=58,bx=Math.min(W-w/2-6,Math.max(w/2+6,x));c.save();c.fillStyle='#fff';c.shadowColor='rgba(0,0,0,.22)';c.shadowBlur=10;c.beginPath();c.roundRect(bx-w/2,by-h/2,w,h,16);c.moveTo(x-8,by+h/2);c.lineTo(x,by+h/2+10);c.lineTo(x+8,by+h/2);c.fill();c.shadowBlur=0;
-  drawCow(c,bx-40,by+5,38,MAXL,T,false);
-  c.fillStyle='#1d2a22';c.font='800 11px Nunito, system-ui';c.textAlign='left';c.textBaseline='middle';c.fillText('Ruhestand für',bx-6,by-11);
-  c.font='900 17px Nunito, system-ui';const r='+'+chefReward();c.fillText(r,bx-6,by+9);shDraw(c,ATOM_SH,bx+c.measureText(r).width+4,by+9,.42);c.restore();
 }
 function drawWorker(){
   if(!wk)return;const s=cowSize()*1.1,[x,y]=toPx(wk),c=cx,bob=wk.walk?Math.abs(Math.sin(T*9))*s*.04:0,sw=wk.walk?Math.sin(T*9)*s*.05:0;
@@ -1042,17 +1033,6 @@ function drawWorker(){
   c.strokeStyle='#4a5160';c.lineWidth=s*.008;for(let i=-1;i<=1;i++){c.beginPath();c.moveTo(s*.02+i*s*.018,-s*.395);c.lineTo(s*.02+i*s*.018,-s*.345);c.stroke()}
   // Lampe oben
   c.fillStyle='#2a2d36';c.beginPath();c.roundRect(-s*.035,-s*.735,s*.07,s*.04,s*.015);c.fill();c.fillStyle=Math.sin(T*4)>0?'#7dff4a':'#3d7a24';c.beginPath();c.arc(0,-s*.745,s*.022,0,7);c.fill();
-  c.restore();
-  // Sprechblase
-  const bx=Math.min(W-74,Math.max(74,x)),by=y-s*1.08;
-  if(wk.sayT>0&&wk.say){c.save();c.font='800 13px Nunito, system-ui';const tw=c.measureText(wk.say).width,w=tw+24,h=30,bx=Math.min(W-w/2-6,Math.max(w/2+6,x));
-    c.fillStyle='#fff';c.shadowColor='rgba(0,0,0,.2)';c.shadowBlur=8;c.beginPath();c.roundRect(bx-w/2,by-h/2,w,h,15);c.fill();c.shadowBlur=0;
-    c.fillStyle='#1d2a22';c.textAlign='center';c.textBaseline='middle';c.fillText(wk.say,bx,by+1);c.restore();return}
-  if(wk.phase==='out')return;
-  const w=132,h=58;c.save();c.fillStyle='#fff';c.shadowColor='rgba(0,0,0,.22)';c.shadowBlur=10;c.beginPath();c.roundRect(bx-w/2,by-h/2,w,h,16);c.moveTo(bx-8,by+h/2);c.lineTo(bx,by+h/2+10);c.lineTo(bx+8,by+h/2);c.fill();c.shadowBlur=0;
-  drawCow(c,bx-34,by+4,40,wk.want,T,false);
-  c.fillStyle='#1d2a22';c.font='800 11px Nunito, system-ui';c.textAlign='left';c.textBaseline='middle';c.fillText('Kaufe für',bx+2,by-11);
-  c.font='900 17px Nunito, system-ui';const r='+'+atomFor(wk.want);c.fillText(r,bx+2,by+9);shDraw(c,ATOM_SH,bx+8+c.measureText(r).width+8,by+9,.42);
   c.restore();
 }
 // ---------- Eingabe ----------
