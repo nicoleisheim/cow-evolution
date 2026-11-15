@@ -217,6 +217,13 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 #mapInfo .mbar{display:block;height:10px;border-radius:6px;background:#f6e3ee;overflow:hidden;border:1.5px solid #3d4a6b}#mapInfo .mbar i{display:block;height:100%;background:linear-gradient(90deg,#ffa8d2,#ff5fa2)}
 .vhead h2{color:#3d4a6b!important}
 #buyList .row canvas{width:84px!important;height:70px!important;margin:-6px 0}
+#magBtn .ring circle,#crateBtn .ring circle,#wkBtn .ring circle,#plantBack .ring circle,#birthFab .ring circle{stroke-width:4.5}
+#magBtn .ring circle:first-child,#crateBtn .ring circle:first-child,#wkBtn .ring circle:first-child,#plantBack .ring circle:first-child,#birthFab .ring circle:first-child{stroke:#fff;stroke-width:8.5}
+#magBtn .ring,#crateBtn .ring,#wkBtn .ring,#plantBack .ring,#birthFab .ring{inset:auto!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;overflow:visible}
+#magBtn,#crateBtn,#wkBtn,#plantBack,#birthFab{box-sizing:border-box}
+#magBtn,#crateBtn,#wkBtn,#plantBack,#birthFab{background:radial-gradient(circle,#fff 0 20px,rgba(255,95,162,.5) 21px)!important}
+#magBtn .mg,#crateBtn .mg,#wkBtn .mg,#plantBack .mg,#birthFab .mg{background:none!important}
+#magBtn.off .mg,#crateBtn.off .mg{filter:grayscale(1)!important;opacity:.45!important}
 </style>
 </head>
 <body>
