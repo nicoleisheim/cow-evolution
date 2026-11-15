@@ -246,7 +246,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 <script>
 // ---------- Daten ----------
 const LV=[
- {n:'Kälbchen',d:'Klein, tapsig und schon ganz neugierig.',body:'#f3d9a4',spot:'#fff6e6',leg:'#e8c98d',ring:'#ffffff',sc:.72,hs:1.35,bw:.85,legs:'short',calf:1,spots:'small'},
+ {n:'Kälbchen',d:'Klein, tapsig und schon ganz neugierig.',body:'#ffe0ec',spot:'#ffc2da',leg:'#f6c3d6',ring:'#ffffff',sc:.72,hs:1.35,bw:.85,legs:'short',calf:1,spots:'small',bow:'#ffffff'},
  {n:'Milchkuh',d:'Der Klassiker. Muht pünktlich um sieben.',body:'#ffffff',spot:'#1d1d1d',leg:'#f2f2f2',ring:'#9e9e9e',sc:.85,horns:1,bell:1,udder:1,spots:'big'},
  {n:'Schokokuh',d:'Gerüchten zufolge gibt sie Kakao.',body:'#a0673a',spot:'#3e1f0d',leg:'#7a4a26',ring:'#8d5524',sc:.92,horns:1,choco:1},
  {n:'Muskelkuh',d:'Stemmt Heuballen zum Frühstück.',body:'#e8b06e',spot:'#b9783a',leg:'#d29a5c',ring:'#ff7043',sc:1.02,bw:1.08,bh:1.08,legs:'thick',horns:1,band:1,muscle:1},
@@ -382,6 +382,7 @@ function drawHead(c,s,d,t,seed){
       else{el(c,ex,ey,s*.04*big,s*.045*big,d.radio&&!d.soft?'#eaffb8':'#fff');c.strokeStyle=OL;c.lineWidth=LW*.7;c.stroke();el(c,ex+s*.01,ey+s*.005,s*.022*big,s*.026*big,d.cosmic?'#24185e':d.crystal?'#4a3aff':d.soft?'#2a2d36':d.radio?'#2f8f00':'#222');el(c,ex+s*.018*big,ey-s*.008*big,s*.01*big,s*.01*big,'#fff')}});
   }
   if(d.soft&&!d.calf){el(c,-s*.06,s*.03,s*.028,s*.016,'rgba(255,120,150,.4)')}
+  if(d.bow){c.save();c.translate(-s*.1,-s*.15);c.rotate(-.35);c.fillStyle=d.bow;c.strokeStyle=shade(d.bow,.6);c.lineWidth=s*.012;[-1,1].forEach(k=>{c.beginPath();c.moveTo(0,0);c.quadraticCurveTo(k*s*.09,-s*.07,k*s*.1,0);c.quadraticCurveTo(k*s*.09,s*.07,0,0);c.fill();c.stroke()});c.beginPath();c.arc(0,0,s*.025,0,7);c.fill();c.stroke();c.restore()}
   if(d.calf){el(c,s*.0,s*.04,s*.03,s*.018,'rgba(255,120,120,.45)')}
   if(d.helmet){c.fillStyle='rgba(180,225,255,.28)';c.strokeStyle='rgba(255,255,255,.95)';c.lineWidth=s*.025;c.beginPath();c.arc(s*.02,-s*.01,s*.28,0,7);c.fill();c.stroke();c.fillStyle='rgba(255,255,255,.6)';c.beginPath();c.ellipse(-s*.08,-s*.13,s*.07,s*.03,-.6,0,7);c.fill()}
   if(d.cosmic){c.strokeStyle='#ffd600';c.lineWidth=s*.03;c.shadowColor='#ffd600';c.shadowBlur=12;c.beginPath();c.ellipse(-s*.02,-s*.3+Math.sin(t*2)*s*.02,s*.15,s*.045,0,0,7);c.stroke();c.shadowBlur=0}
