@@ -246,7 +246,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 <script>
 // ---------- Daten ----------
 const LV=[
- {n:'Kälbchen',d:'Klein, tapsig und schon ganz neugierig.',body:'#ffe0ec',spot:'#ffc2da',leg:'#f6c3d6',ring:'#ffffff',sc:.72,hs:1.35,bw:.85,legs:'short',calf:1,spots:'small',bow:'#ffffff'},
+ {n:'Kälbchen',d:'Klein, tapsig und schon ganz neugierig.',body:'#fffaf6',spot:'#ff8fbf',leg:'#fffaf6',ring:'#ffffff',sc:.8,kawaii:1},
  {n:'Milchkuh',d:'Der Klassiker. Muht pünktlich um sieben.',body:'#ffffff',spot:'#1d1d1d',leg:'#f2f2f2',ring:'#9e9e9e',sc:.85,horns:1,bell:1,udder:1,spots:'big'},
  {n:'Schokokuh',d:'Gerüchten zufolge gibt sie Kakao.',body:'#a0673a',spot:'#3e1f0d',leg:'#7a4a26',ring:'#8d5524',sc:.92,horns:1,choco:1},
  {n:'Muskelkuh',d:'Stemmt Heuballen zum Frühstück.',body:'#e8b06e',spot:'#b9783a',leg:'#d29a5c',ring:'#ff7043',sc:1.02,bw:1.08,bh:1.08,legs:'thick',horns:1,band:1,muscle:1},
@@ -268,8 +268,48 @@ function rr(c,x,y,w,h,r,col){c.fillStyle=col;c.beginPath();c.roundRect(x,y,w,h,r
 function facetPath(c,cx,cy,rx,ry){c.beginPath();FACET.forEach((f,i)=>{const a=i/FACET.length*Math.PI*2;const px=cx+Math.cos(a)*rx*f,py=cy+Math.sin(a)*ry*f;i?c.lineTo(px,py):c.moveTo(px,py)});c.closePath()}
 function crystalFill(c,s){const g=c.createLinearGradient(-s*.4,-s*.3,s*.4,s*.3);g.addColorStop(0,'#b8f6ff');g.addColorStop(.5,'#6fd8ff');g.addColorStop(1,'#b48cff');return g}
 
+function drawKawaii(c,x,y,s,t,flip,lifted,glow,walk,d){
+  d=d||{};const OL='#3d4a6b',LW=Math.max(1.6,s*.028),PK=d.spot||'#ff8fbf',WH=d.body||'#fffaf6',HN='#ffd84d';
+  c.save();c.translate(x,y);
+  if(glow){c.strokeStyle='rgba(255,255,255,.95)';c.lineWidth=3;c.setLineDash([6,5]);c.beginPath();c.ellipse(0,s*.05,s*.62,s*.55,0,0,7);c.stroke();c.setLineDash([])}
+  if(lifted)c.translate(0,-s*.14);
+  if(flip)c.scale(-1,1);
+  const b=walk?-Math.abs(Math.sin(t*9))*s*.03:Math.sin(t*3)*s*.012;
+  c.lineWidth=LW;c.strokeStyle=OL;c.lineJoin='round';c.lineCap='round';
+  // Schwanz
+  c.beginPath();c.moveTo(-s*.3,s*.02+b);c.bezierCurveTo(-s*.42,-s*.02+b,-s*.4,s*.12+b,-s*.46,s*.08+b);c.stroke();
+  c.fillStyle=PK;c.beginPath();c.ellipse(-s*.47,s*.06+b,s*.045,s*.06,-.6,0,7);c.fill();c.stroke();
+  // hintere Beine
+  [[-.2],[.2]].forEach(([lx])=>{c.fillStyle=WH;c.beginPath();c.roundRect(lx*s-s*.06,s*.18+b*.3,s*.12,s*.2,s*.04);c.fill();c.stroke();c.fillStyle=PK;c.beginPath();c.roundRect(lx*s-s*.06,s*.33,s*.12,s*.06,[0,0,s*.035,s*.035]);c.fill();c.stroke()});
+  // Körper
+  const bp=()=>{c.beginPath();c.roundRect(-s*.33,-s*.1+b,s*.66,s*.38,s*.17)};
+  c.fillStyle=WH;bp();c.fill();
+  c.save();bp();c.clip();c.fillStyle=PK;
+  const blob=(cx,cy,r)=>{c.beginPath();[[0,0,1],[.6,-.3,.7],[-.6,-.2,.75],[.3,.5,.7],[-.4,.45,.6]].forEach(([u,v,k])=>{c.moveTo(cx+u*r+r*k,cy+v*r);c.arc(cx+u*r,cy+v*r,r*k,0,7)});c.fill()};
+  blob(-s*.2,s*.06+b,s*.08);blob(s*.18,s*.16+b,s*.07);blob(-s*.02,s*.22+b,s*.05);blob(s*.27,-s*.02+b,s*.05);
+  c.restore();bp();c.stroke();
+  // vordere Beine
+  [[-.1],[.1]].forEach(([lx])=>{c.fillStyle=WH;c.beginPath();c.roundRect(lx*s-s*.065,s*.22+b,s*.13,s*.18-b,s*.045);c.fill();c.stroke();c.fillStyle=PK;c.beginPath();c.roundRect(lx*s-s*.065,s*.34,s*.13,s*.065,[0,0,s*.04,s*.04]);c.fill();c.stroke()});
+  // Kopf
+  const hy=-s*.26+b;
+  [[-1],[1]].forEach(([k])=>{c.fillStyle=WH;c.beginPath();c.ellipse(k*s*.3,hy-s*.03,s*.11,s*.06,k*-.25,0,7);c.fill();c.stroke();c.fillStyle=PK;c.beginPath();c.ellipse(k*s*.31,hy-s*.03,s*.06,s*.028,k*-.25,0,7);c.fill()});
+  [[-1],[1]].forEach(([k])=>{c.fillStyle=HN;c.beginPath();c.moveTo(k*s*.12,hy-s*.15);c.quadraticCurveTo(k*s*.14,hy-s*.27,k*s*.2,hy-s*.25);c.quadraticCurveTo(k*s*.21,hy-s*.17,k*s*.17,hy-s*.13);c.closePath();c.fill();c.stroke()});
+  const hp=()=>{c.beginPath();c.ellipse(0,hy,s*.24,s*.19,0,0,7)};
+  c.fillStyle=WH;hp();c.fill();c.save();hp();c.clip();c.fillStyle=PK;blob(-s*.13,hy-s*.1,s*.065);c.restore();hp();c.stroke();
+  // Blume am Ohr
+  if(d.flower!==0){c.save();c.translate(s*.27,hy-s*.1);c.rotate(t*.3);c.fillStyle=d.flower||'#ffd84d';c.lineWidth=LW*.8;
+    for(let i=0;i<5;i++){c.save();c.rotate(i*Math.PI*2/5);c.beginPath();c.ellipse(0,-s*.045,s*.033,s*.04,0,0,7);c.fill();c.stroke();c.restore()}
+    c.fillStyle='#ffb02e';c.beginPath();c.arc(0,0,s*.025,0,7);c.fill();c.stroke();c.restore();c.lineWidth=LW}
+  // Augen (fröhlich geschlossen) + Bäckchen
+  c.lineWidth=LW*1.1;[[-1],[1]].forEach(([k])=>{c.beginPath();c.arc(k*s*.09,hy-s*.02,s*.035,Math.PI*1.1,Math.PI*1.9);c.stroke()});
+  c.fillStyle='rgba(255,120,160,.55)';[[-1],[1]].forEach(([k])=>{c.beginPath();c.ellipse(k*s*.17,hy+s*.05,s*.04,s*.025,0,0,7);c.fill()});
+  // Schnauze
+  c.lineWidth=LW;c.fillStyle=PK;c.beginPath();c.ellipse(0,hy+s*.08,s*.13,s*.08,0,0,7);c.fill();c.stroke();
+  c.fillStyle=OL;[[-1],[1]].forEach(([k])=>{c.beginPath();c.ellipse(k*s*.045,hy+s*.075,s*.016,s*.024,0,0,7);c.fill()});
+  c.restore();
+}
 function drawCow(c,x,y,s,L,t,flip,lifted,glow,walk){
-  const d=typeof L==='object'?L:LV[L-1];s*=d.sc;
+  const d=typeof L==='object'?L:LV[L-1];s*=d.sc;if(d.kawaii){drawKawaii(c,x,y,s,t,flip,lifted,glow,walk,d);return}
   const bw=d.bw||1,bh=d.bh||1,RX=s*.42*bw,RY=s*.26*bh,OL=outl(d),LW=s*.022;
   c.save();c.translate(x,y);
   // Stufen-Farbring am Boden
