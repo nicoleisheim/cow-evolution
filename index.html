@@ -688,7 +688,7 @@ try{const s=JSON.parse(localStorage.getItem('kuhEvo1'));if(s&&s.cows){S=Object.a
 S.up.crate=Math.min(S.up.crate||0,5);if(S.goldCnt==null)S.goldCnt=(S.cratesOpened||0)%20;S.up.crateLvl=0;
 S.plant=Object.assign(defPlant(),S.plant||{});S.plant.up=Object.assign(defPlant().up,S.plant.up);if(!Array.isArray(S.plant.calves))S.plant.calves=[];S.plant.chef=null;S.plant.calves.forEach((c,i)=>{c.id=i+1;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2});if(S.plant.unlocked&&!S.plant.calves.length&&!S.plant.best)S.plant.best=1;
 function save(){if(window.__reset)return;S.last=Date.now();try{S.wk=(wk&&wk.phase!=='out')?{y:+wk.y.toFixed(3),tx:+wk.tx.toFixed(3),want:wk.want,right:!!wk.right}:null;S.wkT=Math.round(wkT);S.crates=crates.map(k=>({x:+k.x.toFixed(3),y:+k.y.toFixed(3),lvl:k.lvl,gold:k.gold?1:0}));localStorage.setItem('kuhEvo1',JSON.stringify(S))}catch(e){}}
-let coins=[],crates=(Array.isArray(S.crates)?S.crates:[]).map(k=>({x:k.x,y:k.y,lvl:k.lvl||1,gold:!!k.gold,drop:1,landed:1,age:9})),parts=[],floats=[],crateT=0,uid=1;
+let coins=[],crates=(Array.isArray(S.crates)?S.crates:[]).filter(k=>k&&typeof k==='object').slice(0,16).map(k=>({x:k.x,y:k.y,lvl:k.lvl||1,gold:!!k.gold,drop:1,landed:1,age:9})),parts=[],floats=[],crateT=0,uid=1;
 S.cows.forEach(c=>{c.id=uid++;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2;c.ph=Math.random()*COIN_EVERY});
 function cap(){return Math.min(16,10+S.up.cap)}
 function priceOf(L){return Math.round(12000*Math.pow(4.4,L-1)/10)*10}
@@ -1072,6 +1072,9 @@ function loop(now){
   if(S.cratesOn!==false&&S.cows.length+crates.length<cap()){crateT+=dt;if(crateT>=crateInt(S.up.crate)){crateT=0;spawnCrate()}}
   if(S.goldPending>0&&S.cows.length+crates.length<cap()){S.goldPending--;const hi=Math.max(1,Math.min(S.highest,MAXL-1));crates.push({x:rnd(.25,.75),y:rnd(.4,.78),lvl:1+Math.floor(Math.random()*hi),drop:0,age:0,gold:1});save()}
   updCrateUI();updWkUI();updFuelUI();
+  // Kisten immer sichtbar und antippbar halten (nie außerhalb, nie unter den Knöpfen)
+  if(W&&H){const cs=cowSize(),mx=cs*.35/W;crates.forEach(k=>{if(!isFinite(k.x)||k.x==null)k.x=.5;if(!isFinite(k.y)||k.y==null)k.y=.6;k.x=clamp(k.x,mx,1-mx);k.y=clamp(k.y,.33,.86);k.x=avoidFab(k.x,k.y,cs*.35,cs*.35);if(k.x>1-mx)k.x=1-mx})}
+  if(crates.length>cap())crates.length=cap();
   crates.forEach(k=>{k.drop=Math.min(1,k.drop+dt*2.5);k.age+=dt;if(k.drop>=1&&!k.landed){k.landed=1;const [x,y]=toPx(k);for(let i=0;i<10;i++)parts.push({x:x+rnd(-20,20),y:y+cowSize()*.3,vx:rnd(-80,80),vy:rnd(-90,-30),l:rnd(.3,.5),col:'#e8dcb5'})}});
   // Kühe
   S.cows.forEach(c=>{
