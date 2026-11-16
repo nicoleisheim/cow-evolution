@@ -245,6 +245,18 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 @keyframes fabHit{0%{transform:scale(1)}35%{transform:scale(1.25)}100%{transform:scale(1)}}#birthFab.hit{animation:fabHit .5s ease-out}
 .pips{display:flex;gap:3px;margin-top:5px;font-style:normal}.pips em{width:14px;height:5px;border-radius:3px;background:#f3dbe7}.pips em.on{background:#ff5fa2}.pips small{font:800 11px Nunito,system-ui;color:#d6347f}
 #dias.bump{animation:bump .25s ease-out}
+#legoView #legoCv{position:absolute;left:0;top:0;width:100%;height:calc(100% - 98px - env(safe-area-inset-bottom));border-radius:0 0 26px 26px;touch-action:none}
+.view.lv{background:#e7f3ff}
+#lbar{position:absolute;z-index:2;left:calc(12px + env(safe-area-inset-left));right:calc(12px + env(safe-area-inset-right));bottom:calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:6px;padding:7px;border-radius:28px;background:rgba(255,95,162,.78);border:1.5px solid rgba(255,255,255,.55);box-shadow:0 6px 20px rgba(214,52,127,.18)}
+#lbar button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:0;border-radius:21px;padding:9px 6px;font:800 13px Nunito,system-ui;color:#fff;background:transparent;cursor:pointer;text-shadow:0 1px 2px rgba(150,20,80,.35)}
+#lbar button svg{width:24px;height:24px;color:#fff}
+#lbar button.primary{background:#fff;color:#ff4f93;text-shadow:none;box-shadow:0 4px 12px rgba(150,20,80,.18)}
+#lbar button.primary small{color:#d6347f;font:800 11.5px Nunito,system-ui;display:flex;align-items:center;gap:3px}
+#lbar button.primary small svg{width:14px;height:14px}
+#lbar button:disabled{opacity:.6}
+#legoView .pill{background:#fff!important;border:3px solid rgba(255,95,162,.55)!important;color:#d6347f!important;box-shadow:0 6px 20px rgba(214,52,127,.18)!important;backdrop-filter:none!important}
+#legoView .pill small,#legoView .pill .cap{color:#e07aa8!important;opacity:1!important}
+#lBrickIc svg{width:26px;height:26px}
 </style>
 </head>
 <body>
@@ -292,6 +304,13 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
   
   <div id="pbar"><button id="calfBuy" class="primary">Kälbchen</button><button id="pMisBtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="currentColor" opacity=".2"/><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2.5 12h19M12 2.5c3 3 3 16 0 19M12 2.5c-3 3-3 16 0 19" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span>Welt&shy;rettung</span></button><button id="pUpBtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5" fill="currentColor" opacity=".18"/><path d="M13.4 4.6 7.2 13.3h4.5l-.9 6.1 6.2-8.7h-4.5z" fill="currentColor"/></svg><span>Upgrades</span></button><button id="pMapBtn"><svg viewBox="0 0 24 24"><path d="M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="currentColor" opacity=".25"/><path d="M8.5 4v13.5M15.5 6.5V20M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Karte</span></button><button id="pLadBtn"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2.6" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="2.6" fill="currentColor" opacity=".35"/><rect x="3" y="13" width="8" height="8" rx="2.6" fill="currentColor" opacity=".35"/><rect x="13" y="13" width="8" height="8" rx="2.6" fill="currentColor"/></svg><span>Stufen</span></button></div>
 </div>
+<div id="legoView" class="view pv lv">
+  <canvas id="legoCv"></canvas>
+  <div class="ptop"><div class="pills"><div class="pill"><span class="pi" id="lBrickIc"></span><span id="lBricks">0</span></div></div>
+    <div class="pill stat"><div><b id="lRate">0</b><small>Steine/Sek.</small></div><div class="cap" id="lCnt">0/12 Kühe</div></div></div>
+  <div id="lbar"><button id="lBuy" class="primary">Lego-Kalb</button><button id="lLadBtn"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="8" height="8" rx="1.5" fill="currentColor"/><rect x="13" y="12" width="8" height="8" rx="1.5" fill="currentColor" opacity=".6"/><rect x="8" y="4" width="8" height="8" rx="1.5" fill="currentColor" opacity=".8"/></svg><span>Stufen</span></button><button id="lMapBtn"><svg viewBox="0 0 24 24"><path d="M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="currentColor" opacity=".25"/><path d="M8.5 4v13.5M15.5 6.5V20M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Karte</span></button></div>
+</div>
+<div class="overlay hi" id="lLad"><div class="panel"><h2>Lego-Kühe</h2><div id="legoLadder"></div><button class="close" data-close="lLad">Schließen</button></div></div>
 <div class="overlay hi" id="pMis"><div class="panel"><h2 id="missionHead">Weltrettung</h2><div id="missionList"></div><button class="close" data-close="pMis">Schließen</button></div></div>
 <div class="overlay hi" id="pUps"><div class="panel"><h2>Kraftwerk-Upgrades</h2><p style="color:var(--muted);font-weight:600;margin:-6px 0 10px;font-size:13px">Bezahlt wird mit gespeichertem Strom.</p><div id="pupList"></div><button class="close" data-close="pUps">Schließen</button></div></div>
 <div class="overlay hi" id="pLad"><div class="panel"><h2>Kalb-Stufen</h2><div id="calfLadder"></div><button class="close" data-close="pLad">Schließen</button></div></div>
@@ -470,8 +489,10 @@ const MISSIONS=[
  {n:'Stadt Rosaburg',d:'Ampeln und Straßenbahnen stehen still.',need:12,dia:25,bonus:.1,x:70,y:76},
  {n:'Hauptstadt Kuhlonia',d:'Das ganze Land braucht dringend Strom.',need:40,dia:50,bonus:.15,x:76,y:38},
  {n:'Raumstation Muhnar',d:'Ohne Strom fällt die Station aus der Umlaufbahn.',need:120,dia:100,bonus:.15,x:24,y:12},
- {n:'Meteor-Schutzschild',d:'Ein riesiger Meteor rast auf die Erde zu!',need:1000,dia:250,bonus:.25,x:80,y:9}
+ {n:'Meteor-Schutzschild',d:'Ein riesiger Meteor rast auf die Erde zu!',need:1000,dia:250,bonus:.25,x:80,y:9},
+ {n:'Lego-Stadt',d:'Die Stein-Fabrik steht still. Ohne Strom gibt es keine neuen Steine.',need:10000,dia:500,bonus:.25,x:44,y:88,lego:1}
 ];
+function misCost(m){return m.need*300}
 const PUP=[
  {k:'slots',n:'Größerer Brutkasten',d:l=>Math.min(16,8+2*l)+' Plätze',cost:l=>500*Math.pow(3,l),max:4},
  {k:'amp',n:'Reaktor-Verstärker',d:l=>'+'+(l*25)+' % Leistung',cost:l=>300*Math.pow(2.2,l),max:20}
@@ -515,9 +536,10 @@ function renderMap(){
   MISSIONS.forEach((m,i)=>{const on=i<P.missions,lit=on?'#fff27a':'#5f6782',st=' stroke="'+OLc+'" stroke-width="1.6" stroke-linejoin="round"';let ic;
     if(i<3){const c1=on?'#ffd84d':'#b9b3cf',c2=on?'#ffb3d6':'#a7a1bf';ic='<svg viewBox="0 0 40 40"><path d="M4 36V20l7-5 7 5v16z" fill="'+c2+'"'+st+'/><path d="M14 36V12l8-6 8 6v24z" fill="'+c1+'"'+st+'/><path d="M26 36V22l5-4 5 4v14z" fill="'+c2+'"'+st+'/><g fill="'+lit+'"><rect x="7" y="26" width="3" height="3" rx=".8"/><rect x="31" y="27" width="3" height="3" rx=".8"/></g>'+face(22,22,on)+'<path d="M20 36v-6h4v6" fill="'+lit+'"'+st+'/></svg>'}
     else if(i===3){ic='<svg viewBox="0 0 40 40"><rect x="2" y="16" width="10" height="8" rx="1.5" fill="'+(on?'#7fd8ff':'#a7a1bf')+'"'+st+'/><rect x="28" y="16" width="10" height="8" rx="1.5" fill="'+(on?'#7fd8ff':'#a7a1bf')+'"'+st+'/><path d="M12 20h4M24 20h4" stroke="'+OLc+'" stroke-width="1.6"/><circle cx="20" cy="20" r="8" fill="'+(on?'#ffd84d':'#b9b3cf')+'"'+st+'/>'+face(20,20,on)+'<path d="M20 12V7" stroke="'+OLc+'" stroke-width="1.6"/><circle cx="20" cy="6" r="1.8" fill="'+(on?'#ff5fa2':'#8a84a3')+'"'+st+'/></svg>'}
+    else if(m.lego){const cl=on?['#e3342f','#ffd23f','#3b82f6']:['#b9b3cf','#a7a1bf','#c9c4dc'];ic='<svg viewBox="0 0 40 40">'+[[4,22,14,cl[0]],[18,22,18,cl[2]],[10,12,16,cl[1]]].map(([x,y,w,c])=>'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="10" rx="1.5" fill="'+c+'"'+st+'/>'+[0,1].map(j=>'<rect x="'+(x+2+j*(w-8))+'" y="'+(y-3)+'" width="4" height="3" rx="1" fill="'+c+'"'+st+'/>').join('')).join('')+face(18,27,on)+'</svg>'}
     else{ic='<svg viewBox="0 0 40 40"><path d="M3 34a17 17 0 0 1 34 0z" fill="'+(on?'rgba(127,216,255,.55)':'rgba(167,161,191,.55)')+'"'+st+'/><path d="M9 34a11 11 0 0 1 22 0" fill="none" stroke="#fff" stroke-width="1.4" opacity=".7"/>'+face(20,28,on)+'<circle cx="31" cy="7" r="4" fill="#ffa24d"'+st+'/><path d="M28 10l-5 5" stroke="#ffa24d" stroke-width="2" stroke-linecap="round" opacity=".7"/></svg>'}
     pin(m.x,m.y,'city'+(on?' on':''),ic,
-    m.n,()=>showToast(on?m.n+' hat wieder Strom!':m.n+': braucht '+fmt(m.need)+' MW/Sek. Leistung'))});
+    m.n,()=>{if(m.lego&&on){closeMap();openLego();return}showToast(on?m.n+' hat wieder Strom!':m.n+': kostet '+fmt(misCost(m))+' MW gespeicherten Strom')})});
   if(P.accident)pin(52,4,'planet','<svg viewBox="0 0 60 60"><ellipse cx="30" cy="31" rx="28" ry="8" fill="none" stroke="#7dff4a" stroke-width="3" opacity=".9"/><circle cx="30" cy="30" r="18" fill="#ffffff" stroke="#2a2d36" stroke-width="1.6"/><path d="M18 22c4-3 9-2 10 2s-5 6-9 4-3-4-1-6zM33 34c3-2 8-1 8 3s-5 5-8 3-2-4 0-6zM35 17c2-1 5 0 5 2s-3 3-5 2-1-3 0-4zM20 38c2-1 4 0 4 2s-3 2-4 1-1-2 0-3z" fill="#2a2d36"/><path d="M2 31a28 8 0 0 0 56 0" fill="none" stroke="#7dff4a" stroke-width="3"/><circle cx="24" cy="23" r="3" fill="#fff" opacity=".7"/></svg>','Planet Muhtopia',()=>showToast('Planet Muhtopia ist bei einem Reaktorunfall entstanden – noch unerforscht!'));
   const done=P.missions>=MISSIONS.length,bon=Math.round((worldBonus()-1)*100);
   document.getElementById('mapInfo').innerHTML=!P.unlocked?'<b>Kernkraftwerk noch geschlossen</b><span>Erreiche die Radioaktive Kuh, um es zu öffnen.</span>':
@@ -645,15 +667,15 @@ function updPlantUI(){const P=S.plant,out=plantOutput();
 }
 function renderMissions(update){const box=document.getElementById('missionList'),P=S.plant,out=plantOutput();
   if(!update){box.innerHTML='';MISSIONS.forEach((m,i)=>{const r=document.createElement('div');r.className='row mrow';r.innerHTML='<div class="txt"><b></b><span></span><div class="bar"><i></i></div></div><button></button>';
-    r.querySelector('button').onclick=()=>{if(i!==P.missions||plantOutput()<m.need)return;P.missions++;S.dia+=m.dia;
+    r.querySelector('button').onclick=()=>{if(i!==P.missions||P.mw<misCost(m))return;P.mw-=misCost(m);P.missions++;S.dia+=m.dia;sfx('upgrade');if(m.lego)legoUnlock();
       showToast(P.missions>=MISSIONS.length?'Die Welt ist gerettet! +'+m.dia+' Diamanten':m.n+' hat wieder Strom! +'+m.dia+' Diamanten');save();renderMissions(true)};box.appendChild(r)})}
   if(!box.children.length)return;
   MISSIONS.forEach((m,i)=>{const r=box.children[i],done=i<P.missions,cur=i===P.missions,lock=i>P.missions;
     r.classList.toggle('done',done);r.classList.toggle('lockd',lock);
-    r.querySelector('b').textContent=lock?'??? – braucht '+fmt(m.need)+' MW/Sek.':m.n;
-    r.querySelector('span').innerHTML=done?'Versorgt · +'+Math.round(m.bonus*100)+' % Ertrag auf der Weide':lock?'Erst den vorherigen Ort versorgen':m.d+'<br>Braucht <b style="display:inline">'+fmt(m.need)+' MW/Sek.</b> Leistung · Belohnung: '+IC.dia+m.dia+' · +'+Math.round(m.bonus*100)+' % Ertrag';
-    r.querySelector('.bar i').style.width=(done?100:cur?Math.min(100,out/m.need*100):0)+'%';
-    const b=r.querySelector('button');b.textContent=done?'✓':cur?'Versorgen':'–';b.disabled=!cur||out<m.need});
+    r.querySelector('b').textContent=lock?'??? – kostet '+fmt(misCost(m))+' MW':m.n;
+    r.querySelector('span').innerHTML=done?'Versorgt · +'+Math.round(m.bonus*100)+' % Ertrag auf der Weide':lock?'Erst den vorherigen Ort versorgen':m.d+'<br>Kostet <b style="display:inline">'+fmt(misCost(m))+' MW</b> gespeicherten Strom · Belohnung: '+IC.dia+m.dia+' · +'+Math.round(m.bonus*100)+' % Ertrag';
+    r.querySelector('.bar i').style.width=(done?100:cur?Math.min(100,P.mw/misCost(m)*100):0)+'%';
+    const b=r.querySelector('button');b.textContent=done?'✓':cur?'Versorgen':'–';b.disabled=!cur||P.mw<misCost(m)});
   document.getElementById('missionHead').textContent=P.missions>=MISSIONS.length?'Weltrettung – geschafft!':'Weltrettung';
 }
 function renderPup(update){const box=document.getElementById('pupList'),P=S.plant;
@@ -1104,7 +1126,7 @@ function loop(now){
         if(u>=1){magPull=null;merge(a,b)}}}}
   updMagUI();
   if(drag&&!drag.moved&&performance.now()-drag.t0>LP_MS){const c=drag.c;drag=null;openCowSheet(c)}
-  plantTick(dt);updateWorker(dt);updateAutoFuel();if(plantOpen)drawPlant(dt);
+  plantTick(dt);updateWorker(dt);updateAutoFuel();if(plantOpen)drawPlant(dt);legoTick(dt);if(legoOpen)drawLegoScene(dt);
   if(S.test){if(S.coins<1e12)S.coins=1e12;if(S.dia<1e6)S.dia=1e6;if((S.atom||0)<1e4)S.atom=1e4}
   draw(dt);ui();
   requestAnimationFrame(loop);
@@ -1355,6 +1377,150 @@ function drawFuelAnims(){if(!fuelAnims.length)return;const dt=1/60;
     S.fuelUntil=Date.now()+Math.min(FUEL_MAX,fuelLeft()+FUEL_SEC)*1000;sfx('fuel');burst(fx,fy,'#7dff4a',22);rings.push({x:fx,y:fy,r:10,l:.6,col:'#7dff4a'});
     const b=document.getElementById('birthFab');b.classList.remove('hit');void b.offsetWidth;b.classList.add('hit');
     floats.push({x:Math.min(W-60,Math.max(60,fx+70)),y:fy,t:'Strom ×3',l:1,gold:1,ic:'atom'});updFuelUI();save();return false})}
+
+// =================== Lego-Stadt ===================
+const LEGO=[
+ {n:'Lego-Kälbchen',d:'Frisch aus der Form gepresst.',body:'#e3342f',dark:'#b8221e',mz:'#ffd23f',sc:.82},
+ {n:'Baustein-Kuh',d:'Trägt immer einen Ersatzstein mit sich.',body:'#3b82f6',dark:'#2563c9',mz:'#ffd23f',sc:.86,brick:'#ffd23f'},
+ {n:'Klemmbaustein-Kuh',d:'Hat Greifhände – praktisch beim Bauen.',body:'#ffd23f',dark:'#d9a90f',mz:'#ffffff',sc:.9,hands:1},
+ {n:'Ritter-Kuh',d:'Bewacht die Stein-Burg mit Fahne.',body:'#a7b0bf',dark:'#7d8697',mz:'#e3342f',sc:.94,flag:'#e3342f'},
+ {n:'Polizei-Kuh',d:'Sorgt mit Blaulicht für Ordnung.',body:'#ffffff',dark:'#c9d0db',mz:'#3b82f6',sc:.98,siren:1},
+ {n:'Piraten-Kuh',d:'Segelt über den Bausteinsee.',body:'#9a5b34',dark:'#6f3e20',mz:'#ffd9b0',sc:1.02,pirate:1},
+ {n:'Raumfahrer-Kuh',d:'Die erste Kuh aus Steinen im All.',body:'#5fb2ff',dark:'#3b8fdc',mz:'#ffffff',sc:1.06,astro:1},
+ {n:'Goldene Meister-Kuh',d:'Aus purem Goldstein. Selten und wertvoll.',body:'#ffc83d',dark:'#e0a10f',mz:'#fff3c4',sc:1.1,crown:1,sparkle:1}
+];
+const LMAX=LEGO.length,LEGO_PRICE=25,LEGO_SLOTS=12;
+function legoRate(L){return .5*Math.pow(3,L-1)}
+const BRICK_SVG='<svg viewBox="0 0 24 24"><rect x="5" y="4.5" width="5" height="4" rx="1.2" fill="#e3342f" stroke="#3d4a6b" stroke-width="1.4"/><rect x="14" y="4.5" width="5" height="4" rx="1.2" fill="#e3342f" stroke="#3d4a6b" stroke-width="1.4"/><rect x="2.5" y="8" width="19" height="12" rx="2.5" fill="#e3342f" stroke="#3d4a6b" stroke-width="1.6"/><rect x="5" y="10.5" width="3" height="7" rx="1.5" fill="#fff" opacity=".5"/></svg>';
+function defLego(){return {unlocked:false,cows:[],bricks:0,best:1,buys:0}}
+S.lego=Object.assign(defLego(),S.lego||{});if(!Array.isArray(S.lego.cows))S.lego.cows=[];
+let lUid=1;S.lego.cows.forEach(c=>{c.id=lUid++;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2});
+function addLego(L,x,y){const c={lvl:L,x:x??(.15+Math.random()*.7),y:y??(.48+Math.random()*.38),id:lUid++,pop:1,wait:Math.random()*2};c.tx=c.x;c.ty=c.y;S.lego.cows.push(c);return c}
+function legoUnlock(){const G=S.lego;if(G.unlocked)return;G.unlocked=true;addLego(1,.35,.6);addLego(1,.65,.65);save();setTimeout(()=>showToast('Lego-Stadt hat Strom! Tippe auf der Karte auf Lego-Stadt.'),400)}
+function legoOut(){return S.lego.cows.reduce((a,c)=>a+legoRate(c.lvl),0)}
+
+// ---- Zeichnen einer Lego-Kuh (Kawaii, aber eckig mit Noppen) ----
+function drawLegoCow(c,x,y,s,L,t,flip,lifted,glow,walk){
+  const d=LEGO[L-1];s*=d.sc;const OL='#3d4a6b',LW=Math.max(1.6,s*.028),B=d.body,D=d.dark;
+  c.save();c.translate(x,y);
+  if(glow){c.strokeStyle='rgba(255,255,255,.95)';c.lineWidth=3;c.setLineDash([6,5]);c.beginPath();c.ellipse(0,s*.05,s*.62,s*.55,0,0,7);c.stroke();c.setLineDash([])}
+  if(lifted)c.translate(0,-s*.14);
+  const b=walk?-Math.abs(Math.sin(t*9))*s*.03:Math.sin(t*3)*s*.012;
+  c.lineWidth=LW;c.strokeStyle=OL;c.lineJoin='round';c.lineCap='round';
+  const stud=(sx,sy,w,col)=>{c.fillStyle=col;c.beginPath();c.roundRect(sx-w/2,sy-w*.45,w,w*.5,w*.15);c.fill();c.stroke();c.fillStyle='rgba(255,255,255,.45)';c.fillRect(sx-w*.3,sy-w*.35,w*.15,w*.25)};
+  // Schwanz: kleiner Stein
+  c.fillStyle=D;c.beginPath();c.roundRect(-s*.43,s*.0+b,s*.1,s*.08,s*.02);c.fill();c.stroke();
+  // hintere Beine
+  [-.19,.19].forEach(lx=>{c.fillStyle=D;c.beginPath();c.roundRect(lx*s-s*.065,s*.18+b*.3,s*.13,s*.21,s*.02);c.fill();c.stroke()});
+  // Körper (Stein)
+  c.fillStyle=B;c.beginPath();c.roundRect(-s*.34,-s*.1+b,s*.68,s*.36,s*.05);c.fill();c.stroke();
+  c.fillStyle='rgba(255,255,255,.35)';c.beginPath();c.roundRect(-s*.3,-s*.06+b,s*.08,s*.26,s*.03);c.fill();
+  [-.2,0,.2].forEach(u=>stud(u*s,-s*.1+b,s*.12,B));
+  if(d.pirate){c.fillStyle='#ffffff';c.beginPath();c.roundRect(-s*.34,s*.06+b,s*.68,s*.06,s*.01);c.fill()}
+  if(d.astro){c.fillStyle='#ffffff';c.beginPath();c.arc(-s*.15,s*.08+b,s*.06,0,7);c.fill();c.stroke();c.fillStyle='#e3342f';c.beginPath();c.arc(-s*.15,s*.08+b,s*.025,0,7);c.fill()}
+  if(d.siren){c.fillStyle='#3b82f6';c.beginPath();c.roundRect(-s*.34,s*.04+b,s*.68,s*.07,s*.01);c.fill()}
+  // vordere Beine
+  [-.09,.09].forEach(lx=>{c.fillStyle=D;c.beginPath();c.roundRect(lx*s-s*.07,s*.22+b,s*.14,s*.18-b,s*.02);c.fill();c.stroke()});
+  if(d.hands){[-1,1].forEach(k=>{c.save();c.translate(k*s*.38,s*.1+b);c.strokeStyle=OL;c.lineWidth=LW;c.fillStyle='#ffd23f';c.beginPath();c.arc(0,0,s*.055,k>0?-2.2:-.9,k>0?2.2:4,false);c.lineTo(0,0);c.closePath();c.fill();c.stroke();c.restore()})}
+  // Kopf
+  const hy=-s*.27+b;
+  [-1,1].forEach(k=>{c.fillStyle=D;c.beginPath();c.roundRect(k*s*.3-s*.07,hy-s*.07,s*.14,s*.08,s*.02);c.fill();c.stroke()});
+  c.fillStyle=B;c.beginPath();c.roundRect(-s*.23,hy-s*.17,s*.46,s*.34,s*.06);c.fill();c.stroke();
+  if(d.brick){c.fillStyle=d.brick;c.beginPath();c.roundRect(-s*.15,hy-s*.3,s*.3,s*.13,s*.03);c.fill();c.stroke();[-.07,.07].forEach(u=>stud(u*s,hy-s*.3,s*.09,d.brick))}
+  else if(!d.crown&&!d.pirate&&!d.astro)[-.1,.1].forEach(u=>stud(u*s,hy-s*.17,s*.1,B));
+  if(d.flag){c.strokeStyle=OL;c.beginPath();c.moveTo(s*.2,hy-s*.15);c.lineTo(s*.2,hy-s*.42);c.stroke();c.fillStyle=d.flag;c.beginPath();c.moveTo(s*.2,hy-s*.42);c.lineTo(s*.36,hy-s*.36+Math.sin(t*4)*s*.01);c.lineTo(s*.2,hy-s*.3);c.closePath();c.fill();c.stroke()}
+  if(d.siren){const on=Math.sin(t*8)>0;c.fillStyle=on?'#3b82f6':'#9cc4ff';c.beginPath();c.roundRect(-s*.07,hy-s*.27,s*.14,s*.1,s*.03);c.fill();c.stroke();if(on){c.save();c.globalAlpha=.35;c.fillStyle='#3b82f6';c.beginPath();c.arc(0,hy-s*.22,s*.16,0,7);c.fill();c.restore()}}
+  if(d.pirate){c.fillStyle='#2a2d36';c.beginPath();c.moveTo(-s*.27,hy-s*.13);c.quadraticCurveTo(0,hy-s*.42,s*.27,hy-s*.13);c.closePath();c.fill();c.stroke();c.fillStyle='#fff';c.beginPath();c.arc(0,hy-s*.22,s*.03,0,7);c.fill()}
+  if(d.astro){c.fillStyle='rgba(200,235,255,.35)';c.strokeStyle='#ffffff';c.lineWidth=s*.03;c.beginPath();c.roundRect(-s*.31,hy-s*.27,s*.62,s*.52,s*.16);c.fill();c.stroke();c.strokeStyle=OL;c.lineWidth=LW*.8;c.beginPath();c.roundRect(-s*.33,hy-s*.29,s*.66,s*.56,s*.17);c.stroke();c.lineWidth=LW}
+  if(d.crown){c.fillStyle='#ffd23f';c.beginPath();c.moveTo(-s*.12,hy-s*.16);c.lineTo(-s*.14,hy-s*.3);c.lineTo(-s*.06,hy-s*.22);c.lineTo(0,hy-s*.33);c.lineTo(s*.06,hy-s*.22);c.lineTo(s*.14,hy-s*.3);c.lineTo(s*.12,hy-s*.16);c.closePath();c.fill();c.stroke()}
+  // Gesicht
+  const ey=hy-s*.03;c.strokeStyle=OL;c.lineWidth=LW*1.1;
+  if(d.pirate){c.beginPath();c.arc(s*.09,ey,s*.035,Math.PI*1.1,Math.PI*1.9);c.stroke();c.fillStyle='#2a2d36';c.beginPath();c.ellipse(-s*.09,ey,s*.05,s*.045,0,0,7);c.fill();c.beginPath();c.moveTo(-s*.2,ey-s*.08);c.lineTo(s*.05,ey-s*.02);c.stroke()}
+  else [-1,1].forEach(k=>{c.beginPath();c.arc(k*s*.09,ey,s*.035,Math.PI*1.1,Math.PI*1.9);c.stroke()});
+  c.lineWidth=LW;c.fillStyle='rgba(255,120,160,.55)';[-1,1].forEach(k=>{c.beginPath();c.ellipse(k*s*.16,hy+s*.05,s*.035,s*.022,0,0,7);c.fill()});
+  c.fillStyle=d.mz;c.beginPath();c.roundRect(-s*.13,hy+s*.03,s*.26,s*.12,s*.04);c.fill();c.stroke();
+  c.fillStyle=OL;[-1,1].forEach(k=>{c.beginPath();c.roundRect(k*s*.045-s*.015,hy+s*.065,s*.03,s*.045,s*.01);c.fill()});
+  if(d.sparkle&&Math.sin(t*2+x)>.3){c.fillStyle='#fff';const sx=-s*.3,sy=hy-s*.2,r=s*.06;c.beginPath();c.moveTo(sx,sy-r);c.quadraticCurveTo(sx,sy,sx+r,sy);c.quadraticCurveTo(sx,sy,sx,sy+r);c.quadraticCurveTo(sx,sy,sx-r,sy);c.quadraticCurveTo(sx,sy,sx,sy-r);c.fill()}
+  c.restore();
+}
+
+// ---- Szene ----
+let legoOpen=false,lcv=null,lcx=null,LW_=0,LH_=0,lbg=null,lbgW=0,lbgH=0,lDrag=null,lFloats=[];
+const LHZ=.3;
+function legoSize(){return Math.max(50,Math.min(100,Math.min(LW_,LH_)*.2))}
+function lPx(c){return [c.x*LW_,c.y*LH_]}
+function buildLegoBg(){lbgW=LW_;lbgH=LH_;const d=window.devicePixelRatio||1;lbg=lbg||document.createElement('canvas');lbg.width=LW_*d;lbg.height=LH_*d;
+  const g=lbg.getContext('2d');g.setTransform(d,0,0,d,0,0);g.clearRect(0,0,LW_,LH_);const W2=LW_,H2=LH_,hz=H2*LHZ,OL='#3d4a6b',r=srand(99);
+  // Hügel
+  [['#bfe3a8',-26,22,90],['#a6d98a',-10,16,60]].forEach(([col,off,amp,wl],k)=>{g.fillStyle=col;g.beginPath();g.moveTo(0,H2);for(let x=0;x<=W2+8;x+=6)g.lineTo(x,hz+off+Math.sin(x/wl+k*2)*amp*.5);g.lineTo(W2,H2);g.fill();g.strokeStyle=OL;g.globalAlpha=.5;g.lineWidth=2;g.beginPath();for(let x=0;x<=W2+8;x+=6){const y=hz+off+Math.sin(x/wl+k*2)*amp*.5;x?g.lineTo(x,y):g.moveTo(x,y)}g.stroke();g.globalAlpha=1});
+  // Fabrik aus Steinen
+  const base=hz+6,fx=W2*.5,bw=Math.min(W2*.62,260),bh=H2*.16;g.lineWidth=2.2;g.strokeStyle=OL;
+  const brick=(x,y,w,h,col)=>{g.fillStyle=col;g.beginPath();g.roundRect(x,y,w,h,3);g.fill();g.stroke();const n=Math.max(1,Math.round(w/16));for(let i=0;i<n;i++){const sx=x+(i+.5)*w/n;g.beginPath();g.roundRect(sx-4,y-4,8,5,2);g.fill();g.stroke()}};
+  const C=['#e3342f','#3b82f6','#ffd23f','#22b357','#ff8a1f'];
+  const rows=4,rh=bh/rows;for(let j=0;j<rows;j++){const off=j%2?rh*.9:0;let x=fx-bw/2+off;const y=base-(j+1)*rh;while(x<fx+bw/2-4){const w=Math.min(rh*1.8,fx+bw/2-x);brick(x,y,w,rh,C[(j*3+Math.floor(x/7))%5]);x+=w}}
+  // Dach + Tor + Fenster
+  g.fillStyle='#e3342f';g.beginPath();g.moveTo(fx-bw/2-8,base-bh);g.lineTo(fx,base-bh-rh*1.6);g.lineTo(fx+bw/2+8,base-bh);g.closePath();g.fill();g.stroke();
+  g.fillStyle='#2a2d36';g.beginPath();g.roundRect(fx-rh*.8,base-rh*1.6,rh*1.6,rh*1.6,[rh*.8,rh*.8,0,0]);g.fill();g.stroke();
+  [-1,1].forEach(k=>{g.fillStyle='#bfe9ff';g.beginPath();g.roundRect(fx+k*bw*.3-rh*.45,base-bh+rh*.5,rh*.9,rh*.9,3);g.fill();g.stroke()});
+  // Schild
+  g.fillStyle='#fff';g.beginPath();g.roundRect(fx-46,base-bh-rh*.95,92,rh*.75,6);g.fill();g.stroke();g.fillStyle='#e3342f';g.font='900 '+Math.round(rh*.42)+'px Nunito, system-ui';g.textAlign='center';g.textBaseline='middle';g.fillText('Stein-Fabrik',fx,base-bh-rh*.57);
+  // Schornstein
+  const chx=fx+bw*.32;brick(chx-9,base-bh-rh*2.6,18,rh*2.6-rh*.2,'#a7b0bf');
+  // Grundplatte mit Noppen
+  const m=g.createLinearGradient(0,hz,0,H2);m.addColorStop(0,'#8fd46a');m.addColorStop(1,'#5cbf3e');g.fillStyle=m;g.fillRect(0,hz+12,W2,H2);g.fillStyle='#8fd46a';g.fillRect(0,hz+8,W2,6);
+  g.fillStyle='rgba(255,255,255,.18)';g.strokeStyle='rgba(40,110,20,.25)';g.lineWidth=1;
+  for(let y=hz+34;y<H2-6;y+=26)for(let x=((y/26)%2)*13+8;x<W2;x+=26){g.beginPath();g.arc(x,y,5,0,7);g.fill();g.stroke()}
+  // Zaun aus Steinen
+  const fy=hz+16;for(let x=-6;x<W2;x+=34){brick(x,fy-10,30,10,C[Math.floor(x/34+10)%5])}
+  // ein paar lose Steine
+  for(let i=0;i<5;i++){const x=W2*(.08+r()*.84),y=hz+70+r()*(H2-hz-110);brick(x,y,22,12,C[i%5])}
+}
+function drawLegoScene(dt){const c=lcx;if(!c)return;if(lbgW!==LW_||lbgH!==LH_||!lbg)buildLegoBg();
+  const hz=LH_*LHZ,sk=c.createLinearGradient(0,0,0,hz+30);sk.addColorStop(0,'#7cc4ff');sk.addColorStop(1,'#dff1ff');c.fillStyle=sk;c.fillRect(0,0,LW_,hz+40);
+  const sx=LW_*.1,sy=hz*.3;c.fillStyle='#ffe066';c.strokeStyle='#3d4a6b';c.lineWidth=2;c.beginPath();c.arc(sx,sy,18,0,7);c.fill();c.stroke();
+  // Rauch als kleine Steine
+  const chx=LW_*.5+Math.min(LW_*.62,260)*.32,top=hz+6-LH_*.16-LH_*.16/4*2.6;for(let i=0;i<5;i++){const k=(T*.25+i/5)%1;c.save();c.globalAlpha=.8*(1-k);c.translate(chx+Math.sin(i*2+T)*6+k*20,top-k*hz*.6);c.rotate(k*2+i);c.fillStyle=['#ffffff','#e6ecf5'][i%2];c.strokeStyle='#3d4a6b';c.lineWidth=1.5;c.beginPath();c.roundRect(-7-k*4,-4-k*2,14+k*8,8+k*4,2);c.fill();c.stroke();c.restore()}
+  c.drawImage(lbg,0,0,LW_,LH_);
+  const s=legoSize(),order=[...S.lego.cows].sort((a,b)=>a.y-b.y);if(lDrag){const i=order.indexOf(lDrag.c);if(i>=0){order.splice(i,1);order.push(lDrag.c)}else lDrag=null}
+  order.forEach(k=>{const [x,y]=lPx(k),sc=1+(k.pop?Math.sin(k.pop*Math.PI)*.3:0),lift=lDrag&&lDrag.c===k&&lDrag.moved,glow=lDrag&&lDrag.moved&&lDrag.c!==k&&lDrag.c.lvl===k.lvl&&k.lvl<LMAX;
+    drawLegoCow(c,x,y,s*sc,k.lvl,T+k.id,false,lift,glow,k.mv&&!lift)});
+  lFloats.forEach(f=>{f.l-=dt;if(f.spark){f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy+=.9*dt}else f.y-=dt*.06});lFloats=lFloats.filter(f=>f.l>0);
+  lFloats.forEach(f=>{const x=f.x*LW_,y=f.y*LH_;c.globalAlpha=Math.min(1,f.l*2);if(f.spark){c.fillStyle=f.col;c.fillRect(x-3,y-2,6,4)}else{c.font='800 15px Nunito, system-ui';c.textAlign='center';const tw=c.measureText(f.t).width;c.fillStyle='#fff';c.beginPath();c.roundRect(x-tw/2-10,y-14,tw+20,26,13);c.fill();c.strokeStyle='rgba(255,95,162,.55)';c.lineWidth=2.5;c.stroke();c.fillStyle='#d6347f';c.textBaseline='middle';c.fillText(f.t,x,y)}c.globalAlpha=1});
+  updLegoUI()}
+function legoTick(dt){const G=S.lego;if(!G.unlocked)return;G.bricks+=legoOut()*dt;
+  G.cows.forEach(c=>{if(c.pop)c.pop=Math.max(0,c.pop-dt*3);if(lDrag&&lDrag.c===c)return;const dx=c.tx-c.x,dy=c.ty-c.y,d=Math.hypot(dx,dy);
+    if(d<.005){c.wait-=dt;if(c.wait<=0){c.tx=Math.min(.88,Math.max(.12,c.x+(Math.random()-.5)*.3));c.ty=Math.min(.88,Math.max(.46,c.y+(Math.random()-.5)*.25));c.wait=1+Math.random()*3}c.mv=0}
+    else{const sp=.06*dt;c.x+=dx/d*Math.min(sp,d);c.y+=dy/d*Math.min(sp,d);c.mv=1}})}
+let lUiT=0;function updLegoUI(){if(++lUiT%6)return;const G=S.lego;
+  document.getElementById('lBricks').textContent=Math.floor(G.bricks).toLocaleString('de-DE');
+  const r=legoOut();document.getElementById('lRate').textContent=r<100?r.toLocaleString('de-DE',{maximumFractionDigits:1}):fmt(r);
+  document.getElementById('lCnt').textContent=G.cows.length+'/'+LEGO_SLOTS+' Kühe';
+  const b=document.getElementById('lBuy'),h='<span>Lego-Kalb</span><small>'+BRICK_SVG+LEGO_PRICE+'</small>';if(b.innerHTML!==h)b.innerHTML=h;b.disabled=G.cows.length>=LEGO_SLOTS||G.bricks<LEGO_PRICE}
+function openLego(){legoOpen=true;document.getElementById('legoView').classList.add('on');lcv=document.getElementById('legoCv');lcx=lcv.getContext('2d');const d=window.devicePixelRatio||1;LW_=lcv.clientWidth;LH_=lcv.clientHeight;lcv.width=LW_*d;lcv.height=LH_*d;lcx.setTransform(d,0,0,d,0,0);lUiT=0;updLegoUI()}
+function closeLego(){legoOpen=false;lDrag=null;document.getElementById('legoView').classList.remove('on')}
+function mergeLego(a,b){const G=S.lego,L=a.lvl+1;G.cows=G.cows.filter(o=>o!==a&&o!==b);addLego(L,b.x,b.y);sfx('merge',L);
+  lFloats.push({t:'+'+legoRate(L).toLocaleString('de-DE',{maximumFractionDigits:1})+' Steine/Sek.',l:1,x:b.x,y:b.y-.12});
+  for(let i=0;i<14;i++)lFloats.push({spark:1,x:b.x,y:b.y,vx:(Math.random()-.5)*.6,vy:(Math.random()-.8)*.5,l:.6,col:['#e3342f','#3b82f6','#ffd23f','#22b357'][i%4]});
+  if(L>G.best){G.best=L;sfx('discover');showToast('Neue Lego-Kuh: '+LEGO[L-1].n+'! '+LEGO[L-1].d)}save()}
+function renderLegoLadder(){const box=document.getElementById('legoLadder');box.innerHTML='';
+  LEGO.forEach((d,i)=>{const L=i+1,known=L<=S.lego.best,r=document.createElement('div');r.className='row';const cv2=document.createElement('canvas');cv2.width=168;cv2.height=140;const g=cv2.getContext('2d');g.scale(2,2);drawLegoCow(g,40,44,54,L,1,false);if(!known)cv2.className='locked';r.appendChild(cv2);
+    const t=document.createElement('div');t.className='txt';t.innerHTML='<b>'+L+'. '+(known?d.n:'???')+'</b><span>'+(known?d.d+'<br>':'')+legoRate(L).toLocaleString('de-DE',{maximumFractionDigits:1})+' Steine/Sek.</span>';r.appendChild(t);box.appendChild(r)})}
+(function initLego(){
+  document.getElementById('lBrickIc').innerHTML=BRICK_SVG;
+  document.getElementById('lMapBtn').onclick=()=>{closeLego();openMap()};
+  document.getElementById('lLadBtn').onclick=()=>{renderLegoLadder();open('lLad')};
+  document.getElementById('lBuy').onclick=()=>{const G=S.lego;if(G.cows.length>=LEGO_SLOTS||G.bricks<LEGO_PRICE)return;G.bricks-=LEGO_PRICE;G.buys++;const k=addLego(1);sfx('buy');lFloats.push({t:'Neu: Lego-Kälbchen',l:1,x:k.x,y:k.y-.14});save()};
+  addEventListener('resize',()=>{if(legoOpen)openLego()});
+  const cvl=document.getElementById('legoCv'),pos=e=>{const r=cvl.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top]};
+  cvl.addEventListener('pointerdown',e=>{const [px,py]=pos(e),s=legoSize();let best=null,bd=1e9;S.lego.cows.forEach(k=>{const [x,y]=lPx(k),d=Math.hypot(px-x,py-y);if(d<s*LEGO[k.lvl-1].sc*.6&&d<bd){bd=d;best=k}});
+    if(best){lDrag={c:best,dx:best.x*LW_-px,dy:best.y*LH_-py,sx:px,sy:py,moved:false};cvl.setPointerCapture(e.pointerId)}});
+  cvl.addEventListener('pointermove',e=>{if(!lDrag)return;const [px,py]=pos(e);if(Math.hypot(px-lDrag.sx,py-lDrag.sy)>8)lDrag.moved=true;
+    if(lDrag.moved){const k=lDrag.c,m=legoSize()*LEGO[k.lvl-1].sc*.7;k.x=Math.min(1-m/LW_,Math.max(m/LW_,(px+lDrag.dx)/LW_));k.y=Math.min(1-m*.7/LH_,Math.max(.42,(py+lDrag.dy)/LH_));k.tx=k.x;k.ty=k.y}});
+  const end=()=>{if(!lDrag)return;const k=lDrag.c,moved=lDrag.moved;lDrag=null;k.wait=1.5;
+    if(!moved){k.pop=.6;lFloats.push({t:legoRate(k.lvl).toLocaleString('de-DE',{maximumFractionDigits:1})+' Steine/Sek.',l:.9,x:k.x,y:k.y-.14});return}
+    const s=legoSize(),t=S.lego.cows.find(o=>o!==k&&o.lvl===k.lvl&&Math.hypot((o.x-k.x)*LW_,(o.y-k.y)*LH_)<s*.6);if(t&&k.lvl<LMAX)mergeLego(k,t)};
+  cvl.addEventListener('pointerup',end);cvl.addEventListener('pointercancel',end);
+})();
 </script>
 </body>
 </html>
