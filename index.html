@@ -926,9 +926,9 @@ function fuelDrop(c){if(!S.plant||!S.plant.unlocked||c.lvl!==MAXL)return false;c
   sfx('fuel');S.cows=S.cows.filter(o=>o!==c);S.fuelUntil=Date.now()+Math.min(FUEL_MAX,fuelLeft()+FUEL_SEC)*1000;
   burst(x,y,'#7dff4a',24);rings.push({x,y,r:10,l:.6,col:'#7dff4a'});floats.push({x:Math.min(W-60,Math.max(60,x+40)),y:y-cowSize()*.4,t:'Strom ×3',l:.9,gold:1,ic:'atom'});save();return true}
 function updWkUI(){const b=document.getElementById('wkBtn'),un=!!(S.plant&&S.plant.unlocked);b.classList.toggle('show',un);if(!un)return;
-  const iv=wkInt(S.up.wkFreq),here=!!wk;b.classList.toggle('here',here);
+  const iv=wkInt(S.up.wkFreq),here=!!wk;if(!here&&(!isFinite(wkT)||wkT>iv))wkT=iv;b.classList.toggle('here',here);
   document.getElementById('wkRing').style.strokeDashoffset=(119.4*(here?0:Math.max(0,Math.min(1,wkT/iv)))).toFixed(1);
-  const l=document.getElementById('wkLbl'),t=here?'DA':wkT<60?Math.max(1,Math.ceil(wkT))+'s':Math.ceil(wkT/60)+'m';if(l.textContent!==t)l.textContent=t}
+  const l=document.getElementById('wkLbl'),t=here?'DA':wkT<60?Math.max(1,Math.ceil(wkT))+'s':Math.floor(Math.ceil(wkT)/60)+':'+String(Math.ceil(wkT)%60).padStart(2,'0');if(l.textContent!==t)l.textContent=t}
 document.getElementById('wkBtn').onclick=()=>{showToast(wk?(wk.phase==='out'?'Der Mitarbeiter ist auf dem Rückweg.':'Ein Mitarbeiter wartet auf der Weide – er sucht eine '+LV[wk.want-1].n+'!'):'Der nächste Kraftwerk-Mitarbeiter kommt in '+fmtT(wkT)+'.')};
 function updCrateUI(){const on=S.cratesOn!==false,full=S.cows.length+crates.length>=cap(),b=document.getElementById('crateBtn');b.classList.toggle('off',!on);
   const iv=crateInt(S.up.crate),pr=!on?0:full?1:crateT/iv;document.getElementById('crateRing').style.strokeDashoffset=(119.4*(1-pr)).toFixed(1);
