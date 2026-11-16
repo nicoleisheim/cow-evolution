@@ -596,7 +596,7 @@ function buildPlantBg(){
   [[.66,.9],[.84,1]].forEach(([fx,sc])=>{const cx0=W2*fx,h=H2*.2*sc,w=W2*.11*sc;
     g.fillStyle='#ffffff';g.strokeStyle='#3d4a6b';g.lineWidth=2.5;g.beginPath();g.moveTo(cx0-w*.62,base);g.quadraticCurveTo(cx0-w*.28,base-h*.55,cx0-w*.42,base-h);g.lineTo(cx0+w*.42,base-h);g.quadraticCurveTo(cx0+w*.28,base-h*.55,cx0+w*.62,base);g.closePath();g.fill();g.stroke();
     g.fillStyle='rgba(0,0,0,.08)';g.beginPath();g.moveTo(cx0+w*.1,base);g.quadraticCurveTo(cx0+w*.3,base-h*.55,cx0+w*.2,base-h);g.lineTo(cx0+w*.42,base-h);g.quadraticCurveTo(cx0+w*.28,base-h*.55,cx0+w*.62,base);g.fill();
-    g.fillStyle='#ff8fc0';g.fillRect(cx0-w*.46,base-h*.86,w*.92,h*.06);g.fillRect(cx0-w*.52,base-h*.7,w*1.04,h*.04);
+    g.save();g.beginPath();g.moveTo(cx0-w*.62,base);g.quadraticCurveTo(cx0-w*.28,base-h*.55,cx0-w*.42,base-h);g.lineTo(cx0+w*.42,base-h);g.quadraticCurveTo(cx0+w*.28,base-h*.55,cx0+w*.62,base);g.closePath();g.clip();g.fillStyle='#ff8fc0';g.fillRect(cx0-w,base-h*.86,w*2,h*.06);g.fillRect(cx0-w,base-h*.7,w*2,h*.04);g.restore();
     g.strokeStyle='#3d4a6b';g.lineWidth=2.5;g.beginPath();g.moveTo(cx0-w*.62,base);g.quadraticCurveTo(cx0-w*.28,base-h*.55,cx0-w*.42,base-h);g.lineTo(cx0+w*.42,base-h);g.quadraticCurveTo(cx0+w*.28,base-h*.55,cx0+w*.62,base);g.closePath();g.stroke();
     pTowers.push([cx0,base-h,w])});
   const rx=W2*.3,rw=W2*.2,rh=H2*.09;
