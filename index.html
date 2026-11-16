@@ -691,7 +691,7 @@ function save(){if(window.__reset)return;S.last=Date.now();try{S.wk=(wk&&wk.phas
 let coins=[],crates=(Array.isArray(S.crates)?S.crates:[]).filter(k=>k&&typeof k==='object').slice(0,16).map(k=>({x:k.x,y:k.y,lvl:k.lvl||1,gold:!!k.gold,drop:1,landed:1,age:9})),parts=[],floats=[],crateT=0,uid=1;
 S.cows.forEach(c=>{c.id=uid++;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2;c.ph=Math.random()*COIN_EVERY});
 function cap(){return Math.min(16,10+S.up.cap)}
-function priceOf(L){return Math.round(12000*Math.pow(4.4,L-1)/10)*10}
+function priceOf(L){return 12000*Math.pow(2,L-1)}
 function maxBuy(){return Math.max(1,S.highest-1)}
 function buyCost(){return priceOf(1)}
 function rate(){return S.cows.reduce((a,c)=>a+income(c.lvl),0)/COIN_EVERY}
