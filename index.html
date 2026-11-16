@@ -252,11 +252,11 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 #lbar button svg{width:24px;height:24px;color:#fff}
 #lbar button.primary{background:#fff;color:#ff4f93;text-shadow:none;box-shadow:0 4px 12px rgba(150,20,80,.18)}
 #lbar button.primary small{color:#d6347f;font:800 11.5px Nunito,system-ui;display:flex;align-items:center;gap:3px}
-#lbar button.primary small svg{width:14px;height:14px}
+#lbar button.primary small svg{width:17px;height:14px;margin-right:2px}
 #lbar button:disabled{opacity:.6}
 #legoView .pill{background:#fff!important;border:3px solid rgba(255,95,162,.55)!important;color:#d6347f!important;box-shadow:0 6px 20px rgba(214,52,127,.18)!important;backdrop-filter:none!important}
 #legoView .pill small,#legoView .pill .cap{color:#e07aa8!important;opacity:1!important}
-#lBrickIc svg{width:26px;height:26px}
+#lBrickIc svg{width:30px;height:24px}
 </style>
 </head>
 <body>
@@ -1390,7 +1390,7 @@ const LEGO=[
 ];
 const LMAX=LEGO.length,LEGO_PRICE=25,LEGO_SLOTS=12;
 function legoRate(L){return .5*Math.pow(3,L-1)}
-const BRICK_SVG='<svg viewBox="0 0 24 24"><rect x="5" y="4.5" width="5" height="4" rx="1.2" fill="#e3342f" stroke="#3d4a6b" stroke-width="1.4"/><rect x="14" y="4.5" width="5" height="4" rx="1.2" fill="#e3342f" stroke="#3d4a6b" stroke-width="1.4"/><rect x="2.5" y="8" width="19" height="12" rx="2.5" fill="#e3342f" stroke="#3d4a6b" stroke-width="1.6"/><rect x="5" y="10.5" width="3" height="7" rx="1.5" fill="#fff" opacity=".5"/></svg>';
+const BRICK_SVG='<svg viewBox="0 0 64 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><g><path fill="#FFC6DE" d="M38 3.9 L38 2 Q38 0 40 0 L56 0 Q58 0 58 2 L58 3.9 Q57.95 2 56 2 L40 2 Q38.05 2 38 3.9 M58 8 L62.15 8 63 8.15 Q63.95 8.55 64 9.9 L64 11.9 Q63.95 10.55 63 10.15 L62.15 10 1.9 10 1 10.2 Q0.4 10.4 0.2 11 L0 11.75 0 9.9 Q0.05 8.55 1 8.2 L1.9 8 6 8 26 8 38 8 58 8 M6 3.9 L6 2 Q6 0 8 0 L24 0 Q26 0 26 2 L26 3.9 Q25.95 2 24 2 L8 2 Q6.05 2 6 3.9"/><path fill="#FF8FC0" d="M6 3.9 Q6.05 2 8 2 L24 2 Q25.95 2 26 3.9 L26 8 6 8 6 3.9 M58 3.9 L58 8 38 8 38 3.9 Q38.05 2 40 2 L56 2 Q57.95 2 58 3.9 M1 10.2 L1.9 10 62.15 10 63 10.15 63 62 1 62 1 10.2"/><path fill="#F67DB2" d="M1 10.2 L1 62 0 62 0 11.75 0.2 11 Q0.4 10.4 1 10.2 M64 11.9 L64 62 63 62 63 10.15 Q63.95 10.55 64 11.9"/><path fill="#DE6A9C" d="M64 62 L64 64 0 64 0 62 1 62 63 62 64 62"/></g></svg>';
 function defLego(){return {unlocked:false,cows:[],bricks:0,best:1,buys:0}}
 S.lego=Object.assign(defLego(),S.lego||{});if(!Array.isArray(S.lego.cows))S.lego.cows=[];
 let lUid=1;S.lego.cows.forEach(c=>{c.id=lUid++;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2});
