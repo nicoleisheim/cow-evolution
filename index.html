@@ -259,6 +259,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 #lBrickIc svg{width:30px;height:24px}
 .hbal{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.balw{display:flex;gap:6px}.bal{display:inline-flex;align-items:center;gap:4px;background:#fff;border:2.5px solid rgba(255,95,162,.55);color:#d6347f;border-radius:999px;padding:4px 11px 4px 8px;font:900 15px Nunito,system-ui;letter-spacing:0}.bal svg{width:18px;height:18px}
 #field{border-radius:0!important;box-shadow:none!important}#bar,#pbar,#lbar{background:rgba(255,95,162,.93)!important}#bar button,#pbar button,#lbar button{min-height:73px;box-sizing:border-box}#pbar button span{white-space:nowrap}#pbar button{font-size:12px!important}#plantView #plantCv,#legoView #legoCv{border-radius:0!important;box-shadow:none!important}
+html,body{touch-action:manipulation;-webkit-text-size-adjust:100%}
 </style>
 </head>
 <body>
@@ -920,8 +921,8 @@ function startMagnet(){
     let best=null,bd=9;for(let i=0;i<g.length;i++)for(let j=i+1;j<g.length;j++){const d=Math.hypot(g[i].x-g[j].x,g[i].y-g[j].y);if(d<bd){bd=d;best=[g[i],g[j]]}}
     magPull={a:best[0],b:best[1],t:0,x0:best[0].x,y0:best[0].y};return}
 }
-function updFuelUI(){const b=document.getElementById('birthFab'),un=!!(S.plant&&S.plant.unlocked);b.classList.toggle('show',un);if(!un)return;
-  const l=fuelLeft();b.classList.toggle('on',l>0);b.classList.toggle('target',!!(drag&&drag.moved&&drag.c.lvl===MAXL));
+function updFuelUI(){const b=document.getElementById('birthFab'),un=!!(S.plant&&S.plant.unlocked);const l=fuelLeft(),busy=l>0||(typeof fuelAnims!=='undefined'&&fuelAnims.length>0)||!!(drag&&drag.moved&&drag.c.lvl===MAXL);b.classList.toggle('show',un&&busy);if(!un)return;
+  b.classList.toggle('on',l>0);b.classList.toggle('target',!!(drag&&drag.moved&&drag.c.lvl===MAXL));
   document.getElementById('fuelRing').style.strokeDashoffset=(119.4*(1-Math.min(1,l/FUEL_MAX))).toFixed(1);
   const t=l>0?'×3 '+(l<60?Math.ceil(l)+'s':Math.ceil(l/60)+'m'):'×1',e=document.getElementById('fuelLbl');if(e.textContent!==t)e.textContent=t}
 document.getElementById('birthFab').onclick=()=>{const l=fuelLeft();showToast(l>0?'Brennstab aktiv: Das Kraftwerk macht noch '+fmtT(l)+' lang dreimal so viel Strom.':'Jede neue Radioaktive Kuh wird automatisch zum Brennstab: Das Kraftwerk macht dann 1 Minute lang dreimal so viel Strom.')};
@@ -1195,6 +1196,9 @@ function open(id){document.getElementById(id).classList.add('on');updBal()}
 function syncBg(){const sm=(id,el)=>{const cv=document.getElementById(id);if(!cv||!cv.width)return;try{const g=cv.getContext('2d'),p=g.getImageData(2,cv.height-3,1,1).data;el.style.background='rgb('+p[0]+','+p[1]+','+p[2]+')'}catch(e){}};
   if(typeof legoOpen!=='undefined'&&legoOpen)sm('legoCv',document.getElementById('legoView'));else if(typeof plantOpen!=='undefined'&&plantOpen)sm('plantCv',document.getElementById('plantView'));else sm('cv',document.getElementById('app'))}
 setInterval(syncBg,400);
+['gesturestart','gesturechange','gestureend'].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
+document.addEventListener('touchmove',e=>{if(e.touches.length>1||(e.scale&&e.scale!==1))e.preventDefault()},{passive:false});
+{let lastTouch=0;document.addEventListener('touchend',e=>{const n=Date.now();if(n-lastTouch<300&&!(e.target.closest&&e.target.closest('button,input')))e.preventDefault();lastTouch=n},{passive:false})}
 function fitTop(){document.querySelectorAll('#top,.ptop').forEach(t=>{if(!t.offsetParent&&t.id!=='top')return;const kids=[...t.children].filter(e=>e.offsetParent!==null||e.id==='statPill');if(!kids.length)return;
   kids.forEach(e=>e.style.zoom='');const cs=getComputedStyle(t),av=t.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight)-8;let need=0;kids.forEach(e=>need+=e.offsetWidth);need+=8*(kids.length-1);
   if(need>av){const k=Math.max(.6,av/need);kids.forEach(e=>e.style.zoom=k)}})}
