@@ -730,8 +730,8 @@ function rnd(a,b){return a+Math.random()*(b-a)}
 function cowMargins(lvl){const s=cowSize()*LV[lvl-1].sc;return [s*.78/W,s*.55/H]}
 let FZ={r:0,b:0};function updFZ(){let r=0,b=0;['magBtn','crateBtn','wkBtn','birthFab'].forEach(id=>{const e=document.getElementById(id);if(!e||e.offsetParent===null)return;const q=e.getBoundingClientRect();if(q.width){r=Math.max(r,q.right+8);b=Math.max(b,q.bottom+14)}});FZ={r,b}}
 function avoidFab(x,y,hw,hh){if(!W||!FZ.r)return x;if(x*W-hw<FZ.r&&y*H-hh<FZ.b)return (FZ.r+hw)/W;return x}
-function clampXY(lvl,x,y,noAv){try{if(!W)return [x,y]}catch(e){return [x,y]}const [mx,my]=cowMargins(lvl);x=clamp(x,mx,1-mx);y=clamp(y,.3,1-my);const s=cowSize()*LV[lvl-1].sc;return [noAv?x:avoidFab(x,y,s*.5,s*.45),y]}
-function addCow(lvl,x,y){const c={id:uid++,lvl,x:x??rnd(.12,.88),y:y??rnd(.32,.86),wait:1,ph:Math.random()*COIN_EVERY};[c.x,c.y]=clampXY(lvl,c.x,c.y);c.tx=c.x;c.ty=c.y;S.cows.push(c);return c}
+function clampXY(lvl,x,y,noAv){try{if(!W)return [x,y]}catch(e){return [x,y]}const [mx,my]=cowMargins(lvl);x=clamp(x,mx,1-mx);y=clamp(y,.35,1-my);const s=cowSize()*LV[lvl-1].sc;return [noAv?x:avoidFab(x,y,s*.5,s*.45),y]}
+function addCow(lvl,x,y){const c={id:uid++,lvl,x:x??rnd(.12,.88),y:y??rnd(.37,.86),wait:1,ph:Math.random()*COIN_EVERY};[c.x,c.y]=clampXY(lvl,c.x,c.y);c.tx=c.x;c.ty=c.y;S.cows.push(c);return c}
 if(!S.cows.length){addCow(1,.35,.5);addCow(1,.65,.55)}
 
 // Offline-Einnahmen (50 %, max. 2 h)
@@ -767,7 +767,7 @@ function drawCrate(c,x,y,s,gold,wob){
 function drawCoin(c,x,y,r,a){c.save();c.globalAlpha=a;shDraw(c,COIN_SH,x,y,r/10.6);c.restore()}
 
 // ---------- Landschaft ----------
-const HZ=.2,DAY=180;
+const HZ=.27,DAY=180;
 let bgC=null,bgW=0,bgH=0,clouds=[],rings=[],flyers=[];
 function srand(seed){return ()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646}}
 function hex(h){h=h.replace('#','');return [0,2,4].map(i=>parseInt(h.substr(i,2),16))}
@@ -999,7 +999,7 @@ function updateWorker(dt){
 }
 function workerDrop(c){
   if(!wk||wk.phase==='out')return false;const [wx,wy]=toPx(wk),[x,y]=toPx(c);
-  if(Math.abs(x-wx)>cowSize()*.6||c.y>.36)return false;
+  if(Math.abs(x-wx)>cowSize()*.6||c.y>.41)return false;
   if(c.lvl!==wk.want){showToast('Der Mitarbeiter sucht eine '+LV[wk.want-1].n+'!');c.wait=1;return true}
   const n=atomFor(c.lvl);S.cows=S.cows.filter(o=>o!==c);S.atom=(S.atom||0)+n;
   burst(x,y,'#7dff4a',22);rings.push({x,y,r:10,l:.6,col:'#7dff4a'});
@@ -1052,7 +1052,10 @@ function drawWorker(){
   c.fillStyle='#2a2d36';c.beginPath();c.roundRect(-s*.035,-s*.735,s*.07,s*.04,s*.015);c.fill();c.fillStyle=Math.sin(T*4)>0?'#7dff4a':'#3d7a24';c.beginPath();c.arc(0,-s*.745,s*.022,0,7);c.fill();
   c.restore();
   if(fenceC)c.drawImage(fenceC,0,0,W,H);
-  if(wk.phase!=='out'){const ss=cowSize()*.95,side=x<W/2?1:-1,sx=x+side*(s*.35+ss*.32),sy=y-s*.5;drawWantSign(c,sx,sy+ss*1.06,ss,wk.want)}
+  if(wk.phase!=='out'){const r=Math.max(15,Math.min(21,cowSize()*.24)),by=y-bob-s*.8-8-r+Math.sin(T*2.5)*1.5,L=wk.want;c.save();
+    c.fillStyle='#fff';c.strokeStyle=L===MAXL?'#7dff4a':'#ff5fa2';c.lineWidth=3;c.shadowColor='rgba(0,0,0,.15)';c.shadowBlur=6;c.beginPath();c.arc(x,by,r,0,7);c.fill();c.shadowBlur=0;c.stroke();
+    c.beginPath();c.moveTo(x-5,by+r-1.5);c.lineTo(x,by+r+6);c.lineTo(x+5,by+r-1.5);c.fill();c.stroke();c.fillStyle='#fff';c.fillRect(x-4,by+r-4,8,3.5);
+    const bx=cowBox(L),k=r*1.45/bx.m;drawCow(c,x-bx.cx*k,by-bx.cy*k,k,L,0,false);c.restore()}
 }
 // ---------- Eingabe ----------
 
@@ -1100,7 +1103,7 @@ function collect(i){const k=coins[i];S.coins+=k.v;floats.push({x:k.x*W,y:k.y*H,t
 function openCrate(i){const k=crates[i];crates.splice(i,1);if(S.cows.length<cap())sfx('crate',k.gold);if(S.cows.length>=cap()){crates.push(k);floats.push({x:k.x*W,y:k.y*H,t:'Weide voll!',l:1.2});return}const c=addCow(k.lvl,k.x,k.y);c.pop=1;burst(k.x*W,k.y*H,k.gold?'#ffd84d':'#c58a4a',k.gold?24:12);
   if(k.gold){rings.push({x:k.x*W,y:k.y*H,r:10,l:.6,col:'#ffd84d'});showToast('Goldene Kiste: '+LV[k.lvl-1].n+'!')}
   else{S.cratesOpened=(S.cratesOpened||0)+1;S.goldCnt=(S.goldCnt||0)+1;if(S.goldCnt>=goldInt(S.up.gold)){S.goldCnt=0;S.goldPending=(S.goldPending||0)+1;showToast(goldInt(S.up.gold)+' Kisten geöffnet – eine Goldene Kiste ist da!')}}save()}
-function spawnCrate(){const s=cowSize();let best=null,bd=-1;for(let i=0;i<14;i++){const y=rnd(.33,.84),x=avoidFab(rnd(.12,.88),y,s*.35,s*.35);let d=1e9;crates.forEach(o=>{d=Math.min(d,Math.hypot((o.x-x)*W,(o.y-y)*H))});S.cows.forEach(o=>{d=Math.min(d,Math.hypot((o.x-x)*W,(o.y-y)*H))});if(wk)d=Math.min(d,Math.hypot((wk.x-x)*W,(wk.y-y)*H));if(d>bd){bd=d;best=[x,y]}if(d>s*.9)break}crates.push({x:best[0],y:best[1],lvl:1,drop:0,age:0});save()}
+function spawnCrate(){const s=cowSize();let best=null,bd=-1;for(let i=0;i<14;i++){const y=rnd(.37,.84),x=avoidFab(rnd(.12,.88),y,s*.35,s*.35);let d=1e9;crates.forEach(o=>{d=Math.min(d,Math.hypot((o.x-x)*W,(o.y-y)*H))});S.cows.forEach(o=>{d=Math.min(d,Math.hypot((o.x-x)*W,(o.y-y)*H))});if(wk)d=Math.min(d,Math.hypot((wk.x-x)*W,(wk.y-y)*H));if(d>bd){bd=d;best=[x,y]}if(d>s*.9)break}crates.push({x:best[0],y:best[1],lvl:1,drop:0,age:0});save()}
 
 // ---------- Schleife ----------
 let lastT=performance.now(),T=0;
