@@ -232,7 +232,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 #cloudForm{display:flex;flex-direction:column;gap:8px}#cloudForm input{width:100%;box-sizing:border-box;border:2px solid #f3dbe7;border-radius:14px;padding:12px;font:700 16px Nunito,system-ui;color:#3d4a6b;background:#fff;outline:none}#cloudForm input:focus{border-color:#ff8fbf}
 #cloudSheet .close{position:static;box-shadow:none}#cloudSheet .savebtns{margin-top:10px}
 #cloudBox.on{background:#effbe9;border-color:#c9efb5}
-#top{flex-wrap:wrap;row-gap:6px}#top .pills{gap:8px}#statPill{margin-left:auto;flex:none;padding:5px 12px!important}
+#top{flex-wrap:nowrap}.ptop{flex-wrap:nowrap}#top>*,.ptop>*{flex:none}#top .pills{gap:8px}#statPill{margin-left:auto;flex:none;padding:5px 12px!important}
 #toast{top:calc(122px + env(safe-area-inset-top))!important}
 @media (max-width:360px){.pill{font-size:15px!important;height:36px!important}#coinIcon svg{width:24px!important;height:24px!important}#diaIcon svg{width:19px!important;height:19px!important;margin:0 0 0 4px!important}#statPill{font-size:13px!important;padding:4px 9px!important}#statPill small,#statPill .cap{font-size:10px!important}}
 @media (max-width:340px){.pill{font-size:13px!important;height:32px!important;padding:0 9px 0 4px!important}#coinIcon svg{width:20px!important;height:20px!important}#diaIcon svg{width:16px!important;height:16px!important}#statPill{font-size:12px!important}#statPill small,#statPill .cap{font-size:9px!important}}
@@ -1195,6 +1195,10 @@ function open(id){document.getElementById(id).classList.add('on');updBal()}
 function syncBg(){const sm=(id,el)=>{const cv=document.getElementById(id);if(!cv||!cv.width)return;try{const g=cv.getContext('2d'),p=g.getImageData(2,cv.height-3,1,1).data;el.style.background='rgb('+p[0]+','+p[1]+','+p[2]+')'}catch(e){}};
   if(typeof legoOpen!=='undefined'&&legoOpen)sm('legoCv',document.getElementById('legoView'));else if(typeof plantOpen!=='undefined'&&plantOpen)sm('plantCv',document.getElementById('plantView'));else sm('cv',document.getElementById('app'))}
 setInterval(syncBg,400);
+function fitTop(){document.querySelectorAll('#top,.ptop').forEach(t=>{if(!t.offsetParent&&t.id!=='top')return;const kids=[...t.children].filter(e=>e.offsetParent!==null||e.id==='statPill');if(!kids.length)return;
+  kids.forEach(e=>e.style.zoom='');const cs=getComputedStyle(t),av=t.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight)-8;let need=0;kids.forEach(e=>need+=e.offsetWidth);need+=8*(kids.length-1);
+  if(need>av){const k=Math.max(.6,av/need);kids.forEach(e=>e.style.zoom=k)}})}
+setInterval(fitTop,300);
 function updBal(){document.querySelectorAll('.overlay.on .bal').forEach(e=>{const k=e.dataset.bal,v=k==='coins'?S.coins:k==='dia'?S.dia:S.plant.mw,h=(k==='coins'?IC.coin:k==='dia'?IC.dia:IC.bolt)+Math.floor(v).toLocaleString('de-DE');if(e.innerHTML!==h)e.innerHTML=h})}
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>document.getElementById(b.dataset.close).classList.remove('on'));
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o&&o.id!=='discover')o.classList.remove('on')}));
