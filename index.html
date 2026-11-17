@@ -260,6 +260,8 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 .hbal{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.balw{display:flex;gap:6px}.bal{display:inline-flex;align-items:center;gap:4px;background:#fff;border:2.5px solid rgba(255,95,162,.55);color:#d6347f;border-radius:999px;padding:4px 11px 4px 8px;font:900 15px Nunito,system-ui;letter-spacing:0}.bal svg{width:18px;height:18px}
 #field{border-radius:0!important;box-shadow:none!important}#bar,#pbar,#lbar{background:rgba(255,95,162,.93)!important}#bar button,#pbar button,#lbar button{min-height:73px;box-sizing:border-box}#pbar button span{white-space:nowrap}#pbar button{font-size:12px!important}#plantView #plantCv,#legoView #legoCv{border-radius:0!important;box-shadow:none!important}
 #wkCow{position:absolute;left:50%;top:50%;width:34px;height:34px;transform:translate(-50%,-50%);display:none;z-index:1}html,body{-webkit-text-size-adjust:100%}#cv,#field{touch-action:none}#cowSheet .close,#buy .close,.overlay.center .close{box-shadow:none!important}.sellbtn{box-shadow:0 4px 10px rgba(42,140,240,.25)!important}
+.prow{background:linear-gradient(135deg,#f3e9ff,#ffe3ef)!important;border:2px solid #d6c0ff}.prow .bar i{background:linear-gradient(90deg,#d6c0ff,#ff5fa2)!important}.prow.lockd{opacity:.55}.prow.done{background:#effbe8!important;border-color:#9cff6a}
+#portalFx{position:fixed;inset:0;z-index:60;pointer-events:none;display:none;background:radial-gradient(circle,#fff 0,#f5d9ff 30%,rgba(180,140,255,.0) 70%)}#portalFx.on{display:block;animation:pfx 1.6s ease-out forwards}@keyframes pfx{0%{opacity:0;transform:scale(.2)}35%{opacity:1;transform:scale(1.4)}100%{opacity:0;transform:scale(3)}}
 </style>
 </head>
 <body>
@@ -314,10 +316,10 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
   <div id="lbar"><button id="lBuy" class="primary">Lego-Kalb</button><button id="lLadBtn"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="8" height="8" rx="1.5" fill="currentColor"/><rect x="13" y="12" width="8" height="8" rx="1.5" fill="currentColor" opacity=".6"/><rect x="8" y="4" width="8" height="8" rx="1.5" fill="currentColor" opacity=".8"/></svg><span>Stufen</span></button><button id="lMapBtn"><svg viewBox="0 0 24 24"><path d="M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="currentColor" opacity=".25"/><path d="M8.5 4v13.5M15.5 6.5V20M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Karte</span></button></div>
 </div>
 <div class="overlay hi" id="lLad"><div class="panel"><h2>Lego-Kühe</h2><div id="legoLadder"></div><button class="close" data-close="lLad">Schließen</button></div></div>
-<div class="overlay hi" id="pMis"><div class="panel"><h2 id="missionHead">Weltrettung</h2><div id="missionList"></div><button class="close" data-close="pMis">Schließen</button></div></div>
+<div class="overlay hi" id="pMis"><div class="panel"><h2 id="missionHead">Weltrettung</h2><div id="missionList"></div><div id="portalBox"></div><button class="close" data-close="pMis">Schließen</button></div></div>
 <div class="overlay hi" id="pUps"><div class="panel"><h2 class="hbal">Kraftwerk-Upgrades<span class="bal" data-bal="mw"></span></h2><p style="color:var(--muted);font-weight:600;margin:-6px 0 10px;font-size:13px">Bezahlt wird mit gespeichertem Strom.</p><div id="pupList"></div><button class="close" data-close="pUps">Schließen</button></div></div>
 <div class="overlay hi" id="pLad"><div class="panel"><h2>Kalb-Stufen</h2><div id="calfLadder"></div><button class="close" data-close="pLad">Schließen</button></div></div>
-<div id="accident"><div class="alarm"><svg viewBox="0 0 24 24"><path d="M12 2.5 22.5 21h-21z" fill="#ffd23f" stroke="#2a2d36" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 9v5.5" stroke="#2a2d36" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.4" fill="#2a2d36"/></svg><b>ALARM!</b><span>Die Supernova-Kuh hat den Reaktor überlastet …</span></div></div>
+<div id="portalFx"></div><div id="accident"><div class="alarm"><svg viewBox="0 0 24 24"><path d="M12 2.5 22.5 21h-21z" fill="#ffd23f" stroke="#2a2d36" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 9v5.5" stroke="#2a2d36" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.4" fill="#2a2d36"/></svg><b>ALARM!</b><span>Die Supernova-Kuh hat den Reaktor überlastet …</span></div></div>
 <div class="overlay center hi" id="planetModal"><div class="panel" style="text-align:center;background:#1d1a3d"><h2 style="color:#fff">Ein neuer Planet ist entstanden!</h2><canvas id="planetCv" width="400" height="320" style="position:static;width:240px;height:192px;display:block;margin:0 auto 6px"></canvas><h2 style="color:#b8ff8a;margin-bottom:6px">Planet Muhtopia</h2><p style="color:rgba(255,255,255,.75);font-weight:600;margin-bottom:12px">Bei dem Reaktorunfall wurde so viel Energie frei, dass ein ganz neuer Planet entstanden ist. Du findest ihn ab jetzt auf der Weltkarte.</p><button class="close" id="planetGo">Zur Weltkarte</button></div></div>
 <div class="overlay" id="cowSheet"><div class="panel" style="text-align:center"><canvas id="cowCv" width="360" height="260" style="position:static;display:block;width:180px;height:130px;margin:0 auto 4px"></canvas><h2 id="cowName" style="margin-bottom:4px"></h2><p id="cowInfo" style="color:var(--muted);font-weight:600;margin-bottom:16px"></p><button id="sellBtn" class="sellbtn"></button><button class="close" data-close="cowSheet" style="background:#f3f6f2;color:var(--ink)">Abbrechen</button></div></div>
 <div class="overlay" id="buy"><div class="panel"><h2 class="hbal">Kuh kaufen<span class="bal" data-bal="coins"></span></h2><div id="buyList"></div><p id="buyNote" style="font-size:13px;color:#6b5a3e;margin-top:4px"></p><button class="close" data-close="buy">Schließen</button></div></div>
@@ -550,7 +552,7 @@ function renderMap(){
     else{ic='<svg viewBox="0 0 40 40"><path d="M3 34a17 17 0 0 1 34 0z" fill="'+(on?'rgba(127,216,255,.55)':'rgba(167,161,191,.55)')+'"'+st+'/><path d="M9 34a11 11 0 0 1 22 0" fill="none" stroke="#fff" stroke-width="1.4" opacity=".7"/>'+face(20,28,on)+'<circle cx="31" cy="7" r="4" fill="#ffa24d"'+st+'/><path d="M28 10l-5 5" stroke="#ffa24d" stroke-width="2" stroke-linecap="round" opacity=".7"/></svg>'}
     pin(m.x,m.y,'city'+(on?' on':''),ic,
     m.n,()=>{if(m.lego&&on){closeMap();openLego();return}showToast(on?m.n+' hat wieder Strom!':m.n+': kostet '+fmt(misCost(m))+' MW gespeicherten Strom')})});
-  if(P.accident)pin(52,4,'planet','<svg viewBox="0 0 60 60"><ellipse cx="30" cy="31" rx="28" ry="8" fill="none" stroke="#7dff4a" stroke-width="3" opacity=".9"/><circle cx="30" cy="30" r="18" fill="#ffffff" stroke="#2a2d36" stroke-width="1.6"/><path d="M18 22c4-3 9-2 10 2s-5 6-9 4-3-4-1-6zM33 34c3-2 8-1 8 3s-5 5-8 3-2-4 0-6zM35 17c2-1 5 0 5 2s-3 3-5 2-1-3 0-4zM20 38c2-1 4 0 4 2s-3 2-4 1-1-2 0-3z" fill="#2a2d36"/><path d="M2 31a28 8 0 0 0 56 0" fill="none" stroke="#7dff4a" stroke-width="3"/><circle cx="24" cy="23" r="3" fill="#fff" opacity=".7"/></svg>','Planet Muhtopia',()=>showToast('Planet Muhtopia ist bei einem Reaktorunfall entstanden – noch unerforscht!'));
+  if(P.accident)pin(52,4,'planet','<svg viewBox="0 0 60 60"><ellipse cx="30" cy="31" rx="28" ry="8" fill="none" stroke="#7dff4a" stroke-width="3" opacity=".9"/><circle cx="30" cy="30" r="18" fill="#ffffff" stroke="#2a2d36" stroke-width="1.6"/><path d="M18 22c4-3 9-2 10 2s-5 6-9 4-3-4-1-6zM33 34c3-2 8-1 8 3s-5 5-8 3-2-4 0-6zM35 17c2-1 5 0 5 2s-3 3-5 2-1-3 0-4zM20 38c2-1 4 0 4 2s-3 2-4 1-1-2 0-3z" fill="#2a2d36"/><path d="M2 31a28 8 0 0 0 56 0" fill="none" stroke="#7dff4a" stroke-width="3"/><circle cx="24" cy="23" r="3" fill="#fff" opacity=".7"/></svg>','Planet Muhtopia',()=>showToast(P.portalOpen?'Das Portal nach Muhtopia ist offen – bald kannst du den Planeten erkunden!':P.missions>=MISSIONS.length?'Lade im Kraftwerk das Dimensionsportal mit Strom, um nach Muhtopia zu reisen ('+Math.floor(portalPct()*100)+' %).':'Planet Muhtopia ist bei einem Reaktorunfall entstanden – noch unerforscht!'));
   const done=P.missions>=MISSIONS.length,bon=Math.round((worldBonus()-1)*100);
   document.getElementById('mapInfo').innerHTML=!P.unlocked?'<b>Kernkraftwerk noch geschlossen</b><span>Erreiche die Radioaktive Kuh, um es zu öffnen.</span>':
     '<b>'+(done?'Die Welt ist gerettet!':P.missions+' von '+MISSIONS.length+' Orten mit Strom versorgt')+'</b><i class="mbar"><i style="width:'+Math.round(P.missions/MISSIONS.length*100)+'%"></i></i><span>Strom-Bonus auf der Weide: +'+bon+' %</span>';
@@ -558,7 +560,7 @@ function renderMap(){
 function accidentSeq(){
   const a=document.getElementById('accident');a.classList.add('on','red');document.body.classList.add('shake');
   setTimeout(()=>{a.classList.remove('red');a.classList.add('white')},2800);
-  setTimeout(()=>{a.classList.remove('on','white');document.body.classList.remove('shake');open('planetModal');planetAnim()},3500);
+  setTimeout(()=>{a.classList.remove('on','white');document.body.classList.remove('shake');const m=document.getElementById('planetModal');m.querySelector('h2').textContent='Ein neuer Planet ist entstanden!';m.querySelector('p').textContent='Bei dem Reaktorunfall wurde so viel Energie frei, dass ein ganz neuer Planet entstanden ist. Du findest ihn ab jetzt auf der Weltkarte.';open('planetModal');planetAnim()},3500);
 }
 let plAnim=null;
 function planetAnim(){const cv=document.getElementById('planetCv'),g=cv.getContext('2d');let t=0;cancelAnimationFrame(plAnim);
@@ -626,11 +628,19 @@ function buildPlantBg(){
   const gn=Math.round(W2*H2/2200);g.lineCap='round';
   for(let i=0;i<gn;i++){const x=r()*W2,y=hz+28+r()*(H2-hz-28),h=5+r()*6;g.strokeStyle=r()<.5?'rgba(70,160,90,.35)':'rgba(255,255,255,.7)';g.lineWidth=1.6;g.beginPath();g.moveTo(x,y);g.lineTo(x-3,y-h);g.moveTo(x,y);g.lineTo(x,y-h*1.2);g.moveTo(x,y);g.lineTo(x+3,y-h);g.stroke()}
 }
+function drawPortal(c,x,y,R){const P=S.plant,pc=P.portalOpen?1:portalPct(),t=T;c.save();
+  const gl=c.createRadialGradient(x,y,R*.4,x,y,R*1.9);gl.addColorStop(0,'rgba(214,170,255,'+(.25+.5*pc)+')');gl.addColorStop(1,'rgba(214,170,255,0)');c.fillStyle=gl;c.beginPath();c.arc(x,y,R*1.9,0,7);c.fill();
+  c.save();c.beginPath();c.arc(x,y,R,0,7);c.clip();const ig=c.createRadialGradient(x,y,2,x,y,R);ig.addColorStop(0,P.portalOpen?'#ffffff':'#f6ecff');ig.addColorStop(.55,'#d6c0ff');ig.addColorStop(1,'#9b7bff');c.fillStyle=ig;c.fillRect(x-R,y-R,R*2,R*2);
+  c.globalAlpha=.25+.65*pc;c.lineWidth=3;for(let i=0;i<4;i++){c.strokeStyle=i%2?'#ffffff':'#ff9ec8';c.beginPath();for(let a=0;a<7;a+=.15){const rr=a/7*R*.95,ang=a*1.4+t*(1.2+pc*2)+i*Math.PI/2;const px=x+Math.cos(ang)*rr,py=y+Math.sin(ang)*rr;a?c.lineTo(px,py):c.moveTo(px,py)}c.stroke()}c.restore();
+  c.lineWidth=5;c.strokeStyle='#3d4a6b';c.beginPath();c.arc(x,y,R+3,0,7);c.stroke();c.lineWidth=4;c.strokeStyle='#ffffff';c.beginPath();c.arc(x,y,R+3,0,7);c.stroke();
+  c.strokeStyle=P.portalOpen?'#7dff4a':'#ff5fa2';c.lineWidth=4.5;c.lineCap='round';c.beginPath();c.arc(x,y,R+3,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.max(.001,pc));c.stroke();
+  if(pc>0){for(let i=0;i<6;i++){const a=t*.8+i*1.05,rr=R*(1.25+.15*Math.sin(t*3+i));c.fillStyle='rgba(255,255,255,'+(.4+.5*pc)*(.5+.5*Math.sin(t*4+i))+')';c.beginPath();c.arc(x+Math.cos(a)*rr,y+Math.sin(a)*rr,1.8+pc*1.5,0,7);c.fill()}}
+  c.restore()}
 function drawPlant(dt){
   const c=pcx,W2=PW,H2=PH,P=S.plant;if(!c)return;
   if(pbgW!==PW||pbgH!==PH||!pbg)buildPlantBg();
   const hz=H2*PHZ,sk=c.createLinearGradient(0,0,0,hz+30);sk.addColorStop(0,'#9fdcff');sk.addColorStop(1,'#eefaf0');c.fillStyle=sk;c.fillRect(0,0,W2,hz+40);
-  const sx=W2*.18,sy=hz*.45,sg=c.createRadialGradient(sx,sy,4,sx,sy,50);sg.addColorStop(0,'rgba(255,245,170,.9)');sg.addColorStop(1,'rgba(255,245,170,0)');c.fillStyle=sg;c.beginPath();c.arc(sx,sy,50,0,7);c.fill();c.fillStyle='#fff3a8';c.beginPath();c.arc(sx,sy,18,0,7);c.fill();
+  if(P.missions>=MISSIONS.length)drawPortal(c,W2*.13,hz*.68,Math.min(30,W2*.075));else{const sx=W2*.18,sy=hz*.45,sg=c.createRadialGradient(sx,sy,4,sx,sy,50);sg.addColorStop(0,'rgba(255,245,170,.9)');sg.addColorStop(1,'rgba(255,245,170,0)');c.fillStyle=sg;c.beginPath();c.arc(sx,sy,50,0,7);c.fill();c.fillStyle='#fff3a8';c.beginPath();c.arc(sx,sy,18,0,7);c.fill();}
   if(!window.pClouds)window.pClouds=[0,1,2].map(i=>({x:(i+.3+Math.random()*.4)/3*W2,y:(.15+Math.random()*.35)*hz,s:.55+Math.random()*.45,v:4+Math.random()*6}));
   pClouds.forEach(q=>{q.x+=q.v*dt;if(q.x>W2+90)q.x=-90;const B=[[-22,4,16],[0,-4,22],[22,3,16],[8,8,14],[-8,8,14]];c.strokeStyle='#3d4a6b';c.lineWidth=4;B.forEach(([dx,dy,r])=>{c.beginPath();c.arc(q.x+dx*q.s,q.y+dy*q.s,r*q.s,0,7);c.stroke()});c.fillStyle='#fff';B.forEach(([dx,dy,r])=>{c.beginPath();c.arc(q.x+dx*q.s,q.y+dy*q.s,r*q.s,0,7);c.fill()})});
   // Dampf aus den Kühltürmen
@@ -671,6 +681,18 @@ function updPlantUI(){const P=S.plant,out=plantOutput();
       const bb=document.getElementById('calfBuy');bb.disabled=full||(S.atom||0)<ATOM_CALF;const bh='<span>Kälbchen<small>'+IC.atom+ATOM_CALF+'</small></span>';if(bb.innerHTML!==bh)bb.innerHTML=bh;document.getElementById('pAtom').textContent=(S.atom||0).toLocaleString('de-DE');
   renderMissions(true);renderPup(true);
 }
+const PORTAL_NEED=1e8;
+function portalPct(){return Math.min(1,(S.plant.portal||0)/PORTAL_NEED)}
+function renderPortal(){const box=document.getElementById('portalBox');if(!box)return;const P=S.plant,ready=P.missions>=MISSIONS.length,open=!!P.portalOpen,pc=portalPct();
+  if(!box.firstChild){box.innerHTML='<div class="row mrow prow"><div class="txt"><b>Dimensionsportal nach Muhtopia</b><span></span><div class="bar"><i></i></div></div><button></button></div>';
+    box.querySelector('button').onclick=()=>{const P=S.plant;if(P.portalOpen||P.missions<MISSIONS.length||P.mw<1)return;const need=PORTAL_NEED-(P.portal||0),put=Math.min(Math.floor(P.mw),need);P.mw-=put;P.portal=(P.portal||0)+put;sfx('upgrade');
+      if(P.portal>=PORTAL_NEED){P.portalOpen=true;save();renderPortal();portalOpenSeq()}else{showToast('+'+fmt(put)+' MW ins Portal geladen – '+Math.floor(portalPct()*100)+' %');save();renderPortal()}}}
+  const r=box.firstChild;r.classList.toggle('lockd',!ready);r.classList.toggle('done',open);
+  r.querySelector('span').innerHTML=open?'Das Portal ist offen! Muhtopia wartet auf der Weltkarte.':!ready?'Erst alle Orte mit Strom versorgen':'Das Kraftwerk braucht astronomisch viel Strom, um ein Tor in eine andere Dimension zu öffnen.<br><b style="display:inline">'+fmt(P.portal||0)+' / '+fmt(PORTAL_NEED)+' MW</b> geladen ('+Math.floor(pc*100)+' %)';
+  r.querySelector('.bar i').style.width=(open?100:pc*100)+'%';const b=r.querySelector('button');b.textContent=open?'✓':'Einzahlen';b.disabled=open||!ready||P.mw<1}
+function portalOpenSeq(){document.querySelectorAll('.overlay.on').forEach(o=>o.classList.remove('on'));const fx=document.getElementById('portalFx');fx.classList.remove('on');void fx.offsetWidth;fx.classList.add('on');document.body.classList.add('shake');sfx('discover');
+  setTimeout(()=>{document.body.classList.remove('shake')},900);
+  setTimeout(()=>{const m=document.getElementById('planetModal');m.querySelector('h2').textContent='Das Portal ist offen!';m.querySelector('p').textContent='Mit astronomischen Mengen Strom hat das Kraftwerk ein Dimensionsportal geöffnet. Dahinter liegt Planet Muhtopia – du findest ihn auf der Weltkarte.';open('planetModal');planetAnim()},1100)}
 function renderMissions(update){const box=document.getElementById('missionList'),P=S.plant,out=plantOutput();
   if(!update){box.innerHTML='';MISSIONS.forEach((m,i)=>{const r=document.createElement('div');r.className='row mrow';r.innerHTML='<div class="txt"><b></b><span></span><div class="bar"><i></i></div></div><button></button>';
     r.querySelector('button').onclick=()=>{if(i!==P.missions||P.mw<misCost(m))return;P.mw-=misCost(m);P.missions++;sfx('upgrade');if(m.lego)legoUnlock();
@@ -682,7 +704,7 @@ function renderMissions(update){const box=document.getElementById('missionList')
     r.querySelector('span').innerHTML=done?'Versorgt · +'+Math.round(m.bonus*100)+' % Ertrag auf der Weide':lock?'Erst den vorherigen Ort versorgen':m.d+'<br>Kostet <b style="display:inline">'+fmt(misCost(m))+' MW</b> gespeicherten Strom · Belohnung: +'+Math.round(m.bonus*100)+' % Ertrag';
     r.querySelector('.bar i').style.width=(done?100:cur?Math.min(100,P.mw/misCost(m)*100):0)+'%';
     const b=r.querySelector('button');b.textContent=done?'✓':cur?'Versorgen':'–';b.disabled=!cur||P.mw<misCost(m)});
-  document.getElementById('missionHead').textContent=P.missions>=MISSIONS.length?'Weltrettung – geschafft!':'Weltrettung';
+  document.getElementById('missionHead').textContent=P.missions>=MISSIONS.length?'Weltrettung – geschafft!':'Weltrettung';renderPortal();
 }
 function renderPup(update){const box=document.getElementById('pupList'),P=S.plant;
   if(!update){box.innerHTML='';PUP.forEach((u,i)=>{const r=document.createElement('div');r.className='row';r.innerHTML='<div class="txt"><b>'+u.n+'</b><span></span></div><button class="mw"></button>';
