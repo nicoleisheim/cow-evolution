@@ -920,8 +920,10 @@ function tapCow(c){
 let tapHintDone=false;
 function hideHint2(){if(!tapHintDone){tapHintDone=true;try{localStorage.setItem('kuhEvoTap','1')}catch(e){}}}
 let magT=Math.max(0,+S.magT||0)+Math.min(600,Math.max(0,(Date.now()-(S.last||Date.now()))/1000)),magPull=null;
-function startMagnet(){
-  for(let L=1;L<mergeCap();L++){const g=S.cows.filter(c=>c.lvl===L&&!(drag&&drag.c===c)&&c!==sheetCow);if(g.length<2)continue;
+function magHasPair(){const n={};for(const c of S.cows){if(c.lvl>=mergeCap()||(drag&&drag.c===c)||c===sheetOpen())continue;n[c.lvl]=(n[c.lvl]||0)+1;if(n[c.lvl]>1)return true}return false}
+let magHint=false;
+function startMagnet(){if(!magHasPair()){if(!magHint&&S.cows.length>1){magHint=true;showToast('Der Magnet ist bereit – er braucht zwei gleiche Kühe auf der Weide.')}return}magHint=false;
+  for(let L=1;L<mergeCap();L++){const g=S.cows.filter(c=>c.lvl===L&&!(drag&&drag.c===c)&&c!==sheetOpen());if(g.length<2)continue;
     let best=null,bd=9;for(let i=0;i<g.length;i++)for(let j=i+1;j<g.length;j++){const d=Math.hypot(g[i].x-g[j].x,g[i].y-g[j].y);if(d<bd){bd=d;best=[g[i],g[j]]}}
     magPull={a:best[0],b:best[1],t:0,x0:best[0].x,y0:best[0].y};return}
 }
@@ -946,7 +948,7 @@ function updCrateUI(){const on=S.cratesOn!==false,full=S.cows.length+crates.leng
 document.getElementById('crateBtn').onclick=e=>{if(e.target.id==='goldChip'){showToast('Noch '+(goldInt(S.up.gold)-(S.goldCnt||0))+' Kisten bis zur nächsten Goldenen Kiste');return}S.cratesOn=S.cratesOn===false;save()};
 function updMagUI(){const on=S.magnetOn!==false,b=document.getElementById('magBtn');b.classList.toggle('off',!on);
   const pr=on?(magPull?1:magT/magInt(S.up.magnet)):0;document.getElementById('magRing').style.strokeDashoffset=(119.4*(1-pr)).toFixed(1);
-  const l=document.getElementById('magLbl'),t=!on?'AUS':magPull?'zieht':magT>=magInt(S.up.magnet)?'bereit':Math.max(1,Math.ceil(magInt(S.up.magnet)-magT))+'s';if(l.textContent!==t)l.textContent=t}
+  const l=document.getElementById('magLbl'),t=!on?'AUS':magPull?'zieht':magT>=magInt(S.up.magnet)?(magHasPair()?'bereit':'warte'):Math.max(1,Math.ceil(magInt(S.up.magnet)-magT))+'s';if(l.textContent!==t)l.textContent=t}
 function drawMagnetIcon(c,x,y,z,ang){c.save();c.translate(x,y);c.rotate(ang-Math.PI/2);const r=z*.32,h=z*.36,w=z*.26;c.lineCap='butt';c.lineJoin='round';
   const P=()=>{c.beginPath();c.moveTo(-r,h);c.lineTo(-r,0);c.arc(0,0,r,Math.PI,0,false);c.lineTo(r,h)};
   c.strokeStyle='#3d4a6b';c.lineWidth=w+5;P();c.stroke();c.strokeStyle='#ff4f93';c.lineWidth=w;P();c.stroke();
@@ -962,7 +964,7 @@ function drawMagLine(front){if(!magPull)return;const m=magPull,s=cowSize(),[ax,a
   cx.restore();
   drawMagnetIcon(cx,mx,my+Math.sin(T*4)*3,s*.5*Math.max(.01,pop),ang)}
 document.getElementById('magBtn').onclick=()=>{S.magnetOn=S.magnetOn===false;if(!S.magnetOn)magPull=null;save()};
-const LP_MS=550;let sheetCow=null;
+const LP_MS=550;let sheetCow=null;function sheetOpen(){const e=document.getElementById('cowSheet');return e&&e.classList.contains('on')?sheetCow:null}
 function openCowSheet(c){if(c.lvl>=MAXL||!S.cows.includes(c))return;sheetCow=c;const d=LV[c.lvl-1],g=document.getElementById('cowCv').getContext('2d');g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,360,260);drawCow(g,170,170,190,c.lvl,1,false);
   document.getElementById('cowName').textContent=d.n;
   document.getElementById('cowInfo').innerHTML='Stufe '+c.lvl+' · verdient '+IC.coin+perSec(c.lvl)+'/s';
@@ -997,7 +999,7 @@ function updateWorker(dt){
 }
 function workerDrop(c){
   if(!wk||wk.phase==='out')return false;const [wx,wy]=toPx(wk),[x,y]=toPx(c);
-  if(Math.abs(x-wx)>cowSize()*.85||y>wy+cowSize()*1.15)return false;
+  if(Math.abs(x-wx)>cowSize()*.6||c.y>.36)return false;
   if(c.lvl!==wk.want){showToast('Der Mitarbeiter sucht eine '+LV[wk.want-1].n+'!');c.wait=1;return true}
   const n=atomFor(c.lvl);S.cows=S.cows.filter(o=>o!==c);S.atom=(S.atom||0)+n;
   burst(x,y,'#7dff4a',22);rings.push({x,y,r:10,l:.6,col:'#7dff4a'});
@@ -1075,8 +1077,8 @@ cv.addEventListener('pointermove',e=>{
 function endDrag(){
   if(!drag)return;const c=drag.c;if(!drag.moved){drag=null;tapCow(c);return}if(overSell(c)){const ok=drag.sellT>=SELL_T,ox=drag.ox,oy=drag.oy;drag=null;if(ok){sell(c);return}c.x=c.tx=ox;c.y=c.ty=oy;c.wait=1;const [x,y]=toPx(c);floats.push({x,y:y-cowSize()*.6,t:'Zum Verkaufen 1 Sek. halten',l:1.6});return}drag=null;const s=cowSize();
   if(fuelDrop(c))return;
-  if(workerDrop(c))return;
   const t=S.cows.find(o=>o!==c&&o.lvl===c.lvl&&Math.hypot((o.x-c.x)*W,(o.y-c.y)*H)<s*.6);
+  if(!t&&workerDrop(c))return;
   if(t&&c.lvl<mergeCap())merge(c,t);
   else if(t&&c.lvl===MAXL-1){const [x,y]=toPx(c);floats.push({x,y:y-s*.6,t:'Kosmische Kühe verschmelzen nicht mehr',l:1.6})}
   c.wait=1.5;
