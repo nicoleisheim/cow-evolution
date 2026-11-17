@@ -717,8 +717,8 @@ let S={atom:0,dia:0,boostUntil:0,coins:12000,cows:[],highest:1,buys:0,up:{crate:
 try{const s=JSON.parse(localStorage.getItem('kuhEvo1'));if(s&&s.cows){S=Object.assign(S,s);S.up=Object.assign({crate:0,cap:0,income:0,crateLvl:0,gold:0,magnet:0,wkFreq:0,wkPay:0},s.up)}}catch(e){}
 S.up.crate=Math.min(S.up.crate||0,5);if(S.goldCnt==null)S.goldCnt=(S.cratesOpened||0)%20;S.up.crateLvl=0;
 S.plant=Object.assign(defPlant(),S.plant||{});S.plant.up=Object.assign(defPlant().up,S.plant.up);if(!Array.isArray(S.plant.calves))S.plant.calves=[];S.plant.chef=null;S.plant.calves.forEach((c,i)=>{c.id=i+1;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2});if(S.plant.unlocked&&!S.plant.calves.length&&!S.plant.best)S.plant.best=1;
-function save(){if(window.__reset)return;S.last=Date.now();try{S.wk=(wk&&wk.phase!=='out')?{y:+wk.y.toFixed(3),tx:+wk.tx.toFixed(3),want:wk.want,right:!!wk.right}:null;S.wkT=Math.round(wkT);S.crates=crates.map(k=>({x:+k.x.toFixed(3),y:+k.y.toFixed(3),lvl:k.lvl,gold:k.gold?1:0}));localStorage.setItem('kuhEvo1',JSON.stringify(S))}catch(e){}}
-let coins=[],crates=(Array.isArray(S.crates)?S.crates:[]).filter(k=>k&&typeof k==='object').slice(0,16).map(k=>({x:k.x,y:k.y,lvl:k.lvl||1,gold:!!k.gold,drop:1,landed:1,age:9})),parts=[],floats=[],crateT=0,uid=1;
+function save(){if(window.__reset)return;S.last=Date.now();try{S.wk=(wk&&wk.phase!=='out')?{y:+wk.y.toFixed(3),tx:+wk.tx.toFixed(3),want:wk.want,right:!!wk.right}:null;S.wkT=Math.round(wkT);S.crateT=+crateT.toFixed(2);S.magT=+magT.toFixed(2);S.crates=crates.map(k=>({x:+k.x.toFixed(3),y:+k.y.toFixed(3),lvl:k.lvl,gold:k.gold?1:0}));localStorage.setItem('kuhEvo1',JSON.stringify(S))}catch(e){}}
+let coins=[],crates=(Array.isArray(S.crates)?S.crates:[]).filter(k=>k&&typeof k==='object').slice(0,16).map(k=>({x:k.x,y:k.y,lvl:k.lvl||1,gold:!!k.gold,drop:1,landed:1,age:9})),parts=[],floats=[],crateT=Math.max(0,+S.crateT||0)+Math.min(600,Math.max(0,(Date.now()-(S.last||Date.now()))/1000)),uid=1;
 S.cows.forEach(c=>{c.id=uid++;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2;c.ph=Math.random()*COIN_EVERY});
 function cap(){return Math.min(16,10+S.up.cap)}
 function priceOf(L){return 12000*Math.pow(2,L-1)}
@@ -919,7 +919,7 @@ function tapCow(c){
 }
 let tapHintDone=false;
 function hideHint2(){if(!tapHintDone){tapHintDone=true;try{localStorage.setItem('kuhEvoTap','1')}catch(e){}}}
-let magT=0,magPull=null;
+let magT=Math.max(0,+S.magT||0)+Math.min(600,Math.max(0,(Date.now()-(S.last||Date.now()))/1000)),magPull=null;
 function startMagnet(){
   for(let L=1;L<mergeCap();L++){const g=S.cows.filter(c=>c.lvl===L&&!(drag&&drag.c===c)&&c!==sheetCow);if(g.length<2)continue;
     let best=null,bd=9;for(let i=0;i<g.length;i++)for(let j=i+1;j<g.length;j++){const d=Math.hypot(g[i].x-g[j].x,g[i].y-g[j].y);if(d<bd){bd=d;best=[g[i],g[j]]}}
