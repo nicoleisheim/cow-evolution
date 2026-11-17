@@ -713,7 +713,7 @@ function initPlant(){
 
 const ATOM_SH=[["M1.8000000000000007 12.9a10.2 10.2 0 1 0 20.4 0a10.2 10.2 0 1 0 -20.4 0z", "#2f8f12"], ["M1.8000000000000007 11.6a10.2 10.2 0 1 0 20.4 0a10.2 10.2 0 1 0 -20.4 0z", "#7dff4a"], ["M4.6 11.6a7.4 7.4 0 1 0 14.8 0a7.4 7.4 0 1 0 -14.8 0z", "#b8ff8a"], ["M12 11.6L8.80 6.06A6.4 6.4 0 0 1 15.20 6.06z", "#1d3a0a"], ["M12 11.6L18.40 11.60A6.4 6.4 0 0 1 15.20 17.14z", "#1d3a0a"], ["M12 11.6L8.80 17.14A6.4 6.4 0 0 1 5.60 11.60z", "#1d3a0a"], ["M10.1 11.6a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0z", "#b8ff8a"], ["M10.9 11.6a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0 -2.2 0z", "#1d3a0a"]];
 // ---------- Zustand ----------
-let S={atom:0,dia:0,boostUntil:0,coins:12000,cows:[],highest:1,buys:0,up:{crate:0,cap:0,income:0,crateLvl:0,gold:0,magnet:0,wkFreq:0,wkPay:0},magnetOn:true,last:Date.now(),merged:0};
+let S={atom:0,dia:0,boostUntil:0,coins:200,cows:[],highest:1,buys:0,up:{crate:0,cap:0,income:0,crateLvl:0,gold:0,magnet:0,wkFreq:0,wkPay:0},magnetOn:true,last:Date.now(),merged:0};
 try{const s=JSON.parse(localStorage.getItem('kuhEvo1'));if(s&&s.cows){S=Object.assign(S,s);S.up=Object.assign({crate:0,cap:0,income:0,crateLvl:0,gold:0,magnet:0,wkFreq:0,wkPay:0},s.up)}}catch(e){}
 S.up.crate=Math.min(S.up.crate||0,5);if(S.goldCnt==null)S.goldCnt=(S.cratesOpened||0)%20;S.up.crateLvl=0;
 S.plant=Object.assign(defPlant(),S.plant||{});S.plant.up=Object.assign(defPlant().up,S.plant.up);if(!Array.isArray(S.plant.calves))S.plant.calves=[];S.plant.chef=null;S.plant.calves.forEach((c,i)=>{c.id=i+1;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2});if(S.plant.unlocked&&!S.plant.calves.length&&!S.plant.best)S.plant.best=1;
@@ -721,7 +721,7 @@ function save(){if(window.__reset)return;S.last=Date.now();try{S.wk=(wk&&wk.phas
 let coins=[],crates=(Array.isArray(S.crates)?S.crates:[]).filter(k=>k&&typeof k==='object').slice(0,16).map(k=>({x:k.x,y:k.y,lvl:k.lvl||1,gold:!!k.gold,drop:1,landed:1,age:9})),parts=[],floats=[],crateT=Math.max(0,+S.crateT||0)+Math.min(600,Math.max(0,(Date.now()-(S.last||Date.now()))/1000)),uid=1;
 S.cows.forEach(c=>{c.id=uid++;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2;c.ph=Math.random()*COIN_EVERY});
 function cap(){return Math.min(16,10+S.up.cap)}
-function priceOf(L){return 12000*Math.pow(2,L-1)}
+function priceOf(L){const v=100*Math.pow(2.4,L-1)*Math.pow(2,Math.max(1,S.highest||1)-1),p=Math.pow(10,Math.max(0,Math.floor(Math.log10(v))-1));return Math.round(v/p)*p}
 function maxBuy(){return Math.max(1,S.highest-1)}
 function buyCost(){return priceOf(1)}
 function rate(){return S.cows.reduce((a,c)=>a+income(c.lvl),0)/COIN_EVERY}
