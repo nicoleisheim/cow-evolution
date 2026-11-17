@@ -587,7 +587,7 @@ function closePlant(){plantOpen=false;pDrag=null;document.getElementById('plantV
 function mergeCalves(a,b){const P=S.plant,L=a.lvl+1,[x,y]=pPx(b);P.calves=P.calves.filter(o=>o!==a&&o!==b);addCalf(L,b.x,b.y);
   pFloats.push({t:'+'+fmtL(calfMW(L)*(1+.25*P.up.amp))+' MW/Sek.',l:1,x:b.x,y:b.y-.12});
   for(let i=0;i<14;i++)pFloats.push({spark:1,x:b.x,y:b.y,vx:(Math.random()-.5)*.6,vy:(Math.random()-.8)*.5,l:.6,col:CALF[L-1].glow});
-  if(L>P.best){P.best=L;if(L<CMAX)showToast('Neue Stufe: '+CALF[L-1].n+'! '+CALF[L-1].d)}
+  if(L>P.best){P.best=L;if(L<CMAX)setTimeout(()=>discover(L,CALF[L-1]),350)}
   if(L===CMAX&&!P.accident){P.accident=true;save();setTimeout(accidentSeq,600)}
   save();renderMissions(true)}
 let pbg=null,pbgW=0,pbgH=0,pTowers=[];
@@ -1258,13 +1258,13 @@ function renderDex(){try{updCloudUI()}catch(e){}
     const t=document.createElement('div');t.className='txt';t.innerHTML='<b>'+(known?L+'. '+d.n:L+'. ???')+'</b><span>'+(known?d.d+'<br>'+IC.coin+perSec(L)+'/s · '+IC.dia+diaFor(L):'Noch nicht entdeckt')+'</span>';r.appendChild(t);box.appendChild(r)});
 }
 let discAnim=null;
-function discover(L){
-  document.getElementById('discName').textContent=LV[L-1].n;
-  document.getElementById('discDesc').textContent=LV[L-1].d+(L===MAXL?' Sie zieht jetzt ins Kernkraftwerk – öffne die Weltkarte!':'');
-  open('discover');sfx('discover');
+function discover(L,D){const DD=D||LV[L-1];
+  document.getElementById('discName').textContent=DD.n;
+  document.getElementById('discDesc').textContent=DD.d+(!D&&L===MAXL?' Sie zieht jetzt ins Kernkraftwerk – öffne die Weltkarte!':'');
+  document.getElementById('discover').classList.toggle('hi',!!D);open('discover');sfx('discover');
   const conf=[];for(let i=0;i<70;i++)conf.push({x:Math.random()*400,y:-20-Math.random()*300,v:60+Math.random()*90,r:Math.random()*6,s:5+Math.random()*5,c:['#ff5fa2','#ffd23f','#5fd0ff','#7dff4a','#b48cff'][i%5]});
   const c=document.getElementById('discCv'),g=c.getContext('2d');let t=0;cancelAnimationFrame(discAnim);
-  (function a(){t+=.016;g.clearRect(0,0,400,320);g.save();g.translate(200,170);g.rotate(t*.3);for(let i=0;i<12;i++){g.rotate(Math.PI/6);g.fillStyle='rgba(255,216,74,.25)';g.beginPath();g.moveTo(0,0);g.lineTo(-30,-200);g.lineTo(30,-200);g.fill()}g.restore();drawCow(g,190,175,230*(t<.35?.6+Math.sin(t/.35*Math.PI/2)*.4+Math.sin(t/.35*Math.PI)*.12:1),L,t,false);conf.forEach(p=>{p.y+=p.v*.016;p.r+=.08;if(p.y<330){g.save();g.translate(p.x+Math.sin(p.r)*8,p.y);g.rotate(p.r);g.fillStyle=p.c;g.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);g.restore()}});if(document.getElementById('discover').classList.contains('on'))discAnim=requestAnimationFrame(a)})();
+  (function a(){t+=.016;g.clearRect(0,0,400,320);g.save();g.translate(200,170);g.rotate(t*.3);for(let i=0;i<12;i++){g.rotate(Math.PI/6);g.fillStyle='rgba(255,216,74,.25)';g.beginPath();g.moveTo(0,0);g.lineTo(-30,-200);g.lineTo(30,-200);g.fill()}g.restore();{const z=230*(t<.35?.6+Math.sin(t/.35*Math.PI/2)*.4+Math.sin(t/.35*Math.PI)*.12:1);if(D&&D.isLego)drawLegoCow(g,190,215,z*.95,L,t,false,false,false,false);else drawCow(g,190,175,z,D||L,t,false)};conf.forEach(p=>{p.y+=p.v*.016;p.r+=.08;if(p.y<330){g.save();g.translate(p.x+Math.sin(p.r)*8,p.y);g.rotate(p.r);g.fillStyle=p.c;g.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);g.restore()}});if(document.getElementById('discover').classList.contains('on'))discAnim=requestAnimationFrame(a)})();
 }
 let resetArm=0;
 document.getElementById('resetBtn').onclick=()=>{const b=document.getElementById('resetBtn');
@@ -1574,7 +1574,7 @@ function closeLego(){legoOpen=false;lDrag=null;document.getElementById('legoView
 function mergeLego(a,b){const G=S.lego,L=a.lvl+1;G.cows=G.cows.filter(o=>o!==a&&o!==b);addLego(L,b.x,b.y);sfx('merge',L);
   lFloats.push({t:'+'+legoRate(L).toLocaleString('de-DE',{maximumFractionDigits:1})+' Steine/Sek.',l:1,x:b.x,y:b.y-.12});
   for(let i=0;i<14;i++)lFloats.push({spark:1,x:b.x,y:b.y,vx:(Math.random()-.5)*.6,vy:(Math.random()-.8)*.5,l:.6,col:['#e3342f','#3b82f6','#ffd23f','#22b357'][i%4]});
-  if(L>G.best){G.best=L;sfx('discover');showToast('Neue Lego-Kuh: '+LEGO[L-1].n+'! '+LEGO[L-1].d)}save()}
+  if(L>G.best){G.best=L;setTimeout(()=>discover(L,Object.assign({isLego:1},LEGO[L-1])),350)}save()}
 function renderLegoLadder(){const box=document.getElementById('legoLadder');box.innerHTML='';
   LEGO.forEach((d,i)=>{const L=i+1,known=L<=S.lego.best,r=document.createElement('div');r.className='row';const cv2=document.createElement('canvas');cv2.width=168;cv2.height=140;const g=cv2.getContext('2d');g.scale(2,2);drawLegoCow(g,40,44,54,L,1,false);if(!known)cv2.className='locked';r.appendChild(cv2);
     const t=document.createElement('div');t.className='txt';t.innerHTML='<b>'+L+'. '+(known?d.n:'???')+'</b><span>'+(known?d.d+'<br>':'')+legoRate(L).toLocaleString('de-DE',{maximumFractionDigits:1})+' Steine/Sek.</span>';r.appendChild(t);box.appendChild(r)})}
