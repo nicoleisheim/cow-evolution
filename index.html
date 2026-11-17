@@ -1011,6 +1011,7 @@ function drawWantSign(c,x,y,s,L){c.save();const hy=y-s*1.06+Math.sin(T*2.5)*s*.0
   c.strokeStyle=L===MAXL?'#7dff4a':'#ff5fa2';c.lineWidth=3;c.stroke();const bx=cowBox(L),k=s*.4/bx.m;drawCow(c,x-bx.cx*k,hy-bx.cy*k,k,L,0,false);c.restore()}
 const CBOX={};function cowBox(L){if(CBOX[L])return CBOX[L];const N=240,cv=document.createElement('canvas');cv.width=cv.height=N;const g=cv.getContext('2d');drawCow(g,N/2,N/2,100,L,0,false);const d=g.getImageData(0,0,N,N).data;let x0=N,y0=N,x1=0,y1=0;for(let y=0;y<N;y++)for(let x=0;x<N;x++)if(d[(y*N+x)*4+3]>140){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}
   const r=x1>x0?{cx:((x0+x1)/2-N/2)/100,cy:((y0+y1)/2-N/2)/100,m:Math.max(x1-x0,y1-y0)/100}:{cx:0,cy:0,m:1};return CBOX[L]=r}
+const CSPR={};function cowSprite(L){if(CSPR[L])return CSPR[L];const N=320,tc=document.createElement('canvas');tc.width=tc.height=N;const tg=tc.getContext('2d');drawCow(tg,N/2,N/2,170,L,0,false);const d=tg.getImageData(0,0,N,N).data;let x0=N,y0=N,x1=0,y1=0;for(let y=0;y<N;y++)for(let x=0;x<N;x++)if(d[(y*N+x)*4+3]>40){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}const w=x1-x0+1,h=y1-y0+1,cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(tc,x0,y0,w,h,0,0,w,h);return CSPR[L]={cv,w,h}}
 function drawWorker(){
   if(!wk)return;const s=Math.min(46,cowSize()*.62),[x,y]=toPx(wk),c=cx,bob=wk.walk?Math.abs(Math.sin(T*9))*s*.04:0,sw=wk.walk?Math.sin(T*9)*s*.05:0;
   c.save();c.translate(x,y-bob);
@@ -1055,8 +1056,8 @@ function drawWorker(){
   if(wk.phase!=='out'){const side=x<W*.55?1:-1,bw=46,bh=36,L=wk.want,gap=s*.32+12,bx=x+side*(gap+bw/2),by=y-bob-s*.4+Math.sin(T*2.5)*1.2;c.save();
     c.translate(bx,by);c.scale(side,1);const l=-bw/2,r=bw/2,tp=-bh/2,bt=bh/2,R=12,tx=-(gap+bw/2)+s*.27,ty=-s*.1;
     c.beginPath();c.moveTo(l+R,tp);c.lineTo(r-R,tp);c.arcTo(r,tp,r,tp+R,R);c.lineTo(r,bt-R);c.arcTo(r,bt,r-R,bt,R);c.lineTo(l+R,bt);c.arcTo(l,bt,l,bt-R,R);c.lineTo(l,6);c.lineTo(tx,ty);c.lineTo(l,-4);c.lineTo(l,tp+R);c.arcTo(l,tp,l+R,tp,R);c.closePath();
-    c.fillStyle='#fff';c.shadowColor='rgba(0,0,0,.15)';c.shadowBlur=6;c.fill();c.shadowBlur=0;c.lineJoin='round';c.lineWidth=2.5;c.strokeStyle=L===MAXL?'#59d62a':'#3d4a6b';c.stroke();c.restore();
-    const B=cowBox(L),k=bh*.8/B.m;drawCow(c,bx-B.cx*k,by-B.cy*k,k,L,0,false)}
+    c.fillStyle='#fff';c.shadowColor='rgba(0,0,0,.15)';c.shadowBlur=6;c.fill();c.shadowBlur=0;c.lineJoin='round';c.lineWidth=3;c.strokeStyle=L===MAXL?'rgba(89,214,42,.75)':'rgba(255,95,162,.55)';c.stroke();c.restore();
+    const sp=cowSprite(L),q=Math.min((bw-12)/sp.w,(bh-8)/sp.h);c.drawImage(sp.cv,bx-sp.w*q/2,by-sp.h*q/2,sp.w*q,sp.h*q)}
 
 }
 // ---------- Eingabe ----------
