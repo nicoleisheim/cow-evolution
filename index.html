@@ -991,6 +991,8 @@ function updateWorker(dt){
   if(!S.plant||!S.plant.unlocked)return;
   if(!wk){wkT-=dt;if(wkT<=0)spawnWorker();return}
   if(wk.sayT>0)wk.sayT-=dt;
+  if(wk.hop>0)wk.hop=Math.max(0,wk.hop-dt);
+  if(wk.hold>0){wk.hold-=dt;wk.walk=0;return}
   if(H){const fy=wkFenceY();wk.y=wk.ty=fy;if(wk.phase!=='out'&&(wk.tx<.3||wk.tx>.82))wk.tx=Math.min(.82,Math.max(.3,wk.tx))}
   const dx=wk.tx-wk.x,dy=wk.ty-wk.y,d=Math.hypot(dx,dy);
   if(d>.005){const sp=.13*dt;wk.x+=dx/d*Math.min(sp,d);wk.y+=dy/d*Math.min(sp,d);wk.flip=dx<0;wk.walk=1}else{wk.walk=0;
@@ -1002,10 +1004,18 @@ function workerDrop(c){
   if(Math.abs(x-wx)>cowSize()*.6||c.y>.36)return false;
   if(c.lvl!==wk.want){showToast('Der Mitarbeiter sucht eine '+LV[wk.want-1].n+'!');c.wait=1;return true}
   const n=atomFor(c.lvl);S.cows=S.cows.filter(o=>o!==c);S.atom=(S.atom||0)+n;
-  burst(x,y,'#7dff4a',22);rings.push({x,y,r:10,l:.6,col:'#7dff4a'});
-  floats.push({x:Math.min(W-60,Math.max(60,x)),y:y-cowSize()*.55,t:'+'+n,l:.9,gold:1,ic:'atom'});
-  wk.phase='out';wk.tx=wk.right?1.15:-.15;wk.say='Danke! Die nehme ich mit.';wk.sayT=2.5;save();return true;
+  giveAnims.push({L:c.lvl,x0:x,y0:y,t:0,n,done:false});sfx('morph');
+  wk.hold=1.15;wk.phase='out';wk.tx=wk.right?1.15:-.15;wk.say='Danke! Die nehme ich mit.';wk.sayT=2.5;save();return true;
 }
+let giveAnims=[];
+function drawGive(dt){if(!giveAnims.length)return;const c=cx;giveAnims.forEach(a=>{a.t+=dt;const D=.55,u=Math.min(1,a.t/D),e=u*u*(3-2*u);
+  if(wk){const [wx,wy]=toPx(wk);a.tx=wx;a.ty=wy-Math.min(46,cowSize()*.62)*.4}const tx=a.tx??a.x0,ty=a.ty??a.y0;
+  if(u<1){const px=a.x0+(tx-a.x0)*e,py=a.y0+(ty-a.y0)*e-Math.sin(u*Math.PI)*cowSize()*.9,sp=cowSprite(a.L),hh=cowSize()*.85*(1-.8*e),q=hh/sp.h;
+    c.save();c.globalAlpha=u>.85?(1-u)/.15:1;c.translate(px,py);c.rotate(Math.sin(u*Math.PI)*.35*(tx<a.x0?-1:1));c.drawImage(sp.cv,-sp.w*q/2,-sp.h*q/2,sp.w*q,sp.h*q);c.restore();
+    if(Math.random()<.7)parts.push({x:px+rnd(-8,8),y:py+rnd(-8,8),vx:rnd(-30,30),vy:rnd(-40,10),l:rnd(.25,.45),col:Math.random()<.5?'#7dff4a':'#ffffff'})}
+  else if(!a.done){a.done=true;burst(tx,ty,'#7dff4a',24);rings.push({x:tx,y:ty,r:8,l:.6,col:'#7dff4a'});sfx('coin');if(wk)wk.hop=.4;
+    floats.push({x:Math.min(W-60,Math.max(60,tx)),y:ty-24,t:'+'+a.n,l:1.1,gold:1,ic:'atom'})}});
+  giveAnims=giveAnims.filter(a=>a.t<.6)}
 function drawWantSign(c,x,y,s,L){c.save();const hy=y-s*1.06+Math.sin(T*2.5)*s*.03;
   c.fillStyle='#fff';c.shadowColor='rgba(0,0,0,.2)';c.shadowBlur=8;c.beginPath();c.arc(x,hy,s*.27,0,7);c.fill();c.shadowBlur=0;
   c.strokeStyle=L===MAXL?'#7dff4a':'#ff5fa2';c.lineWidth=3;c.stroke();const bx=cowBox(L),k=s*.4/bx.m;drawCow(c,x-bx.cx*k,hy-bx.cy*k,k,L,0,false);c.restore()}
@@ -1014,7 +1024,7 @@ const CBOX={};function cowBox(L){if(CBOX[L])return CBOX[L];const N=240,cv=docume
 const CSPR={};function cowSprite(L){if(CSPR[L])return CSPR[L];const N=320,tc=document.createElement('canvas');tc.width=tc.height=N;const tg=tc.getContext('2d');drawCow(tg,N/2,N/2,170,L,0,false);const d=tg.getImageData(0,0,N,N).data;let x0=N,y0=N,x1=0,y1=0;for(let y=0;y<N;y++)for(let x=0;x<N;x++)if(d[(y*N+x)*4+3]>40){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}const w=x1-x0+1,h=y1-y0+1,cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(tc,x0,y0,w,h,0,0,w,h);return CSPR[L]={cv,w,h}}
 function drawWorker(){
   if(!wk)return;const s=Math.min(46,cowSize()*.62),[x,y]=toPx(wk),c=cx,bob=wk.walk?Math.abs(Math.sin(T*9))*s*.04:0,sw=wk.walk?Math.sin(T*9)*s*.05:0;
-  c.save();c.translate(x,y-bob);
+  const hop=wk.hop>0?Math.sin(wk.hop/.4*Math.PI)*9:0;c.save();c.translate(x,y-bob-hop);
   if(drag&&drag.moved&&wk.phase==='wait'&&drag.c.lvl===wk.want){c.strokeStyle='rgba(125,255,74,.95)';c.lineWidth=3;c.setLineDash([6,5]);c.beginPath();c.ellipse(0,-s*.25,s*.45,s*.65,0,0,7);c.stroke();c.setLineDash([])}
   if(wk.flip)c.scale(-1,1);
   const OL='#7a5a00',LWw=s*.024,Y='#ffd23f',Yd='#f0b90b',G='#3a3f4b';c.lineWidth=LWw;c.strokeStyle=OL;c.lineJoin='round';c.lineCap='round';
@@ -1172,7 +1182,7 @@ function draw(dt){
   drawNight();
   coins.forEach(k=>{const [x,y]=toPx(k);const a=k.age>5?6-k.age:1;drawCoin(cx,x,y-Math.min(1,k.age*3)*s*.15+Math.sin(T*4+k.x*9)*2,s*.13,a)});
   parts.forEach(p=>{cx.globalAlpha=Math.max(0,p.l*1.5);cx.fillStyle=p.col;cx.beginPath();cx.arc(p.x,p.y,4,0,7);cx.fill()});cx.globalAlpha=1;
-  drawFx(dt);
+  drawGive(dt);drawFx(dt);
   floats.forEach(f=>{if(f.gold){drawTapBadge(f);return}cx.globalAlpha=Math.min(1,f.l*2);cx.fillStyle=f.gold?'#ffe066':'#fff';cx.strokeStyle='rgba(60,40,0,.65)';cx.lineWidth=f.gold?4:3;cx.font=f.gold?'800 20px Nunito, system-ui':'bold 16px Nunito, system-ui';cx.textAlign='center';const fw=cx.measureText(f.t).width/2+8,fx=Math.min(W-fw,Math.max(fw,f.x));cx.strokeText(f.t,fx,f.y);cx.fillText(f.t,fx,f.y)});cx.globalAlpha=1;
 }
 let uiT=0;
