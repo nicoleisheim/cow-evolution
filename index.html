@@ -259,7 +259,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 #lBrickIc svg{width:30px;height:24px}
 .hbal{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.balw{display:flex;gap:6px}.bal{display:inline-flex;align-items:center;gap:4px;background:#fff;border:2.5px solid rgba(255,95,162,.55);color:#d6347f;border-radius:999px;padding:4px 11px 4px 8px;font:900 15px Nunito,system-ui;letter-spacing:0}.bal svg{width:18px;height:18px}
 #field{border-radius:0!important;box-shadow:none!important}#bar,#pbar,#lbar{background:rgba(255,95,162,.93)!important}#bar button,#pbar button,#lbar button{min-height:73px;box-sizing:border-box}#pbar button span{white-space:nowrap}#pbar button{font-size:12px!important}#plantView #plantCv,#legoView #legoCv{border-radius:0!important;box-shadow:none!important}
-#wkCow{position:absolute;left:50%;top:50%;width:34px;height:34px;transform:translate(-50%,-50%);display:none;z-index:1}#wkBtn.here #wkCow{display:block}#wkBtn.here .mg{display:none}html,body{touch-action:manipulation;-webkit-text-size-adjust:100%}#cowSheet .close,#buy .close,.overlay.center .close{box-shadow:none!important}.sellbtn{box-shadow:0 4px 10px rgba(42,140,240,.25)!important}
+#wkCow{position:absolute;left:50%;top:50%;width:34px;height:34px;transform:translate(-50%,-50%);display:none;z-index:1}html,body{touch-action:manipulation;-webkit-text-size-adjust:100%}#cowSheet .close,#buy .close,.overlay.center .close{box-shadow:none!important}.sellbtn{box-shadow:0 4px 10px rgba(42,140,240,.25)!important}
 </style>
 </head>
 <body>
@@ -1052,6 +1052,11 @@ function drawWorker(){
   c.fillStyle='#2a2d36';c.beginPath();c.roundRect(-s*.035,-s*.735,s*.07,s*.04,s*.015);c.fill();c.fillStyle=Math.sin(T*4)>0?'#7dff4a':'#3d7a24';c.beginPath();c.arc(0,-s*.745,s*.022,0,7);c.fill();
   c.restore();
   if(fenceC)c.drawImage(fenceC,0,0,W,H);
+  if(wk.phase!=='out'){const side=x<W*.55?1:-1,bw=46,bh=36,L=wk.want,gap=s*.32+12,bx=x+side*(gap+bw/2),by=y-bob-s*.4+Math.sin(T*2.5)*1.2;c.save();
+    c.translate(bx,by);c.scale(side,1);const l=-bw/2,r=bw/2,tp=-bh/2,bt=bh/2,R=12,tx=-(gap+bw/2)+s*.27,ty=-s*.1;
+    c.beginPath();c.moveTo(l+R,tp);c.lineTo(r-R,tp);c.arcTo(r,tp,r,tp+R,R);c.lineTo(r,bt-R);c.arcTo(r,bt,r-R,bt,R);c.lineTo(l+R,bt);c.arcTo(l,bt,l,bt-R,R);c.lineTo(l,6);c.lineTo(tx,ty);c.lineTo(l,-4);c.lineTo(l,tp+R);c.arcTo(l,tp,l+R,tp,R);c.closePath();
+    c.fillStyle='#fff';c.shadowColor='rgba(0,0,0,.15)';c.shadowBlur=6;c.fill();c.shadowBlur=0;c.lineJoin='round';c.lineWidth=2.5;c.strokeStyle=L===MAXL?'#59d62a':'#3d4a6b';c.stroke();c.restore();
+    const B=cowBox(L),k=bh*.8/B.m;drawCow(c,bx-B.cx*k,by-B.cy*k,k,L,0,false)}
 
 }
 // ---------- Eingabe ----------
