@@ -910,9 +910,9 @@ function drawTapBadge(f){
   cx.fillStyle='#d6347f';cx.font='800 17px Nunito, system-ui';cx.textAlign='left';cx.textBaseline='middle';cx.fillText(f.t,x0+33,1);
   cx.restore();
 }
-function fmtTap(n){return n<100&&n%1?n.toFixed(1).replace('.',','):fmt(n)}
+function fmtTap(n){return n<1?n.toFixed(2).replace('.',','):n<100&&n%1?n.toFixed(1).replace('.',','):fmt(n)}
 function tapCow(c){
-  const bonus=income(c.lvl)*1.5;S.coins+=bonus;sfx('coin');c.tap=1;c.wait=Math.max(c.wait,.6);
+  const bonus=income(c.lvl)*.1;S.coins+=bonus;sfx('coin');c.tap=1;c.wait=Math.max(c.wait,.6);
   const [x,y]=toPx(c);floats=floats.filter(f=>f.cow!==c);floats.push({x,y:y-cowSize()*.55,t:'+'+fmtTap(bonus),l:.9,gold:1,cow:c});
   const el=document.getElementById('coins');el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump');
   hideHint2();hideHint();
