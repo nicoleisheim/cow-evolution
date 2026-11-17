@@ -459,11 +459,11 @@ function drawCow(c,x,y,s,L,t,flip,lifted,glow,walk){
 
 const MAXL=LV.length;
 const UPG=[
- {k:'crate',n:'Schnellere Kisten',d:l=>'Kiste alle '+crateInt(l)+' s',cost:l=>7200*Math.pow(3.2,l),max:5},
- {k:'cap',n:'Größere Weide',d:l=>Math.min(16,10+l)+' Kühe Platz',cost:l=>19200*Math.pow(2.4,l),max:6},
- {k:'income',n:'Saftigeres Gras',d:l=>'+'+(l*20)+'% Ertrag',cost:l=>12000*Math.pow(2,l),max:30},
- {k:'gold',n:'Goldene Kiste öfter',d:l=>'alle '+goldInt(l)+' Kisten',cost:l=>60000*Math.pow(3,l),max:5},
- {k:'magnet',n:'Stärkerer Magnet',d:l=>'Magnet alle '+magInt(l)+' s',cost:l=>24000*Math.pow(2.3,l),max:7},
+ {k:'crate',n:'Schnellere Kisten',d:l=>'Kiste alle '+crateInt(l)+' s',cost:l=>1000*Math.pow(3.5,l),max:5},
+ {k:'cap',n:'Größere Weide',d:l=>Math.min(16,10+l)+' Kühe Platz',cost:l=>2500*Math.pow(3.5,l),max:6},
+ {k:'income',n:'Saftigeres Gras',d:l=>'+'+(l*20)+'% Ertrag',cost:l=>1500*Math.pow(2.7,l),max:30},
+ {k:'gold',n:'Goldene Kiste öfter',d:l=>'alle '+goldInt(l)+' Kisten',cost:l=>7500*Math.pow(3.5,l),max:5},
+ {k:'magnet',n:'Stärkerer Magnet',d:l=>'Magnet alle '+magInt(l)+' s',cost:l=>3000*Math.pow(3.2,l),max:7},
  {k:'wkFreq',n:'Häufigere Mitarbeiter-Besuche',d:l=>'Besuch alle '+fmtT(wkInt(l)),cost:l=>4e6*Math.pow(2.2,l),max:8,need:l=>MAXL},
  {k:'wkPay',n:'Bessere Atom-Preise',d:l=>'+'+(l*25)+' % Atom-Münzen',cost:l=>5e6*Math.pow(2.2,l),max:10,need:l=>MAXL}
 ];
