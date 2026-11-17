@@ -801,6 +801,15 @@ function drawTree(g,x,y,s,r){
 function bigFlower(g,x,y,s,col){g.strokeStyle='#5aa83c';g.lineWidth=2;g.beginPath();g.moveTo(x,y);g.lineTo(x,y+s*1.8);g.stroke();
   g.lineWidth=1.5;g.strokeStyle=BOL;g.fillStyle=col;for(let k=0;k<5;k++){const a=k/5*Math.PI*2-Math.PI/2;g.beginPath();g.ellipse(x+Math.cos(a)*s*.75,y+Math.sin(a)*s*.75,s*.55,s*.55,0,0,7);g.fill();g.stroke()}
   g.fillStyle='#ffc53d';g.beginPath();g.arc(x,y,s*.5,0,7);g.fill();g.stroke()}
+let fenceC=null;
+function drawFence(g){const hz=H*HZ,V=BGV;
+  // Zaun
+  const fy=hz+16;
+  if(V==='D'){g.fillStyle='#f0c79a';g.beginPath();g.roundRect(-4,fy-15,W+8,5,2.5);g.fill();g.beginPath();g.roundRect(-4,fy-6,W+8,5,2.5);g.fill();for(let x=10;x<W;x+=38){g.fillStyle='#f6d3ac';g.beginPath();g.roundRect(x-4,fy-24,8,28,4);g.fill()}}
+  else{const post=V==='C'?'#ffffff':'#f6d3ac',rail=V==='C'?'#ff8fbf':'#f0c79a';g.lineWidth=1.8;g.strokeStyle=BOL;g.fillStyle=rail;
+    [fy-15,fy-6].forEach(ry=>{g.beginPath();g.roundRect(-4,ry,W+8,5,2.5);g.fill();g.stroke()});
+    for(let x=10;x<W;x+=38){g.fillStyle=post;g.beginPath();g.roundRect(x-4,fy-24,8,28,[4,4,2,2]);g.fill();if(V==='C'){g.save();g.clip();g.fillStyle='#ff8fbf';for(let k=0;k<4;k++)g.fillRect(x-4,fy-22+k*7,8,3);g.restore()}g.stroke()}}
+}
 function buildBg(){
   bgW=W;bgH=H;bgC=bgC||document.createElement('canvas');
   bgC.width=W*DPR;bgC.height=H*DPR;const g=bgC.getContext('2d');g.setTransform(DPR,0,0,DPR,0,0);g.clearRect(0,0,W,H);
@@ -817,12 +826,7 @@ function buildBg(){
   g.fillStyle=m;g.fillRect(0,hz+12,W,H);g.fillStyle=V==='C'?'#ffd3e6':V==='D'?'#fbd0e2':'#f7c3da';g.fillRect(0,hz+8,W,6);
   if(V==='C'){for(let i=0;i<Math.round(W*H/2600);i++){g.fillStyle=['rgba(255,255,255,.55)','rgba(255,240,140,.5)','rgba(200,170,255,.45)'][i%3];g.beginPath();g.arc(r()*W,hz+30+r()*(H-hz),2.5+r()*3,0,7);g.fill()}}
   else for(let i=0;i<22;i++){g.fillStyle=i%2?'rgba(255,255,255,'+(V==='D'?.18:.12)+')':'rgba(170,40,100,.06)';g.beginPath();g.ellipse(r()*W,hz+30+r()*(H-hz),40+r()*90,14+r()*30,0,0,7);g.fill()}
-  // Zaun
-  const fy=hz+16;
-  if(V==='D'){g.fillStyle='#f0c79a';g.beginPath();g.roundRect(-4,fy-15,W+8,5,2.5);g.fill();g.beginPath();g.roundRect(-4,fy-6,W+8,5,2.5);g.fill();for(let x=10;x<W;x+=38){g.fillStyle='#f6d3ac';g.beginPath();g.roundRect(x-4,fy-24,8,28,4);g.fill()}}
-  else{const post=V==='C'?'#ffffff':'#f6d3ac',rail=V==='C'?'#ff8fbf':'#f0c79a';g.lineWidth=1.8;g.strokeStyle=BOL;g.fillStyle=rail;
-    [fy-15,fy-6].forEach(ry=>{g.beginPath();g.roundRect(-4,ry,W+8,5,2.5);g.fill();g.stroke()});
-    for(let x=10;x<W;x+=38){g.fillStyle=post;g.beginPath();g.roundRect(x-4,fy-24,8,28,[4,4,2,2]);g.fill();if(V==='C'){g.save();g.clip();g.fillStyle='#ff8fbf';for(let k=0;k<4;k++)g.fillRect(x-4,fy-22+k*7,8,3);g.restore()}g.stroke()}}
+  drawFence(g);fenceC=fenceC||document.createElement('canvas');fenceC.width=W*DPR;fenceC.height=H*DPR;{const fg=fenceC.getContext('2d');fg.setTransform(DPR,0,0,DPR,0,0);fg.clearRect(0,0,W,H);drawFence(fg)}
   // Steine
   // Gras
   if(V==='A'||V==='B'){const gn=Math.round(W*H/2200);g.lineCap='round';
@@ -974,17 +978,18 @@ function atomFor(L){return Math.round(2*L*(1+.25*(S.up.wkPay||0)))}
 function wkInt(l){return 120*Math.pow(.88,l||0)}
 function fmtT(t){t=Math.ceil(t);return t<60?t+' s':Math.floor(t/60)+':'+String(t%60).padStart(2,'0')+' Min.'}
 function mergeCap(){return MAXL}
+function wkFenceY(){return H?(H*HZ+1)/H:.2}
 function spawnWorker(){
   const hi=Math.min(MAXL-1,S.highest-1),lo=Math.max(2,hi-5);if(hi<2){wkT=60;return}
   const have=S.cows.filter(c=>c.lvl>=lo&&c.lvl<=hi).map(c=>c.lvl);
   const want=have.length&&Math.random()<.75?have[Math.floor(Math.random()*have.length)]:lo+Math.floor(Math.random()*(hi-lo+1));
-  try{updFZ()}catch(e){}const ymin=Math.max(.56,H?(FZ.b+cowSize()*1.75)/H:0),right=ymin>.86,y=right?.56+Math.random()*.26:ymin+Math.random()*(.86-ymin),m=(cowSize()*.32+10)/W;wk={x:right?1.12:-.12,y,tx:right?Math.max(.8,1-m):Math.min(.2,m),ty:y,right,want,phase:'in',t:45,flip:false,say:null,sayT:0};
+  const fy=wkFenceY(),right=Math.random()<.5,tx=.34+Math.random()*.46;wk={x:right?1.12:-.12,y:fy,tx,ty:fy,right,want,phase:'in',t:45,flip:false,say:null,sayT:0};
 }
 function updateWorker(dt){
   if(!S.plant||!S.plant.unlocked)return;
   if(!wk){wkT-=dt;if(wkT<=0)spawnWorker();return}
   if(wk.sayT>0)wk.sayT-=dt;
-  if(wk.phase!=='out'&&H){try{updFZ()}catch(e){}const ym=(FZ.b+cowSize()*1.75)/H;if(!wk.right&&wk.ty<ym){if(ym>.86){wk.right=true;wk.tx=Math.max(.8,1-(cowSize()*.32+10)/W);wk.ty=Math.min(wk.ty,.82)}else wk.ty=ym}}
+  if(H){const fy=wkFenceY();wk.y=wk.ty=fy;if(wk.phase!=='out'&&(wk.tx<.3||wk.tx>.82))wk.tx=Math.min(.82,Math.max(.3,wk.tx))}
   const dx=wk.tx-wk.x,dy=wk.ty-wk.y,d=Math.hypot(dx,dy);
   if(d>.005){const sp=.13*dt;wk.x+=dx/d*Math.min(sp,d);wk.y+=dy/d*Math.min(sp,d);wk.flip=dx<0;wk.walk=1}else{wk.walk=0;
     if(wk.phase==='in')wk.phase='wait';
@@ -992,7 +997,7 @@ function updateWorker(dt){
 }
 function workerDrop(c){
   if(!wk||wk.phase==='out')return false;const [wx,wy]=toPx(wk),[x,y]=toPx(c);
-  if(Math.hypot(x-wx,y-(wy-cowSize()*.3))>cowSize()*.75)return false;
+  if(Math.abs(x-wx)>cowSize()*.85||y>wy+cowSize()*1.15)return false;
   if(c.lvl!==wk.want){showToast('Der Mitarbeiter sucht eine '+LV[wk.want-1].n+'!');c.wait=1;return true}
   const n=atomFor(c.lvl);S.cows=S.cows.filter(o=>o!==c);S.atom=(S.atom||0)+n;
   burst(x,y,'#7dff4a',22);rings.push({x,y,r:10,l:.6,col:'#7dff4a'});
@@ -1005,7 +1010,7 @@ function drawWantSign(c,x,y,s,L){c.save();const hy=y-s*1.06+Math.sin(T*2.5)*s*.0
 const CBOX={};function cowBox(L){if(CBOX[L])return CBOX[L];const N=240,cv=document.createElement('canvas');cv.width=cv.height=N;const g=cv.getContext('2d');drawCow(g,N/2,N/2,100,L,0,false);const d=g.getImageData(0,0,N,N).data;let x0=N,y0=N,x1=0,y1=0;for(let y=0;y<N;y++)for(let x=0;x<N;x++)if(d[(y*N+x)*4+3]>140){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}
   const r=x1>x0?{cx:((x0+x1)/2-N/2)/100,cy:((y0+y1)/2-N/2)/100,m:Math.max(x1-x0,y1-y0)/100}:{cx:0,cy:0,m:1};return CBOX[L]=r}
 function drawWorker(){
-  if(!wk)return;const s=cowSize()*1.1,[x,y]=toPx(wk),c=cx,bob=wk.walk?Math.abs(Math.sin(T*9))*s*.04:0,sw=wk.walk?Math.sin(T*9)*s*.05:0;
+  if(!wk)return;const s=Math.min(46,cowSize()*.62),[x,y]=toPx(wk),c=cx,bob=wk.walk?Math.abs(Math.sin(T*9))*s*.04:0,sw=wk.walk?Math.sin(T*9)*s*.05:0;
   c.save();c.translate(x,y-bob);
   if(drag&&drag.moved&&wk.phase==='wait'&&drag.c.lvl===wk.want){c.strokeStyle='rgba(125,255,74,.95)';c.lineWidth=3;c.setLineDash([6,5]);c.beginPath();c.ellipse(0,-s*.25,s*.45,s*.65,0,0,7);c.stroke();c.setLineDash([])}
   if(wk.flip)c.scale(-1,1);
@@ -1044,7 +1049,8 @@ function drawWorker(){
   // Lampe oben
   c.fillStyle='#2a2d36';c.beginPath();c.roundRect(-s*.035,-s*.735,s*.07,s*.04,s*.015);c.fill();c.fillStyle=Math.sin(T*4)>0?'#7dff4a':'#3d7a24';c.beginPath();c.arc(0,-s*.745,s*.022,0,7);c.fill();
   c.restore();
-  if(wk.phase!=='out')drawWantSign(c,x,y-bob,s,wk.want);
+  if(fenceC)c.drawImage(fenceC,0,0,W,H);
+  if(wk.phase!=='out'){const ss=cowSize()*.95,side=x<W/2?1:-1,sx=x+side*(s*.35+ss*.32),sy=y-s*.5;drawWantSign(c,sx,sy+ss*1.06,ss,wk.want)}
 }
 // ---------- Eingabe ----------
 
@@ -1140,7 +1146,7 @@ function loop(now){
 function draw(dt){
   cx.clearRect(0,0,W,H);
   if(bgW!==W||bgH!==H)buildBg();
-  drawSky(dt);cx.drawImage(bgC,0,0,W,H);
+  drawSky(dt);cx.drawImage(bgC,0,0,W,H);drawWorker();
   drawSell();
   drawMagLine();
   if(drag&&!drag.moved){const pr=(performance.now()-drag.t0-130)/(LP_MS-130);if(pr>0){const [x,y]=toPx(drag.c),r=cowSize()*.62;cx.save();cx.lineCap='round';cx.lineWidth=5;cx.strokeStyle='rgba(255,255,255,.6)';cx.beginPath();cx.arc(x,y,r,0,7);cx.stroke();cx.strokeStyle='#ff5fa2';cx.beginPath();cx.arc(x,y,r,-Math.PI/2,-Math.PI/2+Math.min(1,pr)*Math.PI*2);cx.stroke();cx.restore()}}
@@ -1155,7 +1161,6 @@ function draw(dt){
   drawMagLine(true);
   try{drawIntro()}catch(e){}
   drawFuelAnims();
-  drawWorker();
   drawNight();
   coins.forEach(k=>{const [x,y]=toPx(k);const a=k.age>5?6-k.age:1;drawCoin(cx,x,y-Math.min(1,k.age*3)*s*.15+Math.sin(T*4+k.x*9)*2,s*.13,a)});
   parts.forEach(p=>{cx.globalAlpha=Math.max(0,p.l*1.5);cx.fillStyle=p.col;cx.beginPath();cx.arc(p.x,p.y,4,0,7);cx.fill()});cx.globalAlpha=1;
