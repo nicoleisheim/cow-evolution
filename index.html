@@ -1108,7 +1108,7 @@ function loop(now){
   const dt=Math.min(.05,(now-lastT)/1000);lastT=now;T+=dt;
   // Kisten
   if(S.cratesOn!==false&&S.cows.length+crates.length<cap()){crateT+=dt;if(crateT>=crateInt(S.up.crate)){crateT=0;spawnCrate()}}
-  if(S.goldPending>0&&S.cows.length+crates.length<cap()){S.goldPending--;const hi=Math.max(1,Math.min(S.highest,MAXL-1));crates.push({x:rnd(.25,.75),y:rnd(.4,.78),lvl:1+Math.floor(Math.random()*hi),drop:0,age:0,gold:1});save()}
+  if(S.goldPending>0&&S.cows.length+crates.length<cap()){S.goldPending--;const hi=Math.max(1,Math.min(S.highest,MAXL-1));crates.push({x:rnd(.25,.75),y:rnd(.4,.78),lvl:2+Math.floor(Math.random()*Math.max(1,hi-1)),drop:0,age:0,gold:1});save()}
   updCrateUI();updWkUI();updFuelUI();
   // Kisten immer sichtbar und antippbar halten (nie außerhalb, nie unter den Knöpfen)
   if(W&&H){const cs=cowSize(),mx=cs*.35/W;crates.forEach(k=>{if(!isFinite(k.x)||k.x==null)k.x=.5;if(!isFinite(k.y)||k.y==null)k.y=.6;k.x=clamp(k.x,mx,1-mx);k.y=clamp(k.y,.33,.86);k.x=avoidFab(k.x,k.y,cs*.35,cs*.35);if(k.x>1-mx)k.x=1-mx})}
