@@ -640,7 +640,7 @@ function drawPlant(dt){
   const c=pcx,W2=PW,H2=PH,P=S.plant;if(!c)return;
   if(pbgW!==PW||pbgH!==PH||!pbg)buildPlantBg();
   const hz=H2*PHZ,sk=c.createLinearGradient(0,0,0,hz+30);sk.addColorStop(0,'#9fdcff');sk.addColorStop(1,'#eefaf0');c.fillStyle=sk;c.fillRect(0,0,W2,hz+40);
-  if(P.missions>=MISSIONS.length)drawPortal(c,W2*.13,hz*.68,Math.min(30,W2*.075));else{const sx=W2*.18,sy=hz*.45,sg=c.createRadialGradient(sx,sy,4,sx,sy,50);sg.addColorStop(0,'rgba(255,245,170,.9)');sg.addColorStop(1,'rgba(255,245,170,0)');c.fillStyle=sg;c.beginPath();c.arc(sx,sy,50,0,7);c.fill();c.fillStyle='#fff3a8';c.beginPath();c.arc(sx,sy,18,0,7);c.fill();}
+  if(P.missions>=MISSIONS.length)drawPortal(c,W2*.13,hz*.68,Math.min(30,W2*.075));else{const sx=W2*.18,sy=hz*.45,sg=c.createRadialGradient(sx,sy,4,sx,sy,48);sg.addColorStop(0,'rgba(255,240,150,.9)');sg.addColorStop(1,'rgba(255,240,150,0)');c.fillStyle=sg;c.beginPath();c.arc(sx,sy,48,0,7);c.fill();c.fillStyle='#ffe066';c.beginPath();c.arc(sx,sy,19,0,7);c.fill();c.strokeStyle='#3d4a6b';c.lineWidth=2;c.stroke();}
   if(!window.pClouds)window.pClouds=[0,1,2].map(i=>({x:(i+.3+Math.random()*.4)/3*W2,y:(.15+Math.random()*.35)*hz,s:.55+Math.random()*.45,v:4+Math.random()*6}));
   pClouds.forEach(q=>{q.x+=q.v*dt;if(q.x>W2+90)q.x=-90;const B=[[-22,4,16],[0,-4,22],[22,3,16],[8,8,14],[-8,8,14]];c.strokeStyle='#3d4a6b';c.lineWidth=4;B.forEach(([dx,dy,r])=>{c.beginPath();c.arc(q.x+dx*q.s,q.y+dy*q.s,r*q.s,0,7);c.stroke()});c.fillStyle='#fff';B.forEach(([dx,dy,r])=>{c.beginPath();c.arc(q.x+dx*q.s,q.y+dy*q.s,r*q.s,0,7);c.fill()})});
   // Dampf aus den Kühltürmen
