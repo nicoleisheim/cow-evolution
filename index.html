@@ -1237,12 +1237,12 @@ const DSHOP=[
 ];
 function sack(){return Math.max(250,rate()/boost()*300)}
 function gold(){return Math.max(1,S.highest-2)}
-function diaPrice(){const v=Math.max(2000,rate()/boost()*120),p=Math.pow(10,Math.max(0,Math.floor(Math.log10(v))-1));return Math.round(v/p)*p}
+function diaPrice(){return 100000}
 const EXCH=[{n:1,f:1},{n:10,f:9},{n:50,f:40}];
 function renderEx(update){const box=document.getElementById('exList');if(!box)return;
   if(!update||box.children.length!==EXCH.length){box.innerHTML='';EXCH.forEach((e,i)=>{const r=document.createElement('div');r.className='row';r.innerHTML='<div class="txt"><b></b><span></span></div><button></button>';
     r.querySelector('button').onclick=()=>{const pr=diaPrice()*e.f;if(S.coins<pr)return;S.coins-=pr;S.dia+=e.n;sfx('dia');spendFx(pr);const bt=r.querySelector('button');bt.dataset.ok=Date.now();r.classList.remove('bought');void r.offsetWidth;r.classList.add('bought');renderEx(true);save()};box.appendChild(r)})}
-  EXCH.forEach((e,i)=>{const r=box.children[i],pr=diaPrice()*e.f;r.querySelector('b').innerHTML=e.n+' '+(e.n===1?'Diamant':'Diamanten');r.querySelector('span').textContent=e.f<e.n?Math.round((1-e.f/e.n)*100)+' % Rabatt':'Preis steigt mit deinem Einkommen';
+  EXCH.forEach((e,i)=>{const r=box.children[i],pr=diaPrice()*e.f;r.querySelector('b').innerHTML=e.n+' '+(e.n===1?'Diamant':'Diamanten');r.querySelector('span').textContent=e.f<e.n?Math.round((1-e.f/e.n)*100)+' % Rabatt':'Einzelpreis';
     const b=r.querySelector('button'),ok=Date.now()-(+b.dataset.ok||0)<900,h=ok?'✓ Gekauft':IC.coin+fmt(pr);if(b.innerHTML!==h)b.innerHTML=h;b.classList.toggle('ok',ok);b.disabled=!ok&&S.coins<pr})}
 function renderDia(update){renderEx(update);
   const box=document.getElementById('diaList');
