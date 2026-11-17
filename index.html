@@ -259,7 +259,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 #lBrickIc svg{width:30px;height:24px}
 .hbal{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.balw{display:flex;gap:6px}.bal{display:inline-flex;align-items:center;gap:4px;background:#fff;border:2.5px solid rgba(255,95,162,.55);color:#d6347f;border-radius:999px;padding:4px 11px 4px 8px;font:900 15px Nunito,system-ui;letter-spacing:0}.bal svg{width:18px;height:18px}
 #field{border-radius:0!important;box-shadow:none!important}#bar,#pbar,#lbar{background:rgba(255,95,162,.93)!important}#bar button,#pbar button,#lbar button{min-height:73px;box-sizing:border-box}#pbar button span{white-space:nowrap}#pbar button{font-size:12px!important}#plantView #plantCv,#legoView #legoCv{border-radius:0!important;box-shadow:none!important}
-html,body{touch-action:manipulation;-webkit-text-size-adjust:100%}#cowSheet .close,#buy .close,.overlay.center .close{box-shadow:none!important}.sellbtn{box-shadow:0 4px 10px rgba(42,140,240,.25)!important}
+html,body{touch-action:manipulation;-webkit-text-size-adjust:100%}#buyBtn.dim{opacity:.6}#cowSheet .close,#buy .close,.overlay.center .close{box-shadow:none!important}.sellbtn{box-shadow:0 4px 10px rgba(42,140,240,.25)!important}
 </style>
 </head>
 <body>
@@ -1176,12 +1176,13 @@ function ui(){
   document.getElementById('rateTxt').innerHTML=(rate()>=10?fmt(rate()):rate().toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1}))+(boost()>1?' '+IC.bolt+Math.ceil((S.boostUntil-Date.now())/1000)+'s':'');
   document.getElementById('capTxt').textContent=S.cows.length+'/'+cap()+' Kühe';
   const bc=buyCost();document.getElementById('buyCost').innerHTML=S.cows.length>=cap()?'Weide voll':'ab '+IC.coin+fmt(bc);
-  document.getElementById('buyBtn').disabled=S.coins<bc||S.cows.length>=cap();
+  {const bb=document.getElementById('buyBtn');bb.disabled=false;bb.classList.toggle('dim',S.coins<bc||S.cows.length>=cap())}
   document.getElementById('dexTxt').textContent=S.highest+'/'+MAXL;if(plantOpen)updPlantUI();
   if(document.getElementById('shop').classList.contains('on'))renderShop(true);if(document.getElementById('buy').classList.contains('on'))renderBuy(true);
 }
-document.getElementById('buyBtn').onclick=()=>{if(S.cows.length>=cap())return;renderBuy();open('buy')};
-function buyLevel(L,btn){const pr=priceOf(L);if(L>maxBuy()||S.coins<pr||S.cows.length>=cap())return;S.coins-=pr;S.buys++;const c=addCow(L);c.pop=1;burst(c.x*W,c.y*H,'#ffd84a',14);starBurst(c.x*W,c.y*H,8);sfx('buy');
+document.getElementById('buyBtn').onclick=()=>{renderBuy();fullNote();open('buy')};
+function fullNote(){}
+function buyLevel(L,btn){const pr=priceOf(L);if(S.cows.length>=cap()){fullNote();return}if(L>maxBuy()||S.coins<pr)return;S.coins-=pr;S.buys++;const c=addCow(L);c.pop=1;burst(c.x*W,c.y*H,'#ffd84a',14);starBurst(c.x*W,c.y*H,8);sfx('buy');
   const [x,y]=toPx(c);floats.push({x:Math.min(W-70,Math.max(70,x)),y:y-cowSize()*.6,t:'Neu: '+LV[L-1].n,l:1.2,gold:1,grey:1});spendFx(pr);
   if(btn){const r=btn.parentElement;r.classList.remove('bought');void r.offsetWidth;r.classList.add('bought');btn.dataset.ok=Date.now()}renderBuy(true);save()}
 function spendFx(pr,pid){const p=document.getElementById(pid||'coins');p.classList.remove('bump');void p.offsetWidth;p.classList.add('bump');const q=p.getBoundingClientRect(),e=document.createElement('div');e.className='spend';e.textContent='−'+fmt(pr);e.style.left=(q.left+q.width/2)+'px';e.style.top=(q.bottom+4)+'px';document.body.appendChild(e);setTimeout(()=>e.remove(),1300)}
