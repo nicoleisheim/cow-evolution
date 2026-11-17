@@ -465,7 +465,7 @@ const UPG=[
  {k:'gold',n:'Goldene Kiste öfter',d:l=>'alle '+goldInt(l)+' Kisten',cost:l=>7500*Math.pow(3.5,l),max:5},
  {k:'magnet',n:'Stärkerer Magnet',d:l=>'Magnet alle '+magInt(l)+' s',cost:l=>3000*Math.pow(3.2,l),max:7},
  {k:'wkFreq',n:'Häufigere Mitarbeiter-Besuche',d:l=>'Besuch alle '+fmtT(wkInt(l)),cost:l=>4e6*Math.pow(2.2,l),max:4,need:l=>MAXL},
- {k:'wkPay',n:'Bessere Atom-Preise',d:l=>'+'+(l*25)+' % Atom-Münzen',cost:l=>5e6*Math.pow(2.2,l),max:10,need:l=>MAXL}
+ {k:'wkPay',n:'Bessere Atom-Preise',d:l=>(2+Math.min(3,l))+' Atom-Münzen pro Kuh-Stufe',cost:l=>5e6*Math.pow(2.2,l),max:3,need:l=>MAXL}
 ];
 function magInt(l){return 10-l}
 function goldInt(l){return 20-2*l}
@@ -976,7 +976,7 @@ document.getElementById('sellBtn').onclick=()=>{const c=sheetCow;sheetCow=null;d
 IC.atom=shSvg('atom',ATOM_SH);
 const ATOM_CALF=5;
 let wk=(S.wk&&S.wk.want&&S.plant&&S.plant.unlocked)?{x:S.wk.tx,y:S.wk.y,tx:S.wk.tx,ty:S.wk.y,want:S.wk.want,right:!!S.wk.right,phase:'wait',t:45,flip:!!S.wk.right,say:null,sayT:0}:null,wkT=typeof S.wkT==='number'&&S.wkT>0?S.wkT:20;
-function atomFor(L){return Math.round(2*L*(1+.25*(S.up.wkPay||0)))}
+function atomFor(L){return L*(2+Math.min(3,S.up.wkPay||0))}
 function wkInt(l){return Math.max(60,120-15*(l||0))}
 function fmtT(t){t=Math.ceil(t);return t<60?t+' s':Math.floor(t/60)+':'+String(t%60).padStart(2,'0')+' Min.'}
 function mergeCap(){return MAXL}
