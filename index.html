@@ -523,7 +523,7 @@ const PUP=[
  {k:'amp',n:'Reaktor-Verstärker',d:l=>'+'+(l*25)+' % Leistung',cost:l=>2500*Math.pow(2.5,l),max:20}
 ];
 const CALF_PRICE=250000;
-function fmtL(n){return n<10?(Math.round(n*10)/10).toString().replace('.',','):fmt(n)}
+function fmtL(n){return n<1e4?(Math.round(n*10)/10).toLocaleString('de-DE',{maximumFractionDigits:1}):fmt(n)}
 function defPlant(){return {accident:false,chef:null,unlocked:false,cows:0,mw:0,calves:[],best:1,missions:0,birthT:0,up:{birth:0,slots:0,amp:0}}}
 function worldBonus(){let b=1;const m=(typeof S!=='undefined'&&S&&S.plant)?S.plant.missions:0;for(let i=0;i<m;i++){if(MISSIONS[i].lego&&S.lego&&S.lego.power===false)continue;b+=MISSIONS[i].bonus}return b}
 let plantOpen=false,pendingMap=false,pFloats=[],pDrag=null,pUid=1;
