@@ -534,7 +534,11 @@ const FUEL_SEC=60,FUEL_MAX=300;function fuelLeft(){return Math.max(0,((S.fuelUnt
 function plantOutput(){let o=0;S.plant.calves.forEach(c=>o+=calfMW(c.lvl));return o*(1+.25*S.plant.up.amp)*(fuelLeft()>0?3:1)}
 function addCalf(L,x,y){const c={lvl:L,x:x??(.15+Math.random()*.7),y:y??(.46+Math.random()*.4),id:pUid++,pop:1,wait:Math.random()*2};c.tx=c.x;c.ty=c.y;S.plant.calves.push(c);return c}
 setTimeout(()=>{try{const P=S.plant;if(!P||!P.unlocked)return;const due=P.calves.filter(c=>c.lvl===CMAX&&c.born&&superLeft(c)<=0);if(due.length){due.forEach(c=>superExplode(c,true));showToast(due.length+' Supernova-'+(due.length>1?'Kühe sind':'Kuh ist')+' explodiert, während du weg warst: +'+fmt(superReward()*due.length)+' MW und +'+SUPER_DIA*due.length+' Diamanten')}}catch(e){}},1500);
+let LCR=null,LCRt=0;function legoCardRect(){if(!plantOpen||!pcv)return null;if(T-LCRt<.5)return LCR;LCRt=T;const e=document.getElementById('pLegoCard');if(!e||!e.classList.contains('on')){LCR=null;return null}const a=e.getBoundingClientRect(),b=pcv.getBoundingClientRect();LCR={l:a.left-b.left,r:a.right-b.left,t:a.top-b.top};return LCR}
+function calfAvoid(c){const r=legoCardRect();if(!r||!PW)return;const s=calfSize(),sc=CALF[c.lvl-1].sc||1,hw=s*sc*.45,lim=(r.t-s*sc*.42)/PH;
+  const inX=x=>x*PW>r.l-hw&&x*PW<r.r+hw;if(inX(c.x)&&c.y>lim)c.y=lim;if(inX(c.tx??c.x)&&(c.ty??0)>lim)c.ty=lim}
 function plantTick(dt){const P=S.plant;if(!P.unlocked)return;
+  P.calves.forEach(calfAvoid);
   P.calves.filter(c=>c.lvl===CMAX).forEach(c=>{if(!c.born)c.born=Date.now();if(superLeft(c)<=0&&!(pDrag&&pDrag.c===c))superExplode(c)});
   P.mw+=plantOutput()*dt;
   P.calves.forEach(c=>{if(c.pop)c.pop=Math.max(0,c.pop-dt*3);if(pDrag&&pDrag.c===c)return;
