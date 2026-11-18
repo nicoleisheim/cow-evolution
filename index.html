@@ -506,8 +506,8 @@ const MISSIONS=[
 ];
 function misCost(m){return m.need*300}
 const PUP=[
- {k:'slots',n:'Größerer Brutkasten',d:l=>Math.min(16,8+2*l)+' Plätze',cost:l=>500*Math.pow(3,l),max:4},
- {k:'amp',n:'Reaktor-Verstärker',d:l=>'+'+(l*25)+' % Leistung',cost:l=>300*Math.pow(2.2,l),max:20}
+ {k:'slots',n:'Größerer Brutkasten',d:l=>Math.min(16,8+2*l)+' Plätze',cost:l=>5000*Math.pow(4,l),max:4},
+ {k:'amp',n:'Reaktor-Verstärker',d:l=>'+'+(l*25)+' % Leistung',cost:l=>2500*Math.pow(2.5,l),max:20}
 ];
 const CALF_PRICE=250000;
 function fmtL(n){return n<10?(Math.round(n*10)/10).toString().replace('.',','):fmt(n)}
