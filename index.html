@@ -263,6 +263,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 .prow{background:linear-gradient(135deg,#f3e9ff,#ffe3ef)!important;border:2px solid #d6c0ff}.prow .bar i{background:linear-gradient(90deg,#d6c0ff,#ff5fa2)!important}.prow.lockd{opacity:.55}.prow.done{background:#effbe8!important;border-color:#9cff6a}
 #portalFx{position:fixed;inset:0;z-index:60;pointer-events:none;display:none;background:radial-gradient(circle,#fff 0,#f5d9ff 30%,rgba(180,140,255,.0) 70%)}#portalFx.on{display:block;animation:pfx 1.6s ease-out forwards}@keyframes pfx{0%{opacity:0;transform:scale(.2)}35%{opacity:1;transform:scale(1.4)}100%{opacity:0;transform:scale(3)}}
 #plantCv.shk{animation:shake .12s linear infinite}
+.pstk{display:flex;flex-direction:column;align-items:flex-end;gap:6px}#pLegoCard{position:absolute;z-index:2;right:12px;top:calc(62px + env(safe-area-inset-top));display:none;align-items:center;gap:8px;background:#fff;border:3px solid rgba(255,95,162,.55);border-radius:16px;padding:5px 12px 5px 8px;box-shadow:0 6px 20px rgba(214,52,127,.18);pointer-events:none}#pLegoCard.on{display:flex}#pLegoCard .lgi svg{width:26px;height:22px;display:block}#pLegoCard b{display:block;font:900 12.5px Nunito,system-ui;color:#d6347f;line-height:1.1}#pLegoCard small{display:flex;align-items:center;gap:5px;font:800 11px Nunito,system-ui;color:#e07aa8}#pLegoCard i{width:8px;height:8px;border-radius:50%;background:#59d62a;box-shadow:0 0 6px #7dff4a;display:inline-block}#pLegoCard.off{border-color:#ff7aa0}#pLegoCard.off small{color:#e0245e}#pLegoCard.off i{background:#e0245e;box-shadow:0 0 6px #ff5f7a;animation:lgblink 1s steps(1) infinite}#pLego{display:none;height:auto!important;padding:4px 10px!important;font:800 11.5px Nunito,system-ui!important;gap:5px!important}#pLego.on{display:flex}#pLego.off{border-color:#ff7aa0!important;color:#e0245e!important;animation:lgblink 1s steps(1) infinite}@keyframes lgblink{50%{opacity:.55}}#pLego svg{width:16px;height:13px}
 </style>
 </head>
 <body>
@@ -299,10 +300,10 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
   <p id="mapInfo"></p>
 </div>
 <div id="plantView" class="view pv">
-  <canvas id="plantCv"></canvas>
+  <canvas id="plantCv"></canvas><div id="pLegoCard"><span class="lgi"></span><div><b>Lego-Stadt</b><small><i></i><span class="lgt"></span></small></div></div>
   <div class="ptop">
     <div class="pills"><div class="pill"><svg class="pbolt" viewBox="0 0 24 24"><path d="M13.4 2.6 5.2 13.3h5.7l-1.1 8.1 8.2-11h-5.8z" fill="#ffe14d" stroke="#b8860b" stroke-width="1.2" stroke-linejoin="round"/></svg><span id="pMW">0</span></div><div class="pill"><span class="pi" id="pAtomIc"></span><span id="pAtom">0</span></div></div>
-    <div class="pill stat"><div><b id="pOut">0</b><small>MW/Sek.</small></div><div class="cap" id="pCalf">0/8 Kälber</div></div>
+    <div class="pstk"><div class="pill stat"><div><b id="pOut">0</b><small>MW/Sek.</small></div><div class="cap" id="pCalf">0/8 Kälber</div></div></div>
   </div>
   
   
@@ -661,6 +662,7 @@ function drawPlant(dt){
   // Dampf aus den Kühltürmen
   pTowers.forEach(([tx,ty,tw],j)=>{for(let i=0;i<6;i++){const k=((T*.18+i/6+j*.37)%1);c.fillStyle='rgba(255,255,255,'+(.75*(1-k))+')';c.beginPath();c.arc(tx+Math.sin(i*2+T*.7)*tw*.15+k*tw*.4,ty-6-k*hz*.55,tw*(.22+k*.45),0,7);c.fill()}});
   c.drawImage(pbg,0,0,W2,H2);
+
   if(fuelLeft()>0){const rx=W2*.3,rw=W2*.2,rh=H2*.09,ry=hz+6-rh,pu=.55+.25*Math.sin(T*5),rg=c.createRadialGradient(rx,ry,4,rx,ry,rw*1.1);rg.addColorStop(0,'rgba(170,255,90,'+pu+')');rg.addColorStop(1,'rgba(170,255,90,0)');c.fillStyle=rg;c.beginPath();c.arc(rx,ry,rw*1.1,0,7);c.fill()}
   // schwebende Leuchtpartikel
   for(let i=0;i<16;i++){const x=W2*(.5+.48*Math.sin(T*.2*(1+(i%3)*.3)+i*1.9)),y=hz+30+(H2-hz-40)*(.5+.5*Math.sin(T*.15+i*2.7));c.fillStyle='rgba(225,255,150,'+(.3+.3*Math.sin(T*3+i))+')';c.beginPath();c.arc(x,y,2.2,0,7);c.fill()}
@@ -695,6 +697,7 @@ function updPlantUI(){const P=S.plant,out=plantOutput();
   document.getElementById('pMW').textContent=Math.floor(P.mw).toLocaleString('de-DE');
   document.getElementById('pOut').textContent=fmtL(out)+(fuelLeft()>0?' ×3':'');
   document.getElementById('pCalf').textContent=P.calves.length+'/'+slots()+' Kälber';
+  {const e=document.getElementById('pLegoCard'),un=!!(S.lego&&S.lego.unlocked);e.classList.toggle('on',un);if(un){const off=S.lego.power===false;e.classList.toggle('off',off);const ic=e.querySelector('.lgi');if(!ic.innerHTML&&typeof BRICK_SVG!=='undefined')ic.innerHTML=BRICK_SVG;const t=off?'Stromausfall!':'versorgt · '+fmtL(legoUse())+' MW/s',q=e.querySelector('.lgt');if(q.textContent!==t)q.textContent=t}}
   const iv=birthInt(P.up.birth),full=P.calves.length>=slots();
       const bb=document.getElementById('calfBuy');bb.disabled=full||(S.atom||0)<ATOM_CALF;const bh='<span>Kälbchen<small>'+IC.atom+ATOM_CALF+'</small></span>';if(bb.innerHTML!==bh)bb.innerHTML=bh;document.getElementById('pAtom').textContent=(S.atom||0).toLocaleString('de-DE');
   renderMissions(true);renderPup(true);
