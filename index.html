@@ -262,6 +262,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 #wkCow{position:absolute;left:50%;top:50%;width:34px;height:34px;transform:translate(-50%,-50%);display:none;z-index:1}html,body{-webkit-text-size-adjust:100%}#cv,#field{touch-action:none}#cowSheet .close,#buy .close,.overlay.center .close{box-shadow:none!important}.sellbtn{box-shadow:0 4px 10px rgba(42,140,240,.25)!important}
 .prow{background:linear-gradient(135deg,#f3e9ff,#ffe3ef)!important;border:2px solid #d6c0ff}.prow .bar i{background:linear-gradient(90deg,#d6c0ff,#ff5fa2)!important}.prow.lockd{opacity:.55}.prow.done{background:#effbe8!important;border-color:#9cff6a}
 #portalFx{position:fixed;inset:0;z-index:60;pointer-events:none;display:none;background:radial-gradient(circle,#fff 0,#f5d9ff 30%,rgba(180,140,255,.0) 70%)}#portalFx.on{display:block;animation:pfx 1.6s ease-out forwards}@keyframes pfx{0%{opacity:0;transform:scale(.2)}35%{opacity:1;transform:scale(1.4)}100%{opacity:0;transform:scale(3)}}
+#plantCv.shk{animation:shake .12s linear infinite}
 </style>
 </head>
 <body>
@@ -498,12 +499,13 @@ const CALF=[
  {n:'Supernova-Kuh',d:'Das hellste Leuchten des Universums – nach 10 Minuten explodiert sie und hinterlässt Strom und Diamanten.',body:'#fffaf7',spot:'#ffb59a',mz:'#ffe2d6',sc:1.1,horns:1,float:1,radio:1,soft:1,tre:'#ffe14d',gsp:'rgba(255,255,255,.55)',gl:0.7,glow:'rgba(255,200,140,.95)',kawaii:1,ear:'#ffcfbd',hoof:'#e89a7e',glowc:'rgba(255,200,140,.95)',spots:1,burst:1,foreStar:1}
 ];
 const CMAX=CALF.length;
+function shakeEl(id,ms){const e=document.getElementById(id);if(!e)return;e.classList.add('shk');clearTimeout(e._shk);e._shk=setTimeout(()=>e.classList.remove('shk'),ms)}
 const SUPER_LIFE=600,SUPER_DIA=10;let superFlash=0;
 function superLeft(c){return SUPER_LIFE-(Date.now()-(c.born||Date.now()))/1000}
 function superReward(){return Math.round(calfMW(CMAX)*300*(1+.25*S.plant.up.amp))}
 function superExplode(c,silent){const P=S.plant;if(!P.calves.includes(c))return;P.calves=P.calves.filter(o=>o!==c);const mw=superReward();P.mw+=mw;S.dia+=SUPER_DIA;
   if(!silent){sfx('discover');if(plantOpen){superFlash=1;for(let i=0;i<60;i++){const a=Math.random()*7,v=.2+Math.random()*.8;pFloats.push({spark:1,x:c.x,y:c.y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-.2,l:.6+Math.random()*.6,col:['#ffd76a','#ff8fc0','#ffffff','#ffb59a'][i%4]})}
-    pFloats.push({t:'+'+fmt(mw)+' MW · +'+SUPER_DIA+' 💎',l:1.6,x:c.x,y:c.y-.12});document.body.classList.add('shake');setTimeout(()=>document.body.classList.remove('shake'),450)}
+    pFloats.push({t:'+'+fmt(mw)+' MW · +'+SUPER_DIA+' 💎',l:1.6,x:c.x,y:c.y-.12});shakeEl('plantCv',450)}
     showToast('Eine Supernova-Kuh ist explodiert! +'+fmt(mw)+' MW und +'+SUPER_DIA+' Diamanten')}
   save();if(typeof renderMissions==='function')renderMissions(true)}
 function calfMW(L){return .5*Math.pow(3,L-1)}
@@ -706,8 +708,7 @@ function renderPortal(){const box=document.getElementById('portalBox');if(!box)r
   const r=box.firstChild;r.classList.toggle('lockd',!ready);r.classList.toggle('done',open);
   r.querySelector('span').innerHTML=open?'Das Portal ist offen! Muhtopia wartet auf der Weltkarte.':!ready?'Erst alle Orte mit Strom versorgen':'Das Kraftwerk braucht astronomisch viel Strom, um ein Tor in eine andere Dimension zu öffnen.<br><b style="display:inline">'+fmt(P.portal||0)+' / '+fmt(PORTAL_NEED)+' MW</b> geladen ('+Math.floor(pc*100)+' %)';
   r.querySelector('.bar i').style.width=(open?100:pc*100)+'%';const b=r.querySelector('button');b.textContent=open?'✓':'Einzahlen';b.disabled=open||!ready||P.mw<1}
-function portalOpenSeq(){document.querySelectorAll('.overlay.on').forEach(o=>o.classList.remove('on'));const fx=document.getElementById('portalFx');fx.classList.remove('on');void fx.offsetWidth;fx.classList.add('on');document.body.classList.add('shake');sfx('discover');
-  setTimeout(()=>{document.body.classList.remove('shake')},900);
+function portalOpenSeq(){document.querySelectorAll('.overlay.on').forEach(o=>o.classList.remove('on'));const fx=document.getElementById('portalFx');fx.classList.remove('on');void fx.offsetWidth;fx.classList.add('on');shakeEl('plantCv',900);sfx('discover');
   setTimeout(()=>{const m=document.getElementById('planetModal');m.querySelector('h2').textContent='Das Portal ist offen!';m.querySelector('p').textContent='Mit astronomischen Mengen Strom hat das Kraftwerk ein Dimensionsportal geöffnet. Dahinter liegt Planet Muhtopia – du findest ihn auf der Weltkarte.';open('planetModal');planetAnim()},1100)}
 function renderMissions(update){const box=document.getElementById('missionList'),P=S.plant,out=plantOutput();
   if(!update){box.innerHTML='';MISSIONS.forEach((m,i)=>{const r=document.createElement('div');r.className='row mrow';r.innerHTML='<div class="txt"><b></b><span></span><div class="bar"><i></i></div></div><button></button>';
