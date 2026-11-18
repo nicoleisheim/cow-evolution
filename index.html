@@ -525,7 +525,7 @@ const PUP=[
 const CALF_PRICE=250000;
 function fmtL(n){return n<10?(Math.round(n*10)/10).toString().replace('.',','):fmt(n)}
 function defPlant(){return {accident:false,chef:null,unlocked:false,cows:0,mw:0,calves:[],best:1,missions:0,birthT:0,up:{birth:0,slots:0,amp:0}}}
-function worldBonus(){let b=1;const m=(typeof S!=='undefined'&&S&&S.plant)?S.plant.missions:0;for(let i=0;i<m;i++)b+=MISSIONS[i].bonus;return b}
+function worldBonus(){let b=1;const m=(typeof S!=='undefined'&&S&&S.plant)?S.plant.missions:0;for(let i=0;i<m;i++){if(MISSIONS[i].lego&&S.lego&&S.lego.power===false)continue;b+=MISSIONS[i].bonus}return b}
 let plantOpen=false,pendingMap=false,pFloats=[],pDrag=null,pUid=1;
 function slots(){return Math.min(16,8+2*S.plant.up.slots)}
 function birthInt(l){const m=Math.max(1,(typeof S!=='undefined'&&S&&S.plant)?S.plant.cows:1);return Math.max(2,30*Math.pow(.85,l)/m)}
@@ -789,7 +789,7 @@ function addCow(lvl,x,y){const c={id:uid++,lvl,x:x??rnd(.12,.88),y:y??rnd(.32,.8
 if(!S.cows.length){addCow(1,.35,.5);addCow(1,.65,.55)}
 
 // Offline-Einnahmen (50 %, max. 2 h)
-(function(){const dt=Math.min(7200,(Date.now()-S.last)/1000);if(dt>60&&S.cows.length){const g=rate()*dt*.25;S.coins+=g;document.getElementById('offTxt').textContent='Deine Kühe haben in deiner Abwesenheit '+fmt(g)+' Münzen verdient.';open('offline')}})();
+(function(){const dt=Math.min(7200,(Date.now()-S.last)/1000);if(dt>60&&S.cows.length){const g=rate()/boost()*dt*.25;S.coins+=g;document.getElementById('offTxt').textContent='Deine Kühe haben in deiner Abwesenheit '+fmt(g)+' Münzen verdient.';open('offline')}})();
 
 // ---------- Canvas ----------
 const cv=document.getElementById('cv'),cx=cv.getContext('2d'),field=document.getElementById('field');
@@ -966,7 +966,7 @@ function drawTapBadge(f){
 }
 function fmtTap(n){return n<1?n.toFixed(2).replace('.',','):n<100&&n%1?n.toFixed(1).replace('.',','):fmt(n)}
 function tapCow(c){
-  const bonus=income(c.lvl)/COIN_EVERY*.1;S.coins+=bonus;sfx('coin');c.tap=1;c.wait=Math.max(c.wait,.6);
+  const bonus=income(c.lvl)/COIN_EVERY*.1;c.tap=1;c.wait=Math.max(c.wait,.6);if(!(bonus>0))return;S.coins+=bonus;sfx('coin');
   const [x,y]=toPx(c);floats=floats.filter(f=>f.cow!==c);floats.push({x,y:y-cowSize()*.55,t:'+'+fmtTap(bonus),l:.9,gold:1,cow:c});
   const el=document.getElementById('coins');el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump');
   hideHint2();hideHint();
@@ -1178,7 +1178,7 @@ function loop(now){
   const dt=Math.min(.05,(now-lastT)/1000);lastT=now;T+=dt;
   // Kisten
   if(S.cratesOn!==false&&S.cows.length+crates.length<cap()){crateT+=dt;if(crateT>=crateInt(S.up.crate)){crateT=0;spawnCrate()}}
-  if(S.goldPending>0&&S.cows.length+crates.length<cap()){S.goldPending--;const hi=Math.max(1,Math.min(S.highest,MAXL-1));crates.push({x:rnd(.25,.75),y:rnd(.4,.78),lvl:2+Math.floor(Math.random()*Math.max(1,hi-1)),drop:0,age:0,gold:1});save()}
+  if(S.goldPending>0&&S.cows.length+crates.length<cap()){S.goldPending--;const shop=(S.goldShop||0)>0;if(shop)S.goldShop--;const hi=Math.max(1,Math.min(S.highest,MAXL-1)-(shop?2:0));crates.push({x:rnd(.25,.75),y:rnd(.4,.78),lvl:2+Math.floor(Math.random()*Math.max(1,hi-1)),drop:0,age:0,gold:1});save()}
   updCrateUI();updWkUI();updFuelUI();
   // Kisten immer sichtbar und antippbar halten (nie außerhalb, nie unter den Knöpfen)
   if(W&&H){const cs=cowSize(),mx=cs*.35/W;crates.forEach(k=>{if(!isFinite(k.x)||k.x==null)k.x=.5;if(!isFinite(k.y)||k.y==null)k.y=.6;k.x=clamp(k.x,mx,1-mx);k.y=clamp(k.y,.33,.86);k.x=avoidFab(k.x,k.y,cs*.35,cs*.35);if(k.x>1-mx)k.x=1-mx})}
@@ -1298,13 +1298,14 @@ function renderShop(update){
 const DSHOP=[
  {n:'Turbo-Gras',d:()=>'60 Sek. doppelte Einnahmen',cost:40,can:()=>true,buy:()=>{S.boostUntil=Math.max(Date.now(),S.boostUntil||0)+60000}},
  {n:'Kistenregen',d:()=>'Bis zu 5 Geschenkboxen sofort',cost:30,can:()=>S.cows.length+crates.length<cap(),buy:()=>{const n=Math.min(5,cap()-S.cows.length-crates.length);for(let i=0;i<n;i++)setTimeout(spawnCrate,i*180)}},
- {n:'Münzsack',d:()=>'+'+fmt(Math.max(1000,rate()/boost()*600))+' Münzen (10 Min. Einnahmen)',cost:50,can:()=>true,buy:()=>{S.coins+=Math.max(1000,rate()/boost()*600)}},
- {n:'Goldene Kiste',d:()=>'Enthält eine seltene Kuh',cost:75,can:()=>true,buy:()=>{S.goldPending=(S.goldPending||0)+1}},
+ {n:'Münzsack',d:()=>'+'+fmt(sackVal())+' Münzen',cost:50,can:()=>true,buy:()=>{S.coins+=sackVal()}},
+ {n:'Goldene Kiste',d:()=>'Enthält eine seltene Kuh',cost:75,can:()=>true,buy:()=>{S.goldPending=(S.goldPending||0)+1;S.goldShop=(S.goldShop||0)+1}},
  {n:'Super-Turbo',d:()=>'5 Min. doppelte Einnahmen',cost:150,can:()=>true,buy:()=>{S.boostUntil=Math.max(Date.now(),S.boostUntil||0)+300000}},
  {n:'Atom-Paket',d:()=>'+10 Atom-Münzen fürs Kraftwerk',no:'Erst das Kraftwerk freischalten',cost:60,can:()=>!!S.plant.unlocked,buy:()=>{S.atom=(S.atom||0)+10}},
- {n:'Brennstab',d:()=>'60 Sek. dreifacher Strom im Kraftwerk',no:'Erst das Kraftwerk freischalten',cost:75,can:()=>!!S.plant.unlocked,buy:()=>{S.fuelUntil=Date.now()+Math.min(FUEL_MAX,fuelLeft()+60)*1000}},
+ {n:'Brennstab',d:()=>'60 Sek. dreifacher Strom im Kraftwerk',no:()=>S.plant.unlocked?'Brennstab ist voll ('+Math.round(FUEL_MAX/60)+' Min.)':'Erst das Kraftwerk freischalten',cost:75,can:()=>!!S.plant.unlocked&&fuelLeft()<=FUEL_MAX-60,buy:()=>{S.fuelUntil=Date.now()+Math.min(FUEL_MAX,fuelLeft()+60)*1000}},
  {n:'Steine-Kiste',d:()=>'+'+fmt(Math.max(200,legoOut()*600))+' Lego-Steine',no:'Erst die Lego-Stadt freischalten',cost:50,can:()=>!!(S.lego&&S.lego.unlocked),buy:()=>{S.lego.bricks+=Math.max(200,legoOut()*600)}}
 ];
+function sackVal(){return Math.min(Math.max(1000,rate()/boost()*600),35*diaPrice())}
 function sack(){return Math.max(250,rate()/boost()*300)}
 function gold(){return Math.max(1,S.highest-2)}
 function diaPrice(){const v=25000*Math.pow(2,Math.min(MAXL,S.highest||1)-MAXL),p=Math.pow(10,Math.max(0,Math.floor(Math.log10(v))-1));return Math.min(25000,Math.round(v/p)*p)}
@@ -1317,7 +1318,7 @@ function renderEx(update){const box=document.getElementById('exList');if(!box)re
 function renderDia(update){renderEx(update);
   const box=document.getElementById('diaList');
   if(!update){box.innerHTML='';DSHOP.forEach((u,i)=>{const r=document.createElement('div');r.className='row';r.innerHTML='<div class="txt"><b>'+u.n+'</b><span></span></div><button class="d"></button>';r.querySelector('button').onclick=()=>{if(S.dia<u.cost||!u.can())return;S.dia-=u.cost;u.buy();sfx('upgrade');spendFx(u.cost,'dias');{const bt=r.querySelector('button');bt.dataset.ok=Date.now();r.classList.remove('bought');void r.offsetWidth;r.classList.add('bought')}renderDia(true);save()};box.appendChild(r)})}
-  DSHOP.forEach((u,i)=>{const r=box.children[i];r.querySelector('span').textContent=u.can()?u.d():(u.no||'Weide voll');const b=r.querySelector('button'),ok=Date.now()-(+b.dataset.ok||0)<900,h=ok?'✓ Gekauft':IC.dia+u.cost;if(b.innerHTML!==h)b.innerHTML=h;b.classList.toggle('ok',ok);b.disabled=!ok&&(S.dia<u.cost||!u.can())});
+  DSHOP.forEach((u,i)=>{const r=box.children[i];r.querySelector('span').textContent=u.can()?u.d():((typeof u.no==='function'?u.no():u.no)||'Weide voll');const b=r.querySelector('button'),ok=Date.now()-(+b.dataset.ok||0)<900,h=ok?'✓ Gekauft':IC.dia+u.cost;if(b.innerHTML!==h)b.innerHTML=h;b.classList.toggle('ok',ok);b.disabled=!ok&&(S.dia<u.cost||!u.can())});
 }
 function buyUpg(i){const u=UPG[i],l=S.up[u.k];if(l>=u.max||(u.need&&S.highest<u.need(l))||S.coins<u.cost(l))return;const pr=u.cost(l);S.coins-=pr;S.up[u.k]++;sfx('upgrade');spendFx(pr);
   const box=document.getElementById('shopList'),r=box&&box.children[i];if(r){const b=r.querySelector('button');b.dataset.ok=Date.now();r.classList.remove('bought');void r.offsetWidth;r.classList.add('bought')}renderShop(true);save()}
@@ -1505,7 +1506,7 @@ function defLego(){return {unlocked:false,cows:[],bricks:0,best:1,buys:0}}
 S.lego=Object.assign(defLego(),S.lego||{});if(!Array.isArray(S.lego.cows))S.lego.cows=[];
 let lUid=1;S.lego.cows.forEach(c=>{c.id=lUid++;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2});
 function addLego(L,x,y){const c={lvl:L,x:x??(.15+Math.random()*.7),y:y??(.48+Math.random()*.38),id:lUid++,pop:1,wait:Math.random()*2};c.tx=c.x;c.ty=c.y;S.lego.cows.push(c);return c}
-function legoUnlock(){const G=S.lego;if(G.unlocked)return;G.unlocked=true;addLego(1,.35,.6);addLego(1,.65,.65);save();setTimeout(()=>showToast('Lego-Stadt hat Strom! Tippe auf der Karte auf Lego-Stadt.'),400)}
+function legoUnlock(){const G=S.lego;if(G.unlocked)return;G.unlocked=true;G.power=true;addLego(1,.35,.6);addLego(1,.65,.65);save();setTimeout(()=>showToast('Lego-Stadt hat Strom! Tippe auf der Karte auf Lego-Stadt.'),400)}
 function legoOut(){return S.lego.cows.reduce((a,c)=>a+legoRate(c.lvl),0)}
 
 // ---- Zeichnen einer Lego-Kuh (Kawaii, aber eckig mit Noppen) ----
@@ -1633,7 +1634,7 @@ function drawLegoScene(dt){const c=lcx;if(!c)return;if(lbgW!==LW_||lbgH!==LH_||!
   updLegoUI()}
 function legoUse(){const G=S.lego;if(!G||!G.unlocked)return 0;return G.cows.reduce((a,c)=>a+Math.pow(3,c.lvl-1),0)}
 function legoTick(dt){const G=S.lego;if(!G.unlocked)return;const need=legoUse()*dt,P=S.plant,was=G.power!==false;
-  if(need<=0)G.power=true;else if(was){if(P.mw>=need)P.mw-=need;else G.power=false}else if(P.mw>=legoUse()*10){P.mw-=need;G.power=true}
+  if(need<=0)G.power=true;else if(was){if(P.mw>=need){P.mw-=need;G.power=true}else G.power=false}else if(P.mw>=legoUse()*10){P.mw-=need;G.power=true}
   if(was&&!G.power)showToast('Stromausfall in der Lego-Stadt! Das Kraftwerk produziert zu wenig Strom.');else if(!was&&G.power)showToast('Die Lego-Stadt hat wieder Strom!');
   if(G.power)G.bricks+=legoOut()*dt;
   G.cows.forEach(c=>{if(c.pop)c.pop=Math.max(0,c.pop-dt*3);if(lDrag&&lDrag.c===c)return;const dx=c.tx-c.x,dy=c.ty-c.y,d=Math.hypot(dx,dy);
@@ -1654,7 +1655,7 @@ function renderLegoLadder(){const box=document.getElementById('legoLadder');box.
   LEGO.forEach((d,i)=>{const L=i+1,known=L<=S.lego.best,r=document.createElement('div');r.className='row';const cv2=document.createElement('canvas');cv2.width=168;cv2.height=140;const g=cv2.getContext('2d');g.scale(2,2);drawLegoCow(g,40,44,54,L,1,false);if(!known)cv2.className='locked';r.appendChild(cv2);
     const t=document.createElement('div');t.className='txt';t.innerHTML='<b>'+L+'. '+(known?d.n:'???')+'</b><span>'+(known?d.d+'<br>':'')+legoRate(L).toLocaleString('de-DE',{maximumFractionDigits:1})+' Steine/Sek.</span>';r.appendChild(t);box.appendChild(r)})}
 (function initLego(){
-  try{const off=Math.min(7200,Math.max(0,(Date.now()-(S.last||Date.now()))/1000));if(S.lego.unlocked&&off>0){const n=legoUse()*off;if(S.plant.mw>=n)S.plant.mw-=n;else S.lego.power=false}}catch(e){}
+  try{const off=Math.min(7200,Math.max(0,(Date.now()-(S.last||Date.now()))/1000));if(S.plant.unlocked&&off>0){const P=S.plant;let o=0;P.calves.forEach(c=>o+=calfMW(c.lvl));P.mw+=o*(1+.25*P.up.amp)*off;if(S.lego.unlocked){const n=legoUse()*off;if(P.mw>=n){P.mw-=n;S.lego.power=true;S.lego.bricks=(S.lego.bricks||0)+legoOut()*off}else S.lego.power=false}}}catch(e){}
   document.getElementById('lBrickIc').innerHTML=BRICK_SVG;
   document.getElementById('lMapBtn').onclick=()=>{closeLego();openMap()};
   document.getElementById('lLadBtn').onclick=()=>{renderLegoLadder();open('lLad')};
