@@ -497,17 +497,16 @@ const CALF=[
  {n:'Isotopen-Kuh',d:'Ihr Leuchten sieht man schon von Weitem.',body:'#fffaf7',spot:'#c7a9ff',mz:'#e5d7ff',sc:.96,horns:1,radio:1,soft:1,tre:'#ffe14d',gsp:'rgba(255,255,255,.55)',gl:0.46,glow:'rgba(180,140,255,.95)',kawaii:1,ear:'#ddcbff',hoof:'#9b84c6',glowc:'rgba(180,140,255,.95)',spots:1,orbit:1},
  {n:'Reaktor-Kuh',d:'Strahlt so hell wie ein kleiner Reaktor.',body:'#fffaf7',spot:'#87c5ff',mz:'#c7e4ff',sc:1,horns:1,radio:1,soft:1,tre:'#ffe14d',gsp:'rgba(255,255,255,.55)',gl:0.52,glow:'rgba(95,178,255,.95)',kawaii:1,ear:'#b7dcff',hoof:'#6999c6',glowc:'rgba(95,178,255,.95)',spots:1,hardhat:1},
  {n:'Fusions-Kuh',d:'So viel Energie, dass sie schwebt.',body:'#fffaf7',spot:'#6ee8db',mz:'#bbf4ee',sc:1.05,horns:1,float:1,radio:1,soft:1,tre:'#ffe14d',gsp:'rgba(255,255,255,.55)',gl:0.6,glow:'rgba(62,224,207,.95)',kawaii:1,ear:'#a8f1e9',hoof:'#57b4aa',glowc:'rgba(62,224,207,.95)',spots:1,electric:1},
- {n:'Supernova-Kuh',d:'Das hellste Leuchten des Universums – nach 10 Minuten explodiert sie und hinterlässt Strom und Diamanten.',body:'#fffaf7',spot:'#ffb59a',mz:'#ffe2d6',sc:1.1,horns:1,float:1,radio:1,soft:1,tre:'#ffe14d',gsp:'rgba(255,255,255,.55)',gl:0.7,glow:'rgba(255,200,140,.95)',kawaii:1,ear:'#ffcfbd',hoof:'#e89a7e',glowc:'rgba(255,200,140,.95)',spots:1,burst:1,foreStar:1}
+ {n:'Supernova-Kuh',d:'Das hellste Leuchten des Universums – nach 10 Minuten explodiert sie.',body:'#fffaf7',spot:'#ffb59a',mz:'#ffe2d6',sc:1.1,horns:1,float:1,radio:1,soft:1,tre:'#ffe14d',gsp:'rgba(255,255,255,.55)',gl:0.7,glow:'rgba(255,200,140,.95)',kawaii:1,ear:'#ffcfbd',hoof:'#e89a7e',glowc:'rgba(255,200,140,.95)',spots:1,burst:1,foreStar:1}
 ];
 const CMAX=CALF.length;
 function shakeEl(id,ms){const e=document.getElementById(id);if(!e)return;e.classList.add('shk');clearTimeout(e._shk);e._shk=setTimeout(()=>e.classList.remove('shk'),ms)}
 const SUPER_LIFE=600,SUPER_DIA=10;let superFlash=0;
 function superLeft(c){return SUPER_LIFE-(Date.now()-(c.born||Date.now()))/1000}
 function superReward(){return Math.round(calfMW(CMAX)*300*(1+.25*S.plant.up.amp))}
-function superExplode(c,silent){const P=S.plant;if(!P.calves.includes(c))return;P.calves=P.calves.filter(o=>o!==c);const mw=superReward();P.mw+=mw;S.dia+=SUPER_DIA;
-  if(!silent){sfx('discover');if(plantOpen){superFlash=1;for(let i=0;i<60;i++){const a=Math.random()*7,v=.2+Math.random()*.8;pFloats.push({spark:1,x:c.x,y:c.y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-.2,l:.6+Math.random()*.6,col:['#ffd76a','#ff8fc0','#ffffff','#ffb59a'][i%4]})}
-    pFloats.push({t:'+'+fmt(mw)+' MW · +'+SUPER_DIA+' 💎',l:1.6,x:c.x,y:c.y-.12});shakeEl('plantCv',450)}
-    showToast('Eine Supernova-Kuh ist explodiert! +'+fmt(mw)+' MW und +'+SUPER_DIA+' Diamanten')}
+function superExplode(c,silent){const P=S.plant;if(!P.calves.includes(c))return;P.calves=P.calves.filter(o=>o!==c);
+  if(!silent){sfx('discover');if(plantOpen){superFlash=1;for(let i=0;i<60;i++){const a=Math.random()*7,v=.2+Math.random()*.8;pFloats.push({spark:1,x:c.x,y:c.y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-.2,l:.6+Math.random()*.6,col:['#ffd76a','#ff8fc0','#ffffff','#ffb59a'][i%4]})}shakeEl('plantCv',450)}
+    showToast('Eine Supernova-Kuh ist explodiert!')}
   save();if(typeof renderMissions==='function')renderMissions(true)}
 function calfMW(L){return .5*Math.pow(3,L-1)}
 const MISSIONS=[
@@ -533,7 +532,7 @@ function birthInt(l){const m=Math.max(1,(typeof S!=='undefined'&&S&&S.plant)?S.p
 const FUEL_SEC=60,FUEL_MAX=300;function fuelLeft(){return Math.max(0,((S.fuelUntil||0)-Date.now())/1000)}
 function plantOutput(){let o=0;S.plant.calves.forEach(c=>o+=calfMW(c.lvl));return o*(1+.25*S.plant.up.amp)*(fuelLeft()>0?3:1)}
 function addCalf(L,x,y){const c={lvl:L,x:x??(.15+Math.random()*.7),y:y??(.46+Math.random()*.4),id:pUid++,pop:1,wait:Math.random()*2};c.tx=c.x;c.ty=c.y;S.plant.calves.push(c);return c}
-setTimeout(()=>{try{const P=S.plant;if(!P||!P.unlocked)return;const due=P.calves.filter(c=>c.lvl===CMAX&&c.born&&superLeft(c)<=0);if(due.length){due.forEach(c=>superExplode(c,true));showToast(due.length+' Supernova-'+(due.length>1?'Kühe sind':'Kuh ist')+' explodiert, während du weg warst: +'+fmt(superReward()*due.length)+' MW und +'+SUPER_DIA*due.length+' Diamanten')}}catch(e){}},1500);
+setTimeout(()=>{try{const P=S.plant;if(!P||!P.unlocked)return;const due=P.calves.filter(c=>c.lvl===CMAX&&c.born&&superLeft(c)<=0);if(due.length){due.forEach(c=>superExplode(c,true));showToast(due.length+' Supernova-'+(due.length>1?'Kühe sind':'Kuh ist')+' explodiert, während du weg warst.')}}catch(e){}},1500);
 let LCR=null,LCRt=0;function legoCardRect(){if(!plantOpen||!pcv)return null;if(T-LCRt<.5)return LCR;LCRt=T;const e=document.getElementById('pLegoCard');if(!e||!e.classList.contains('on')){LCR=null;return null}const a=e.getBoundingClientRect(),b=pcv.getBoundingClientRect();LCR={l:a.left-b.left,r:a.right-b.left,t:a.top-b.top};return LCR}
 function calfAvoid(c){const r=legoCardRect();if(!r||!PW)return;const s=calfSize(),sc=CALF[c.lvl-1].sc||1,hw=s*sc*.45,lim=(r.t-s*sc*.42)/PH;
   const inX=x=>x*PW>r.l-hw&&x*PW<r.r+hw;if(inX(c.x)&&c.y>lim)c.y=lim;if(inX(c.tx??c.x)&&(c.ty??0)>lim)c.ty=lim}
