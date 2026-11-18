@@ -999,7 +999,7 @@ function updCrateUI(){const on=S.cratesOn!==false,full=S.cows.length+crates.leng
   const iv=crateInt(S.up.crate),pr=!on?0:full?1:crateT/iv;document.getElementById('crateRing').style.strokeDashoffset=(119.4*(1-pr)).toFixed(1);
   const l=document.getElementById('crateLbl'),t=!on?'aus':full?'voll':Math.max(1,Math.ceil(iv-crateT))+'s';if(l.textContent!==t)l.textContent=t;
   const g=document.getElementById('goldChip'),gt=(S.goldCnt||0)+'/'+goldInt(S.up.gold);if(g.textContent!==gt)g.textContent=gt}
-document.getElementById('crateBtn').onclick=e=>{if(e.target.id==='goldChip'){showToast('Noch '+(goldInt(S.up.gold)-(S.goldCnt||0))+' Kisten bis zur nächsten Goldenen Kiste');return}S.cratesOn=S.cratesOn===false;save()};
+document.getElementById('crateBtn').onclick=e=>{if(e.target.id==='goldChip'){return}S.cratesOn=S.cratesOn===false;save()};
 function updMagUI(){const on=S.magnetOn!==false,b=document.getElementById('magBtn');b.classList.toggle('off',!on);
   const pr=on?(magPull?1:magT/magInt(S.up.magnet)):0;document.getElementById('magRing').style.strokeDashoffset=(119.4*(1-pr)).toFixed(1);
   const l=document.getElementById('magLbl'),t=!on?'aus':magPull?'zieht':magT>=magInt(S.up.magnet)?'bereit':Math.max(1,Math.ceil(magInt(S.up.magnet)-magT))+'s';if(l.textContent!==t)l.textContent=t}
@@ -1168,8 +1168,8 @@ function merge(a,b){
 function burst(x,y,col,n){for(let i=0;i<n;i++){const a=Math.random()*7,v=rnd(60,220);parts.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-60,l:rnd(.4,.8),col})}}
 function collect(i){const k=coins[i];S.coins+=k.v;floats.push({x:k.x*W,y:k.y*H,t:'+'+fmt(k.v),l:1});flyers.push({x:k.x*W,y:k.y*H,t:0});coins.splice(i,1)}
 function openCrate(i){const k=crates[i];crates.splice(i,1);if(S.cows.length<cap())sfx('crate',k.gold);if(S.cows.length>=cap()){crates.push(k);floats.push({x:k.x*W,y:k.y*H,t:'Weide voll!',l:1.2});return}const c=addCow(k.lvl,k.x,k.y);c.pop=1;burst(k.x*W,k.y*H,k.gold?'#ffd84d':'#c58a4a',k.gold?24:12);
-  if(k.gold){rings.push({x:k.x*W,y:k.y*H,r:10,l:.6,col:'#ffd84d'});showToast('Goldene Kiste: '+LV[k.lvl-1].n+'!')}
-  else{S.cratesOpened=(S.cratesOpened||0)+1;S.goldCnt=(S.goldCnt||0)+1;if(S.goldCnt>=goldInt(S.up.gold)){S.goldCnt=0;S.goldPending=(S.goldPending||0)+1;showToast(goldInt(S.up.gold)+' Kisten geöffnet – eine Goldene Kiste ist da!')}}save()}
+  if(k.gold){rings.push({x:k.x*W,y:k.y*H,r:10,l:.6,col:'#ffd84d'})}
+  else{S.cratesOpened=(S.cratesOpened||0)+1;S.goldCnt=(S.goldCnt||0)+1;if(S.goldCnt>=goldInt(S.up.gold)){S.goldCnt=0;S.goldPending=(S.goldPending||0)+1}}save()}
 function spawnCrate(){const s=cowSize();let best=null,bd=-1;for(let i=0;i<14;i++){const y=rnd(.33,.84),x=avoidFab(rnd(.12,.88),y,s*.35,s*.35);let d=1e9;crates.forEach(o=>{d=Math.min(d,Math.hypot((o.x-x)*W,(o.y-y)*H))});S.cows.forEach(o=>{d=Math.min(d,Math.hypot((o.x-x)*W,(o.y-y)*H))});if(wk)d=Math.min(d,Math.hypot((wk.x-x)*W,(wk.y-y)*H));if(d>bd){bd=d;best=[x,y]}if(d>s*.9)break}crates.push({x:best[0],y:best[1],lvl:1,drop:0,age:0});save()}
 
 // ---------- Schleife ----------
