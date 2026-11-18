@@ -1633,8 +1633,8 @@ function drawLegoScene(dt){const c=lcx;if(!c)return;if(lbgW!==LW_||lbgH!==LH_||!
   updLegoUI()}
 function legoUse(){const G=S.lego;if(!G||!G.unlocked)return 0;return G.cows.reduce((a,c)=>a+Math.pow(3,c.lvl-1),0)}
 function legoTick(dt){const G=S.lego;if(!G.unlocked)return;const need=legoUse()*dt,P=S.plant,was=G.power!==false;
-  if(need<=0)G.power=true;else if(P.mw>=need){P.mw-=need;G.power=true}else{P.mw=0;G.power=false}
-  if(was&&!G.power)showToast('Stromausfall in der Lego-Stadt! Das Kraftwerk hat keinen Strom mehr gespeichert.');else if(!was&&G.power)showToast('Die Lego-Stadt hat wieder Strom!');
+  if(need<=0)G.power=true;else if(was){if(P.mw>=need)P.mw-=need;else G.power=false}else if(P.mw>=legoUse()*10){P.mw-=need;G.power=true}
+  if(was&&!G.power)showToast('Stromausfall in der Lego-Stadt! Das Kraftwerk produziert zu wenig Strom.');else if(!was&&G.power)showToast('Die Lego-Stadt hat wieder Strom!');
   if(G.power)G.bricks+=legoOut()*dt;
   G.cows.forEach(c=>{if(c.pop)c.pop=Math.max(0,c.pop-dt*3);if(lDrag&&lDrag.c===c)return;const dx=c.tx-c.x,dy=c.ty-c.y,d=Math.hypot(dx,dy);
     if(d<.005){c.wait-=dt;if(c.wait<=0){c.tx=Math.min(.88,Math.max(.12,c.x+(Math.random()-.5)*.3));c.ty=Math.min(.88,Math.max(.46,c.y+(Math.random()-.5)*.25));c.wait=1+Math.random()*3}c.mv=0}
@@ -1654,7 +1654,7 @@ function renderLegoLadder(){const box=document.getElementById('legoLadder');box.
   LEGO.forEach((d,i)=>{const L=i+1,known=L<=S.lego.best,r=document.createElement('div');r.className='row';const cv2=document.createElement('canvas');cv2.width=168;cv2.height=140;const g=cv2.getContext('2d');g.scale(2,2);drawLegoCow(g,40,44,54,L,1,false);if(!known)cv2.className='locked';r.appendChild(cv2);
     const t=document.createElement('div');t.className='txt';t.innerHTML='<b>'+L+'. '+(known?d.n:'???')+'</b><span>'+(known?d.d+'<br>':'')+legoRate(L).toLocaleString('de-DE',{maximumFractionDigits:1})+' Steine/Sek.</span>';r.appendChild(t);box.appendChild(r)})}
 (function initLego(){
-  try{const off=Math.min(7200,Math.max(0,(Date.now()-(S.last||Date.now()))/1000));if(S.lego.unlocked&&off>0){const n=legoUse()*off;if(S.plant.mw>=n)S.plant.mw-=n;else{S.plant.mw=0;S.lego.power=false}}}catch(e){}
+  try{const off=Math.min(7200,Math.max(0,(Date.now()-(S.last||Date.now()))/1000));if(S.lego.unlocked&&off>0){const n=legoUse()*off;if(S.plant.mw>=n)S.plant.mw-=n;else S.lego.power=false}}catch(e){}
   document.getElementById('lBrickIc').innerHTML=BRICK_SVG;
   document.getElementById('lMapBtn').onclick=()=>{closeLego();openMap()};
   document.getElementById('lLadBtn').onclick=()=>{renderLegoLadder();open('lLad')};
