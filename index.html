@@ -492,9 +492,17 @@ const CALF=[
  {n:'Isotopen-Kuh',d:'Ihr Leuchten sieht man schon von Weitem.',body:'#fffaf7',spot:'#c7a9ff',mz:'#e5d7ff',sc:.96,horns:1,radio:1,soft:1,tre:'#ffe14d',gsp:'rgba(255,255,255,.55)',gl:0.46,glow:'rgba(180,140,255,.95)',kawaii:1,ear:'#ddcbff',hoof:'#9b84c6',glowc:'rgba(180,140,255,.95)',spots:1,orbit:1},
  {n:'Reaktor-Kuh',d:'Strahlt so hell wie ein kleiner Reaktor.',body:'#fffaf7',spot:'#87c5ff',mz:'#c7e4ff',sc:1,horns:1,radio:1,soft:1,tre:'#ffe14d',gsp:'rgba(255,255,255,.55)',gl:0.52,glow:'rgba(95,178,255,.95)',kawaii:1,ear:'#b7dcff',hoof:'#6999c6',glowc:'rgba(95,178,255,.95)',spots:1,hardhat:1},
  {n:'Fusions-Kuh',d:'So viel Energie, dass sie schwebt.',body:'#fffaf7',spot:'#6ee8db',mz:'#bbf4ee',sc:1.05,horns:1,float:1,radio:1,soft:1,tre:'#ffe14d',gsp:'rgba(255,255,255,.55)',gl:0.6,glow:'rgba(62,224,207,.95)',kawaii:1,ear:'#a8f1e9',hoof:'#57b4aa',glowc:'rgba(62,224,207,.95)',spots:1,electric:1},
- {n:'Supernova-Kuh',d:'Das hellste Leuchten des Universums.',body:'#fffaf7',spot:'#ffb59a',mz:'#ffe2d6',sc:1.1,horns:1,float:1,radio:1,soft:1,tre:'#ffe14d',gsp:'rgba(255,255,255,.55)',gl:0.7,glow:'rgba(255,200,140,.95)',kawaii:1,ear:'#ffcfbd',hoof:'#e89a7e',glowc:'rgba(255,200,140,.95)',spots:1,burst:1,foreStar:1}
+ {n:'Supernova-Kuh',d:'Das hellste Leuchten des Universums – nach 10 Minuten explodiert sie und hinterlässt Strom und Diamanten.',body:'#fffaf7',spot:'#ffb59a',mz:'#ffe2d6',sc:1.1,horns:1,float:1,radio:1,soft:1,tre:'#ffe14d',gsp:'rgba(255,255,255,.55)',gl:0.7,glow:'rgba(255,200,140,.95)',kawaii:1,ear:'#ffcfbd',hoof:'#e89a7e',glowc:'rgba(255,200,140,.95)',spots:1,burst:1,foreStar:1}
 ];
 const CMAX=CALF.length;
+const SUPER_LIFE=600,SUPER_DIA=10;let superFlash=0;
+function superLeft(c){return SUPER_LIFE-(Date.now()-(c.born||Date.now()))/1000}
+function superReward(){return Math.round(calfMW(CMAX)*300*(1+.25*S.plant.up.amp))}
+function superExplode(c,silent){const P=S.plant;if(!P.calves.includes(c))return;P.calves=P.calves.filter(o=>o!==c);const mw=superReward();P.mw+=mw;S.dia+=SUPER_DIA;
+  if(!silent){sfx('discover');if(plantOpen){superFlash=1;for(let i=0;i<60;i++){const a=Math.random()*7,v=.2+Math.random()*.8;pFloats.push({spark:1,x:c.x,y:c.y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-.2,l:.6+Math.random()*.6,col:['#ffd76a','#ff8fc0','#ffffff','#ffb59a'][i%4]})}
+    pFloats.push({t:'+'+fmt(mw)+' MW · +'+SUPER_DIA+' 💎',l:1.6,x:c.x,y:c.y-.12});document.body.classList.add('shake');setTimeout(()=>document.body.classList.remove('shake'),450)}
+    showToast('Eine Supernova-Kuh ist explodiert! +'+fmt(mw)+' MW und +'+SUPER_DIA+' Diamanten')}
+  save();if(typeof renderMissions==='function')renderMissions(true)}
 function calfMW(L){return .5*Math.pow(3,L-1)}
 const MISSIONS=[
  {n:'Dorf Wiesenhausen',d:'Im Dorf sind alle Lichter ausgegangen.',need:4,dia:10,bonus:.1,x:20,y:66},
@@ -519,7 +527,9 @@ function birthInt(l){const m=Math.max(1,(typeof S!=='undefined'&&S&&S.plant)?S.p
 const FUEL_SEC=60,FUEL_MAX=300;function fuelLeft(){return Math.max(0,((S.fuelUntil||0)-Date.now())/1000)}
 function plantOutput(){let o=0;S.plant.calves.forEach(c=>o+=calfMW(c.lvl));return o*(1+.25*S.plant.up.amp)*(fuelLeft()>0?3:1)}
 function addCalf(L,x,y){const c={lvl:L,x:x??(.15+Math.random()*.7),y:y??(.46+Math.random()*.4),id:pUid++,pop:1,wait:Math.random()*2};c.tx=c.x;c.ty=c.y;S.plant.calves.push(c);return c}
+setTimeout(()=>{try{const P=S.plant;if(!P||!P.unlocked)return;const due=P.calves.filter(c=>c.lvl===CMAX&&c.born&&superLeft(c)<=0);if(due.length){due.forEach(c=>superExplode(c,true));showToast(due.length+' Supernova-'+(due.length>1?'Kühe sind':'Kuh ist')+' explodiert, während du weg warst: +'+fmt(superReward()*due.length)+' MW und +'+SUPER_DIA*due.length+' Diamanten')}}catch(e){}},1500);
 function plantTick(dt){const P=S.plant;if(!P.unlocked)return;
+  P.calves.filter(c=>c.lvl===CMAX).forEach(c=>{if(!c.born)c.born=Date.now();if(superLeft(c)<=0&&!(pDrag&&pDrag.c===c))superExplode(c)});
   P.mw+=plantOutput()*dt;
   P.calves.forEach(c=>{if(c.pop)c.pop=Math.max(0,c.pop-dt*3);if(pDrag&&pDrag.c===c)return;
     const dx=c.tx-c.x,dy=c.ty-c.y,d=Math.hypot(dx,dy);
@@ -653,7 +663,10 @@ function drawPlant(dt){
   const s=calfSize(),order=[...P.calves].sort((a,b)=>a.y-b.y);if(pDrag){const i=order.indexOf(pDrag.c);if(i>=0){order.splice(i,1);order.push(pDrag.c)}else pDrag=null}
   order.forEach(k=>{const [x,y]=pPx(k),sc=1+(k.pop?Math.sin(k.pop*Math.PI)*.3:0),lift=pDrag&&pDrag.c===k&&pDrag.moved,
     glow=pDrag&&pDrag.moved&&pDrag.c!==k&&pDrag.c.lvl===k.lvl&&k.lvl<CMAX;
-    drawCow(c,x,y,s*sc,CALF[k.lvl-1],T+k.id,k.flip,lift,glow,k.mv&&!lift)});
+    const sl=k.lvl===CMAX?superLeft(k):999,sh=sl<15?Math.sin(T*45)*(4-sl/5):0;
+    drawCow(c,x+sh,y,s*sc,CALF[k.lvl-1],T+k.id,k.flip,lift,glow,k.mv&&!lift);
+    if(k.lvl===CMAX&&!lift){const t=Math.max(0,Math.ceil(sl)),lbl=Math.floor(t/60)+':'+String(t%60).padStart(2,'0'),by=y+s*.42;c.save();c.font='900 12px Nunito, system-ui';const tw=c.measureText(lbl).width+16;c.fillStyle=sl<15&&Math.sin(T*10)>0?'#ff5fa2':'#fff';c.beginPath();c.roundRect(x-tw/2,by,tw,20,10);c.fill();c.strokeStyle='rgba(255,95,162,.55)';c.lineWidth=2.5;c.stroke();c.fillStyle=sl<15&&Math.sin(T*10)>0?'#fff':'#d6347f';c.textAlign='center';c.textBaseline='middle';c.fillText(lbl,x,by+10.5);c.restore()}});
+  if(superFlash>0){c.fillStyle='rgba(255,250,235,'+superFlash*.85+')';c.fillRect(0,0,W2,H2);superFlash=Math.max(0,superFlash-dt*1.6)}
   pFloats.forEach(f=>{f.l-=dt;if(f.spark){f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy+=.9*dt}else f.y-=dt*.06});pFloats=pFloats.filter(f=>f.l>0);
   pFloats.forEach(f=>{if(f.spark){c.globalAlpha=Math.max(0,f.l*1.6);c.fillStyle=f.col;c.beginPath();c.arc(f.x*W2,f.y*H2,3.5,0,7);c.fill();return}
     c.globalAlpha=Math.min(1,f.l*2);c.font='900 16px Nunito, system-ui';c.textAlign='center';const fw=c.measureText(f.t).width/2+8,fx=Math.min(W2-fw,Math.max(fw,W2*f.x));c.lineWidth=4;c.strokeStyle='rgba(15,40,10,.75)';c.strokeText(f.t,fx,H2*f.y);c.fillStyle='#ffffff';c.fillText(f.t,fx,H2*f.y)});c.globalAlpha=1;
