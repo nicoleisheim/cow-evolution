@@ -227,7 +227,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 .savebox b{font:900 15px Nunito,system-ui;color:#3d4a6b}.savebox span{font:600 12.5px Nunito,system-ui;color:#7a6f86}
 .savebtns{display:flex;gap:8px;margin-top:4px}.savebtns button{flex:1;border:0;border-radius:999px;padding:10px;font:800 14px Nunito,system-ui;cursor:pointer;background:linear-gradient(135deg,#ffa8d2,#ff5fa2);color:#fff}
 .savebtns button+button{background:#fde7f1;color:#d6347f}
-#saveCode{width:100%;height:110px;box-sizing:border-box;border:2px solid #f3dbe7;border-radius:14px;padding:10px;font:600 11px ui-monospace,Menlo,monospace;color:#3d4a6b;resize:none;word-break:break-all;background:#fff}
+#saveCode{width:100%;height:110px;box-sizing:border-box;border:2px solid #f3dbe7;border-radius:14px;padding:10px;font:600 16px ui-monospace,Menlo,monospace;color:#3d4a6b;resize:none;word-break:break-all;background:#fff}
 #saveSheet .close{position:static;box-shadow:none}#saveSheet .savebtns{margin-top:10px}
 #cloudForm{display:flex;flex-direction:column;gap:8px}#cloudForm input{width:100%;box-sizing:border-box;border:2px solid #f3dbe7;border-radius:14px;padding:12px;font:700 16px Nunito,system-ui;color:#3d4a6b;background:#fff;outline:none}#cloudForm input:focus{border-color:#ff8fbf}
 #cloudSheet .close{position:static;box-shadow:none}#cloudSheet .savebtns{margin-top:10px}
@@ -259,7 +259,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 #lBrickIc svg{width:30px;height:24px}
 .hbal{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.balw{display:flex;gap:6px}.bal{display:inline-flex;align-items:center;gap:4px;background:#fff;border:2.5px solid rgba(255,95,162,.55);color:#d6347f;border-radius:999px;padding:4px 11px 4px 8px;font:900 15px Nunito,system-ui;letter-spacing:0}.bal svg{width:18px;height:18px}
 #field{border-radius:0!important;box-shadow:none!important}#bar,#pbar,#lbar{background:rgba(255,95,162,.93)!important}#bar button,#pbar button,#lbar button{min-height:73px;box-sizing:border-box}#pbar button span{white-space:nowrap}#pbar button{font-size:12px!important}#plantView #plantCv,#legoView #legoCv{border-radius:0!important;box-shadow:none!important}
-#wkCow{position:absolute;left:50%;top:50%;width:34px;height:34px;transform:translate(-50%,-50%);display:none;z-index:1}html,body{-webkit-text-size-adjust:100%}#cv,#field{touch-action:none}#cowSheet .close,#buy .close,.overlay.center .close{box-shadow:none!important}.sellbtn{box-shadow:0 4px 10px rgba(42,140,240,.25)!important}
+#wkCow{position:absolute;left:50%;top:50%;width:34px;height:34px;transform:translate(-50%,-50%);display:none;z-index:1}html,body{-webkit-text-size-adjust:100%}#cv,#field{touch-action:none}*{touch-action:manipulation}#cowSheet .close,#buy .close,.overlay.center .close{box-shadow:none!important}.sellbtn{box-shadow:0 4px 10px rgba(42,140,240,.25)!important}
 .prow{background:linear-gradient(135deg,#f3e9ff,#ffe3ef)!important;border:2px solid #d6c0ff}.prow .bar i{background:linear-gradient(90deg,#d6c0ff,#ff5fa2)!important}.prow.lockd{opacity:.55}.prow.done{background:#effbe8!important;border-color:#9cff6a}
 #portalFx{position:fixed;inset:0;z-index:60;pointer-events:none;display:none;background:radial-gradient(circle,#fff 0,#f5d9ff 30%,rgba(180,140,255,.0) 70%)}#portalFx.on{display:block;animation:pfx 1.6s ease-out forwards}@keyframes pfx{0%{opacity:0;transform:scale(.2)}35%{opacity:1;transform:scale(1.4)}100%{opacity:0;transform:scale(3)}}
 #plantCv.shk{animation:shake .12s linear infinite}
@@ -1274,8 +1274,18 @@ function open(id){document.getElementById(id).classList.add('on');updBal()}
 function syncBg(){const sm=(id,el)=>{const cv=document.getElementById(id);if(!cv||!cv.width)return;try{const g=cv.getContext('2d'),p=g.getImageData(2,cv.height-3,1,1).data;el.style.background='rgb('+p[0]+','+p[1]+','+p[2]+')'}catch(e){}};
   if(typeof legoOpen!=='undefined'&&legoOpen)sm('legoCv',document.getElementById('legoView'));else if(typeof plantOpen!=='undefined'&&plantOpen)sm('plantCv',document.getElementById('plantView'));else sm('cv',document.getElementById('app'))}
 setInterval(syncBg,400);
-['gesturestart','gesturechange','gestureend'].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
-document.addEventListener('touchmove',e=>{if(e.touches.length>1||(e.scale&&e.scale!==1))e.preventDefault()},{passive:false});
+// Zoom-Schutz: Hineinzoomen verhindern. Falls iOS doch einmal zoomt, darf man wieder herauszoomen,
+// und nach dem Loslassen wird der Zoom automatisch zurückgesetzt.
+function zoomed(){return !!(window.visualViewport&&visualViewport.scale>1.01)}
+['gesturestart','gesturechange','gestureend'].forEach(ev=>document.addEventListener(ev,e=>{if(!zoomed())e.preventDefault()},{passive:false}));
+document.addEventListener('touchmove',e=>{if(zoomed())return;if(e.touches.length>1||(e.scale&&e.scale!==1))e.preventDefault()},{passive:false});
+{let zTouches=0,zTimer=0;const vp=document.querySelector('meta[name=viewport]'),vpC=vp?vp.getAttribute('content'):'';
+  const unzoom=()=>{if(!vp||zTouches>0||!zoomed())return;vp.setAttribute('content',vpC.replace('initial-scale=1','initial-scale=1.0001'));setTimeout(()=>{vp.setAttribute('content',vpC);window.scrollTo(0,0)},60)};
+  const later=()=>{clearTimeout(zTimer);zTimer=setTimeout(unzoom,450)};
+  document.addEventListener('touchstart',e=>{zTouches=e.touches.length},{passive:true,capture:true});
+  ['touchend','touchcancel'].forEach(ev=>document.addEventListener(ev,e=>{zTouches=e.touches.length;if(!zTouches)later()},{passive:true,capture:true}));
+  if(window.visualViewport)visualViewport.addEventListener('resize',later);
+  addEventListener('pageshow',later);document.addEventListener('visibilitychange',()=>{if(!document.hidden)later()})}
 {let lastTouch=0;document.addEventListener('touchend',e=>{const n=Date.now();if(n-lastTouch<300&&!(e.target.closest&&e.target.closest('button,input')))e.preventDefault();lastTouch=n},{passive:false})}
 function fitTop(){document.querySelectorAll('#top,.ptop').forEach(t=>{if(!t.offsetParent&&t.id!=='top')return;const kids=[...t.children].filter(e=>e.offsetParent!==null||e.id==='statPill');if(!kids.length)return;
   kids.forEach(e=>e.style.zoom='');const cs=getComputedStyle(t),av=t.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight)-8;let need=0;kids.forEach(e=>need+=e.offsetWidth);need+=8*(kids.length-1);
