@@ -264,6 +264,26 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 #portalFx{position:fixed;inset:0;z-index:60;pointer-events:none;display:none;background:radial-gradient(circle,#fff 0,#f5d9ff 30%,rgba(180,140,255,.0) 70%)}#portalFx.on{display:block;animation:pfx 1.6s ease-out forwards}@keyframes pfx{0%{opacity:0;transform:scale(.2)}35%{opacity:1;transform:scale(1.4)}100%{opacity:0;transform:scale(3)}}
 #plantCv.shk{animation:shake .12s linear infinite}
 .pstk{display:flex;flex-direction:column;align-items:flex-end;gap:6px}#pLegoCard{position:absolute;z-index:2;left:12px;bottom:calc(108px + env(safe-area-inset-bottom));display:none;align-items:center;gap:8px;background:#fff;border:3px solid rgba(255,95,162,.55);border-radius:16px;padding:5px 12px 5px 8px;box-shadow:0 6px 20px rgba(214,52,127,.18);pointer-events:none}#pLegoCard.on{display:flex}#pLegoCard .lgi svg{width:26px;height:22px;display:block}#pLegoCard b{display:block;font:900 12.5px Nunito,system-ui;color:#d6347f;line-height:1.1}#pLegoCard small{display:flex;align-items:center;gap:5px;font:800 11px Nunito,system-ui;color:#e07aa8}#pLegoCard i{width:8px;height:8px;border-radius:50%;background:#59d62a;box-shadow:0 0 6px #7dff4a;display:inline-block}#pLegoCard.off{border-color:#ff7aa0}#pLegoCard.off small{color:#e0245e}#pLegoCard.off i{background:#e0245e;box-shadow:0 0 6px #ff5f7a;animation:lgblink 1s steps(1) infinite}#pLego{display:none;height:auto!important;padding:4px 10px!important;font:800 11.5px Nunito,system-ui!important;gap:5px!important}#pLego.on{display:flex}#pLego.off{border-color:#ff7aa0!important;color:#e0245e!important;animation:lgblink 1s steps(1) infinite}@keyframes lgblink{50%{opacity:.55}}#pLego svg{width:16px;height:13px}
+#apoView #apoCv{position:absolute;left:0;top:0;width:100%;height:calc(100% - 98px - env(safe-area-inset-bottom));touch-action:none}
+.view.av{background:#f4fbf8}
+#abar{position:absolute;z-index:2;left:calc(12px + env(safe-area-inset-left));right:calc(12px + env(safe-area-inset-right));bottom:calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr 1fr;gap:4px;padding:7px;border-radius:28px;background:rgba(255,95,162,.93);border:1.5px solid rgba(255,255,255,.55);box-shadow:0 6px 20px rgba(214,52,127,.18)}
+#abar button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:0;border-radius:21px;padding:9px 4px;min-height:73px;font:800 12px Nunito,system-ui;color:#fff;background:transparent;cursor:pointer;text-shadow:0 1px 2px rgba(150,20,80,.35);white-space:nowrap}
+#abar button svg{width:24px;height:24px;color:#fff}
+#abar button.primary{background:#fff;color:#ff4f93;text-shadow:none;box-shadow:0 4px 12px rgba(150,20,80,.18)}
+#abar button.primary small{color:#d6347f;font:800 11.5px Nunito,system-ui;display:flex;align-items:center;gap:2px}
+#abar button.primary small svg{width:15px;height:15px}
+#abar button:disabled{opacity:.6}
+.abadge{position:absolute;top:5px;right:8px;min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:#fff;color:#ff4f93;font:900 11.5px Nunito,system-ui;font-style:normal;display:flex;align-items:center;justify-content:center;text-shadow:none;box-shadow:0 2px 6px rgba(150,20,80,.25)}
+#apoView .pill{background:#fff!important;border:3px solid rgba(89,201,138,.6)!important;color:#2f8f5b!important;box-shadow:0 6px 20px rgba(40,140,90,.15)!important;backdrop-filter:none!important}
+#apoView .pill small,#apoView .pill .cap{color:#4fae7c!important;opacity:1!important}
+#aPillIc svg{width:28px;height:28px}
+.bal svg.pillic{width:20px;height:20px}
+.row button.ap{background:linear-gradient(135deg,#9ff0c0,#3fbf7a);color:#fff;box-shadow:0 3px 8px rgba(60,190,120,.3)}
+.row button.ap svg.ic{width:15px;height:15px;vertical-align:-3px;margin-right:2px}
+.apoEmpty{text-align:center;color:#4fae7c;font-weight:800;padding:12px 0 16px}
+#aPat .vrow{background:#eef8ff}
+#mapPins .apo svg{filter:drop-shadow(0 0 6px rgba(89,201,138,.8))!important}
+.apoDot{position:absolute;top:-6px;left:50%;margin-left:12px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:#ff5fa2;color:#fff;font:900 12px Nunito,system-ui;font-style:normal;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
 </style>
 </head>
 <body>
@@ -317,6 +337,16 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
     <div class="pill stat"><div><b id="lRate">0</b><small>Steine/Sek.</small></div><div class="cap" id="lCnt">0/12 Kühe</div></div></div>
   <div id="lbar"><button id="lBuy" class="primary">Lego-Kalb</button><button id="lLadBtn"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="8" height="8" rx="1.5" fill="currentColor"/><rect x="13" y="12" width="8" height="8" rx="1.5" fill="currentColor" opacity=".6"/><rect x="8" y="4" width="8" height="8" rx="1.5" fill="currentColor" opacity=".8"/></svg><span>Stufen</span></button><button id="lMapBtn"><svg viewBox="0 0 24 24"><path d="M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="currentColor" opacity=".25"/><path d="M8.5 4v13.5M15.5 6.5V20M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Karte</span></button></div>
 </div>
+<div id="apoView" class="view pv av">
+  <canvas id="apoCv"></canvas>
+  <div class="ptop"><div class="pills"><div class="pill"><span class="pi" id="aPillIc"></span><span id="aPills">0</span></div></div>
+    <div class="pill stat"><div><b id="aRate">0</b><small>Pillen/Sek.</small></div><div class="cap" id="aCnt">0/8 Kühe</div></div></div>
+  <div id="abar"><button id="aBuy" class="primary">Apo-Kalb</button><button id="aPatBtn"><svg viewBox="0 0 24 24"><path d="M12 20.5s-8.2-4.7-8.2-10.6A4.5 4.5 0 0 1 12 7.3a4.5 4.5 0 0 1 8.2 2.6c0 5.9-8.2 10.6-8.2 10.6z" fill="currentColor" opacity=".25"/><path d="M12 20.5s-8.2-4.7-8.2-10.6A4.5 4.5 0 0 1 12 7.3a4.5 4.5 0 0 1 8.2 2.6c0 5.9-8.2 10.6-8.2 10.6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10.2v6M9 13.2h6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span>Patienten</span><i class="abadge" id="aBadge" style="display:none"></i></button><button id="aUpBtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5" fill="currentColor" opacity=".18"/><path d="M13.4 4.6 7.2 13.3h4.5l-.9 6.1 6.2-8.7h-4.5z" fill="currentColor"/></svg><span>Upgrades</span></button><button id="aLadBtn"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="8" height="8" rx="1.5" fill="currentColor"/><rect x="13" y="12" width="8" height="8" rx="1.5" fill="currentColor" opacity=".6"/><rect x="8" y="4" width="8" height="8" rx="1.5" fill="currentColor" opacity=".8"/></svg><span>Stufen</span></button><button id="aMapBtn"><svg viewBox="0 0 24 24"><path d="M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="currentColor" opacity=".25"/><path d="M8.5 4v13.5M15.5 6.5V20M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Karte</span></button></div>
+</div>
+<div class="overlay hi" id="aPat"><div class="panel"><h2 class="hbal">Patienten<span class="bal" data-bal="dia"></span></h2><div id="aPatList"></div><button class="close" data-close="aPat">Schließen</button></div></div>
+<div class="overlay hi" id="aUps"><div class="panel"><h2 class="hbal">Apotheken-Upgrades<span class="bal" data-bal="pills"></span></h2><div id="aupList"></div><button class="close" data-close="aUps">Schließen</button></div></div>
+<div class="overlay hi" id="aLad"><div class="panel"><h2>Apotheken-Kühe</h2><div id="apoLadder"></div><button class="close" data-close="aLad">Schließen</button></div></div>
+<div class="overlay center hi" id="apoModal"><div class="panel" style="text-align:center"><canvas id="apoMCv" width="400" height="320" style="position:static;width:200px;height:160px;display:block;margin:0 auto 6px"></canvas><h2 id="apoMName"></h2><p id="apoMTxt" style="color:#6b5a3e;font-weight:600;margin-bottom:14px"></p><button class="close" id="apoGo">Zur Kuh-Apotheke</button><button class="close" data-close="apoModal" style="background:#f3f6f2;color:var(--ink);margin-top:8px">Später</button></div></div>
 <div class="overlay hi" id="lLad"><div class="panel"><h2>Lego-Kühe</h2><div id="legoLadder"></div><button class="close" data-close="lLad">Schließen</button></div></div>
 <div class="overlay hi" id="pMis"><div class="panel"><h2 id="missionHead">Weltrettung</h2><div id="missionList"></div><div id="portalBox"></div><button class="close" data-close="pMis">Schließen</button></div></div>
 <div class="overlay hi" id="pUps"><div class="panel"><h2 class="hbal">Kraftwerk-Upgrades<span class="bal" data-bal="mw"></span></h2><p style="color:var(--muted);font-weight:600;margin:-6px 0 10px;font-size:13px">Bezahlt wird mit gespeichertem Strom.</p><div id="pupList"></div><button class="close" data-close="pUps">Schließen</button></div></div>
@@ -326,7 +356,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 <div class="overlay" id="cowSheet"><div class="panel" style="text-align:center"><canvas id="cowCv" width="360" height="260" style="position:static;display:block;width:180px;height:130px;margin:0 auto 4px"></canvas><h2 id="cowName" style="margin-bottom:4px"></h2><p id="cowInfo" style="color:var(--muted);font-weight:600;margin-bottom:16px"></p><button id="sellBtn" class="sellbtn"></button><button class="close" data-close="cowSheet" style="background:#f3f6f2;color:var(--ink)">Abbrechen</button></div></div>
 <div class="overlay" id="buy"><div class="panel"><h2 class="hbal">Kuh kaufen<span class="bal" data-bal="coins"></span></h2><div id="buyList"></div><p id="buyNote" style="font-size:13px;color:#6b5a3e;margin-top:4px"></p><button class="close" data-close="buy">Schließen</button></div></div>
 <div class="overlay" id="shop"><div class="panel"><h2 class="hbal">Upgrades<span class="balw"><span class="bal" data-bal="coins"></span><span class="bal" data-bal="dia"></span></span></h2><div id="shopList"></div><h2 class="sec">Diamanten kaufen</h2><div id="exList"></div><h2 class="sec">Diamanten-Shop</h2><div id="diaList"></div><button class="close" data-close="shop">Schließen</button></div></div>
-<div class="overlay" id="dex"><div class="panel"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px"><h2 style="margin:0">Sammlung <small style="font-size:11px;color:#9aa4b5;font-weight:700">v58</small></h2><button id="testBtn" style="border:0;border-radius:999px;background:#eef1f4;color:#1d2a22;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;margin-left:auto;white-space:nowrap">Test aus</button><button id="resetBtn" style="display:flex;align-items:center;gap:6px;border:0;border-radius:999px;background:#fde7f1;color:#d6347f;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;white-space:nowrap"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v5h5"/></svg><span>Neu starten</span></button></div><div id="dexList"></div><div class="savebox"><b>Töne</b><span>Kurze Klänge beim Verschmelzen, Antippen und Entdecken.</span><div class="savebtns"><button id="sndBtn">Töne: an</button></div></div><div class="savebox" id="cloudBox"><b>☁️ Cloud-Speicherung</b><span id="cloudStat">Dein Spielstand wird automatisch online gesichert und lässt sich auf jedem Gerät wieder laden.</span><div class="savebtns"><button id="cloudBtn">Einrichten</button><button id="cloudOut" style="display:none">Abmelden</button></div></div><div class="savebox"><b>Spielstand-Code</b><span>Sichere deinen Fortschritt als Code, z.B. in deinen Notizen. So kannst du ihn jederzeit wiederherstellen.</span><div class="savebtns"><button id="saveExp">Sichern</button><button id="saveImp">Laden</button></div></div><button class="close" data-close="dex">Schließen</button></div></div>
+<div class="overlay" id="dex"><div class="panel"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px"><h2 style="margin:0">Sammlung <small style="font-size:11px;color:#9aa4b5;font-weight:700">v59</small></h2><button id="testBtn" style="border:0;border-radius:999px;background:#eef1f4;color:#1d2a22;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;margin-left:auto;white-space:nowrap">Test aus</button><button id="resetBtn" style="display:flex;align-items:center;gap:6px;border:0;border-radius:999px;background:#fde7f1;color:#d6347f;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;white-space:nowrap"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v5h5"/></svg><span>Neu starten</span></button></div><div id="dexList"></div><div class="savebox"><b>Töne</b><span>Kurze Klänge beim Verschmelzen, Antippen und Entdecken.</span><div class="savebtns"><button id="sndBtn">Töne: an</button></div></div><div class="savebox" id="cloudBox"><b>☁️ Cloud-Speicherung</b><span id="cloudStat">Dein Spielstand wird automatisch online gesichert und lässt sich auf jedem Gerät wieder laden.</span><div class="savebtns"><button id="cloudBtn">Einrichten</button><button id="cloudOut" style="display:none">Abmelden</button></div></div><div class="savebox"><b>Spielstand-Code</b><span>Sichere deinen Fortschritt als Code, z.B. in deinen Notizen. So kannst du ihn jederzeit wiederherstellen.</span><div class="savebtns"><button id="saveExp">Sichern</button><button id="saveImp">Laden</button></div></div><button class="close" data-close="dex">Schließen</button></div></div>
 <div class="overlay center" id="discover"><div class="panel"><h2>Neue Kuh entdeckt!</h2><canvas id="discCv" width="400" height="320"></canvas><h2 id="discName"></h2><p id="discDesc"></p><button class="close" data-close="discover">Weiter</button></div></div>
 <div class="overlay center" id="saveSheet"><div class="panel"><h2 id="saveTitle">Spielstand sichern</h2><p id="saveInfo" style="color:#6b5a3e;margin:0 0 8px;font-weight:600;font-size:14px"></p><textarea id="saveCode" spellcheck="false" autocomplete="off"></textarea><div class="savebtns"><button id="saveAct">Kopieren</button><button id="saveShare">Teilen</button></div><button class="close" data-close="saveSheet">Schließen</button></div></div>
 <div class="overlay center" id="cloudSheet"><div class="panel"><h2 id="cloudTitle">Cloud-Speicherung</h2><p id="cloudInfo" style="color:#6b5a3e;margin:0 0 10px;font-weight:600;font-size:14px">Wähle einen Spielernamen und eine Geheimzahl. Merke sie dir gut – damit holst du deinen Spielstand auf jedes Gerät.</p><div id="cloudForm"><input id="cloudName" placeholder="Spielername" autocomplete="off" autocapitalize="off"><input id="cloudPin" placeholder="Geheimzahl (mind. 4 Ziffern)" inputmode="numeric" autocomplete="off"></div><div class="savebtns" id="cloudBtns"><button id="cloudGo">Verbinden</button></div><button class="close" data-close="cloudSheet">Schließen</button></div></div>
@@ -460,6 +490,7 @@ function drawKawaii(c,x,y,s,t,flip,lifted,glow,walk,d){
     c.fillStyle='#d6c0ff';c.beginPath();c.arc(0,oy,s*.045,0,7);c.fill();c.stroke();
     ['#ff8fc0','#7fd0ff','#ffd23f'].forEach((col,i)=>{const a=t*2+i*Math.PI*2/3,ex=Math.cos(a)*s*.2,ey2=oy+Math.sin(a)*s*.06;c.fillStyle=col;c.beginPath();c.arc(ex,ey2,s*.03,0,7);c.fill();c.stroke()});c.restore();c.lineWidth=LW}
   if(d.electric){[[-.44,0],[.44,.06],[-.38,-.36],[.4,-.34],[0,-.5]].forEach(([u,v],i)=>{if(Math.sin(t*6+i*1.9)<-.2)return;const px=u*s,py=v*s+b,z=s*.07;c.fillStyle='#ffd23f';c.beginPath();c.moveTo(px+z*.3,py-z*1.2);c.lineTo(px-z*.6,py+z*.1);c.lineTo(px,py+z*.1);c.lineTo(px-z*.3,py+z*1.2);c.lineTo(px+z*.6,py-z*.2);c.lineTo(px,py-z*.2);c.closePath();c.fill();c.lineWidth=LW*.8;c.stroke()});c.lineWidth=LW}
+  if(d.acc&&typeof drawApoAcc==='function')drawApoAcc(c,d.acc,s,hy,t,LW,OL);
   if(d.sparkle&&Math.sin(t*2+x)>.4){star4(-s*.3,hy-s*.22,s*.06,'#ffffff')}
   if(d.stars){[[-.36,-.28,.07,0],[.38,-.12,.055,1.7],[-.4,.18,.05,3.1],[.34,.3,.06,4.4]].forEach(([u,v,r,ph])=>{const k=.5+.5*Math.sin(t*2.4+ph);if(k>.25)star4(u*s,hy+v*s,s*r*(.6+.4*k),'#ffd23f')})}
   c.restore();
@@ -561,7 +592,7 @@ function radioArrive(n){
 function showToast(t){const el=document.getElementById('toast');el.textContent=t;el.style.animationDuration=Math.max(2.6,t.length/22)+'s';el.classList.remove('on');void el.offsetWidth;el.classList.add('on')}
 
 // ----- Karte -----
-function updMapBtn(){const b=document.getElementById('mapBtn');b.classList.toggle('new',!!(S.plant.unlocked&&!S.plant.seenMap))}
+function updMapBtn(){const b=document.getElementById('mapBtn');b.classList.toggle('new',!!(S.plant.unlocked&&!S.plant.seenMap)||!!(S.apo&&S.apo.unlocked&&!S.apo.seen))}
 function renderMap(){
   const box=document.getElementById('mapPins'),P=S.plant;box.innerHTML='';
   const pin=(x,y,cls,html,label,fn)=>{const b=document.createElement('button');b.className='pin '+cls;b.style.left=x+'%';b.style.top=y+'%';b.innerHTML=html+'<span>'+label+'</span>';if(fn)b.onclick=fn;box.appendChild(b);return b};
@@ -577,6 +608,7 @@ function renderMap(){
     pin(m.x,m.y,'city'+(on?' on':''),ic,
     m.n,()=>{if(m.lego&&on){closeMap();openLego();return}showToast(on?m.n+' hat wieder Strom!':m.n+': kostet '+fmt(misCost(m))+' MW gespeicherten Strom')})});
   if(P.accident)pin(52,4,'planet','<svg viewBox="0 0 60 60"><ellipse cx="30" cy="31" rx="28" ry="8" fill="none" stroke="#7dff4a" stroke-width="3" opacity=".9"/><circle cx="30" cy="30" r="18" fill="#ffffff" stroke="#2a2d36" stroke-width="1.6"/><path d="M18 22c4-3 9-2 10 2s-5 6-9 4-3-4-1-6zM33 34c3-2 8-1 8 3s-5 5-8 3-2-4 0-6zM35 17c2-1 5 0 5 2s-3 3-5 2-1-3 0-4zM20 38c2-1 4 0 4 2s-3 2-4 1-1-2 0-3z" fill="#2a2d36"/><path d="M2 31a28 8 0 0 0 56 0" fill="none" stroke="#7dff4a" stroke-width="3"/><circle cx="24" cy="23" r="3" fill="#fff" opacity=".7"/></svg>','Planet Muhtopia',()=>showToast(P.portalOpen?'Das Portal nach Muhtopia ist offen – bald kannst du den Planeten erkunden!':P.missions>=MISSIONS.length?'Lade im Kraftwerk das Dimensionsportal mit Strom, um nach Muhtopia zu reisen ('+Math.floor(portalPct()*100)+' %).':'Planet Muhtopia ist bei einem Reaktorunfall entstanden – noch unerforscht!'));
+  if(typeof apoPin==='function')apoPin(pin);
   const done=P.missions>=MISSIONS.length,bon=Math.round((worldBonus()-1)*100);
   document.getElementById('mapInfo').innerHTML=!P.unlocked?'<b>Kernkraftwerk noch geschlossen</b><span>Erreiche die Radioaktive Kuh, um es zu öffnen.</span>':
     '<b>'+(done?'Die Welt ist gerettet!':P.missions+' von '+MISSIONS.length+' Orten mit Strom versorgt')+'</b><i class="mbar"><i style="width:'+Math.round(P.missions/MISSIONS.length*100)+'%"></i></i><span>Strom-Bonus auf der Weide: +'+bon+' %</span>';
@@ -793,7 +825,7 @@ function cap(){return Math.min(16,10+S.up.cap)}
 function priceOf(L){const v=25000*Math.pow(2,L-1)*Math.pow(2,Math.min(MAXL,Math.max(1,S.highest||1))-MAXL),p=Math.pow(10,Math.max(0,Math.floor(Math.log10(v))-1));return Math.round(v/p)*p}
 function maxBuy(){return Math.max(1,S.highest-1)}
 function buyCost(){return priceOf(1)}
-function rate(){return S.cows.reduce((a,c)=>a+income(c.lvl),0)/COIN_EVERY}
+function rate(){return S.cows.reduce((a,c)=>a+(c.sick?0:income(c.lvl)),0)/COIN_EVERY}
 function fmt(n){n=Math.floor(n);if(n<1e6)return n.toLocaleString('de-DE');const u=['','Tsd.','Mio.','Mrd.','Bio.','Brd.','Trio.'];let i=0;while(n>=1000&&i<u.length-1){n/=1000;i++}return n.toLocaleString('de-DE',{maximumFractionDigits:n<10?2:n<100?1:0})+' '+u[i]}
 function rnd(a,b){return a+Math.random()*(b-a)}
 function cowMargins(lvl){const s=cowSize()*LV[lvl-1].sc;return [s*.78/W,s*.55/H]}
@@ -958,7 +990,7 @@ function drawSell(){
   cx.fillStyle='#fff';cx.textAlign='center';cx.textBaseline='middle';cx.font='bold 15px Nunito, system-ui';cx.fillText(!on?'Verkaufen':pr<1?'Halten …':'Loslassen!',r.x+r.w/2,r.y+22);
   cx.font='bold 17px Nunito, system-ui';const tx='+'+n,tw=cx.measureText(tx).width;cx.fillText(tx,r.x+r.w/2-9,r.y+48);drawDia(cx,r.x+r.w/2+tw/2+5,r.y+48,9);cx.restore();
 }
-function sell(c){if(diaFor(c.lvl)<1)return;
+function sell(c){if(diaFor(c.lvl)<1||c.sick)return;
   const [x,y]=toPx(c);
   if(S.cows.length<=1){floats.push({x,y:y-30,t:'Die letzte Kuh bleibt!',l:1.4});c.wait=1;return}
   const n=diaFor(c.lvl);S.cows=S.cows.filter(o=>o!==c);S.dia+=n;sfx('dia');
@@ -981,6 +1013,7 @@ function drawTapBadge(f){
 }
 function fmtTap(n){return n<1?n.toFixed(2).replace('.',','):n<100&&n%1?n.toFixed(1).replace('.',','):fmt(n)}
 function tapCow(c){
+  if(c.sick){c.tap=1;const D=sickInfo(c),[x,y]=toPx(c);floats=floats.filter(f=>f.cow!==c);floats.push({x,y:y-cowSize()*.75,t:'Krank – ab in die Kuh-Apotheke!',l:1.6,cow:c});return}
   const bonus=income(c.lvl)/COIN_EVERY*.1;c.tap=1;c.wait=Math.max(c.wait,.6);if(!(bonus>0))return;S.coins+=bonus;sfx('coin');
   const [x,y]=toPx(c);floats=floats.filter(f=>f.cow!==c);floats.push({x,y:y-cowSize()*.55,t:'+'+fmtTap(bonus),l:.9,gold:1,cow:c});
   const el=document.getElementById('coins');el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump');
@@ -989,10 +1022,10 @@ function tapCow(c){
 let tapHintDone=false;
 function hideHint2(){if(!tapHintDone){tapHintDone=true;try{localStorage.setItem('kuhEvoTap','1')}catch(e){}}}
 let magT=Math.max(0,+S.magT||0)+Math.min(600,Math.max(0,(Date.now()-(S.last||Date.now()))/1000)),magPull=null;
-function magHasPair(){const n={};for(const c of S.cows){if(c.lvl>=mergeCap()||(drag&&drag.c===c)||c===sheetOpen())continue;n[c.lvl]=(n[c.lvl]||0)+1;if(n[c.lvl]>1)return true}return false}
+function magHasPair(){const n={};for(const c of S.cows){if(c.lvl>=mergeCap()||c.sick||(drag&&drag.c===c)||c===sheetOpen())continue;n[c.lvl]=(n[c.lvl]||0)+1;if(n[c.lvl]>1)return true}return false}
 let magHint=false;
 function startMagnet(){if(!magHasPair())return;
-  for(let L=1;L<mergeCap();L++){const g=S.cows.filter(c=>c.lvl===L&&!(drag&&drag.c===c)&&c!==sheetOpen());if(g.length<2)continue;
+  for(let L=1;L<mergeCap();L++){const g=S.cows.filter(c=>c.lvl===L&&!c.sick&&!(drag&&drag.c===c)&&c!==sheetOpen());if(g.length<2)continue;
     let best=null,bd=9;for(let i=0;i<g.length;i++)for(let j=i+1;j<g.length;j++){const d=Math.hypot(g[i].x-g[j].x,g[i].y-g[j].y);if(d<bd){bd=d;best=[g[i],g[j]]}}
     magPull={a:best[0],b:best[1],t:0,x0:best[0].x,y0:best[0].y};return}
 }
@@ -1036,9 +1069,9 @@ document.getElementById('magBtn').onclick=()=>{S.magnetOn=S.magnetOn===false;if(
 const LP_MS=550;let sheetCow=null;function sheetOpen(){const e=document.getElementById('cowSheet');return e&&e.classList.contains('on')?sheetCow:null}
 function openCowSheet(c){if(c.lvl>=MAXL||!S.cows.includes(c))return;sheetCow=c;const d=LV[c.lvl-1],g=document.getElementById('cowCv').getContext('2d');g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,360,260);drawCow(g,170,170,190,c.lvl,1,false);
   document.getElementById('cowName').textContent=d.n;
-  document.getElementById('cowInfo').innerHTML='Stufe '+c.lvl+' · verdient '+IC.coin+perSec(c.lvl)+'/s';
-  const last=S.cows.length<=1,none=diaFor(c.lvl)<1,b=document.getElementById('sellBtn');b.disabled=last||none;
-  b.innerHTML=last?'Die letzte Kuh bleibt':none?'Kälbchen bringen keine Diamanten':'Verkaufen für '+diaFor(c.lvl)+' '+IC.dia;
+  document.getElementById('cowInfo').innerHTML=c.sick?'Stufe '+c.lvl+' · krank – verdient nichts.<br>In der Kuh-Apotheke gibt es '+sickInfo(c).m+'.':'Stufe '+c.lvl+' · verdient '+IC.coin+perSec(c.lvl)+'/s';
+  const last=S.cows.length<=1,none=diaFor(c.lvl)<1,ill=!!c.sick,b=document.getElementById('sellBtn');b.disabled=last||none||ill;
+  b.innerHTML=ill?'Erst gesund pflegen':last?'Die letzte Kuh bleibt':none?'Kälbchen bringen keine Diamanten':'Verkaufen für '+diaFor(c.lvl)+' '+IC.dia;
   try{localStorage.setItem('kuhEvoSell','1')}catch(e){}hideHint();open('cowSheet')}
 document.getElementById('sellBtn').onclick=()=>{const c=sheetCow;sheetCow=null;document.getElementById('cowSheet').classList.remove('on');if(c&&S.cows.includes(c))sell(c)};
 // ---------- Kraftwerk-Mitarbeiter auf der Weide ----------
@@ -1161,8 +1194,8 @@ cv.addEventListener('pointermove',e=>{
 });
 function endDrag(){
   if(!drag)return;const c=drag.c;if(!drag.moved){drag=null;tapCow(c);return}if(overSell(c)){const ok=drag.sellT>=SELL_T,ox=drag.ox,oy=drag.oy;drag=null;if(ok){sell(c);return}c.x=c.tx=ox;c.y=c.ty=oy;c.wait=1;const [x,y]=toPx(c);floats.push({x,y:y-cowSize()*.6,t:'Zum Verkaufen 1 Sek. halten',l:1.6});return}drag=null;const s=cowSize();
-  if(fuelDrop(c))return;
-  const t=S.cows.find(o=>o!==c&&o.lvl===c.lvl&&Math.hypot((o.x-c.x)*W,(o.y-c.y)*H)<s*.6);
+  if(c.sick){c.wait=1.5;return}if(fuelDrop(c))return;
+  const t=S.cows.find(o=>o!==c&&!o.sick&&o.lvl===c.lvl&&Math.hypot((o.x-c.x)*W,(o.y-c.y)*H)<s*.6);
   if(!t&&workerDrop(c))return;
   if(t&&c.lvl<mergeCap())merge(c,t);
   else if(t&&c.lvl===MAXL-1){const [x,y]=toPx(c);floats.push({x,y:y-s*.6,t:'Kosmische Kühe verschmelzen nicht mehr',l:1.6})}
@@ -1202,10 +1235,11 @@ function loop(now){
   // Kühe
   S.cows.forEach(c=>{
     if(c.pop)c.pop=Math.max(0,c.pop-dt*3);if(c.tap)c.tap=Math.max(0,c.tap-dt*6);if(c.tapCd)c.tapCd=Math.max(0,c.tapCd-dt);
-    c.ph+=dt;if(c.ph>=COIN_EVERY){c.ph-=COIN_EVERY;S.coins+=income(c.lvl)}
+    c.ph+=dt;if(c.ph>=COIN_EVERY){c.ph-=COIN_EVERY;if(!c.sick)S.coins+=income(c.lvl)}
     if(drag&&drag.c===c)return;
     if(magPull&&magPull.a===c)return;
     {const [nx,ny]=clampXY(c.lvl,c.x,c.y);if(nx!==c.x||ny!==c.y){c.x+=(nx-c.x)*.2;c.y+=(ny-c.y)*.2;[c.tx,c.ty]=clampXY(c.lvl,c.tx,c.ty)}}
+    if(c.sick){c.mv=0;c.tx=c.x;c.ty=c.y;return}
     const dx=c.tx-c.x,dy=c.ty-c.y,d=Math.hypot(dx,dy);
     if(d<.005){c.wait-=dt;if(c.wait<=0){[c.tx,c.ty]=clampXY(c.lvl,c.x+rnd(-.2,.2),c.y+rnd(-.15,.15));c.wait=rnd(1,4)}c.mv=0}
     else{const sp=.05*dt;c.x+=dx/d*Math.min(sp,d);c.y+=dy/d*Math.min(sp,d);c.flip=dx<0;c.mv=1}
@@ -1225,7 +1259,7 @@ function loop(now){
         if(u>=1){magPull=null;merge(a,b)}}}}
   updMagUI();
   if(drag&&!drag.moved&&performance.now()-drag.t0>LP_MS){const c=drag.c;drag=null;openCowSheet(c)}
-  plantTick(dt);updateWorker(dt);updateAutoFuel();if(plantOpen)drawPlant(dt);legoTick(dt);if(legoOpen)drawLegoScene(dt);
+  plantTick(dt);updateWorker(dt);updateAutoFuel();if(plantOpen)drawPlant(dt);legoTick(dt);if(legoOpen)drawLegoScene(dt);apoTick(dt);if(apoOpen)drawApoScene(dt);
   if(S.test){if(S.coins<1e12)S.coins=1e12;if(S.dia<1e6)S.dia=1e6;if((S.atom||0)<1e4)S.atom=1e4}
   draw(dt);ui();
   requestAnimationFrame(loop);
@@ -1242,10 +1276,11 @@ function draw(dt){
   const order=[...S.cows].sort((a,b)=>a.y-b.y);
   if(drag){const dc=drag.c,i=order.indexOf(dc);if(i>=0){order.splice(i,1);order.push(dc)}else drag=null}
   order.forEach(c=>{const [x,y]=toPx(c);const sc=1+(c.pop?Math.sin(c.pop*Math.PI)*.35:0)+(c.tap?Math.sin(c.tap*Math.PI)*.06:0);
-    const glow=drag&&drag.moved&&drag.c!==c&&drag.c.lvl===c.lvl&&c.lvl<mergeCap();
-    drawCow(cx,x,y,s*sc,c.lvl,T+c.id,c.flip,drag&&drag.moved&&drag.c===c,glow,c.mv&&!(drag&&drag.c===c));
+    const glow=drag&&drag.moved&&drag.c!==c&&drag.c.lvl===c.lvl&&c.lvl<mergeCap()&&!c.sick&&!drag.c.sick;
+    drawCow(cx,x+(c.sick&&!(drag&&drag.c===c)?Math.sin(T*30)*1.2:0),y,s*sc,c.lvl,T+c.id,c.flip,drag&&drag.moved&&drag.c===c,glow,c.mv&&!(drag&&drag.c===c));
     if(drag&&drag.c===c&&overSell(c)){cx.globalAlpha=.35;cx.fillStyle='#4dd9ff';cx.beginPath();cx.arc(x,y,s*.55,0,7);cx.fill();cx.globalAlpha=1;const n=diaFor(c.lvl),t='+'+n;cx.font='bold 20px Nunito, system-ui';cx.textAlign='center';cx.lineWidth=4;cx.strokeStyle='rgba(0,0,0,.45)';const tw=cx.measureText(t).width;cx.strokeText(t,x-10,y-s*.75);cx.fillStyle='#fff';cx.fillText(t,x-10,y-s*.75);drawDia(cx,x+tw/2-2,y-s*.77,11)}});
   drawMagLine(true);
+  S.cows.forEach(c=>{if(c.sick&&!(drag&&drag.moved&&drag.c===c)){const [x,y]=toPx(c);drawSickOverlay(cx,x,y,s,c)}});
   try{drawIntro()}catch(e){}
   drawFuelAnims();
   drawNight();
@@ -1287,7 +1322,7 @@ function renderBuy(update){
 // ---------- Panels ----------
 function open(id){document.getElementById(id).classList.add('on');updBal()}
 function syncBg(){const sm=(id,el)=>{const cv=document.getElementById(id);if(!cv||!cv.width)return;try{const g=cv.getContext('2d'),p=g.getImageData(2,cv.height-3,1,1).data;el.style.background='rgb('+p[0]+','+p[1]+','+p[2]+')'}catch(e){}};
-  if(typeof legoOpen!=='undefined'&&legoOpen)sm('legoCv',document.getElementById('legoView'));else if(typeof plantOpen!=='undefined'&&plantOpen)sm('plantCv',document.getElementById('plantView'));else sm('cv',document.getElementById('app'))}
+  if(typeof apoOpen!=='undefined'&&apoOpen)sm('apoCv',document.getElementById('apoView'));else if(typeof legoOpen!=='undefined'&&legoOpen)sm('legoCv',document.getElementById('legoView'));else if(typeof plantOpen!=='undefined'&&plantOpen)sm('plantCv',document.getElementById('plantView'));else sm('cv',document.getElementById('app'))}
 setInterval(syncBg,400);
 // ===== Zoom-Schutz für iOS =====
 // 1) Jeder einzelne Tipp wird vom Spiel selbst als Klick ausgelöst und der Browser-Tipp verworfen.
@@ -1322,7 +1357,7 @@ function fitTop(){document.querySelectorAll('#top,.ptop').forEach(t=>{if(!t.offs
   kids.forEach(e=>e.style.zoom='');const cs=getComputedStyle(t),av=t.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight)-8;let need=0;kids.forEach(e=>need+=e.offsetWidth);need+=8*(kids.length-1);
   if(need>av){const k=Math.max(.6,av/need);kids.forEach(e=>e.style.zoom=k)}})}
 setInterval(fitTop,300);
-function updBal(){document.querySelectorAll('.overlay.on .bal').forEach(e=>{const k=e.dataset.bal,v=k==='coins'?S.coins:k==='dia'?S.dia:S.plant.mw,h=(k==='coins'?IC.coin:k==='dia'?IC.dia:IC.bolt)+Math.floor(v).toLocaleString('de-DE');setH(e,h)})}
+function updBal(){document.querySelectorAll('.overlay.on .bal').forEach(e=>{const k=e.dataset.bal,v=k==='coins'?S.coins:k==='dia'?S.dia:k==='pills'?S.apo.pills:S.plant.mw,h=(k==='coins'?IC.coin:k==='dia'?IC.dia:k==='pills'?IC.pill:IC.bolt)+Math.floor(v).toLocaleString('de-DE');setH(e,h)})}
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>document.getElementById(b.dataset.close).classList.remove('on'));
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o&&o.id!=='discover')o.classList.remove('on')}));
 document.getElementById('shopBtn').onclick=()=>{renderShop();open('shop')};
@@ -1400,11 +1435,11 @@ function ub64(t){t=t.replace(/-/g,'+').replace(/_/g,'/');const s=atob(t);return 
 async function zip_(str,inflate){const cs=inflate?new DecompressionStream('deflate-raw'):new CompressionStream('deflate-raw');const data=inflate?str:new TextEncoder().encode(str);const out=new Response(new Blob([data]).stream().pipeThrough(cs));return inflate?await out.text():new Uint8Array(await out.arrayBuffer())}
 function packState(){save();const o=JSON.parse(JSON.stringify(S)),r=v=>typeof v==='number'?(Math.abs(v)>=1e6?Math.round(v):Math.round(v*100)/100):v;
   delete o.testBackup;delete o.test;delete o.last;if(o.test&&S.testBackup){}if(S.test&&S.testBackup){o.coins=S.testBackup.coins;o.dia=S.testBackup.dia;o.atom=S.testBackup.atom}
-  o.cows=S.cows.map(c=>c.lvl);if(o.plant){o.plant.calves=(S.plant.calves||[]).map(c=>c.lvl);delete o.plant.chef;delete o.plant.birthT}
+  o.cows=S.cows.map(c=>c.sick?[c.lvl,c.sick]:c.lvl);if(o.plant){o.plant.calves=(S.plant.calves||[]).map(c=>c.lvl);delete o.plant.chef;delete o.plant.birthT}
   const walk=x=>{if(Array.isArray(x))return x.map(walk);if(x&&typeof x==='object'){const y={};for(const k in x){const v=x[k];if(v===0||v==null)continue;y[k]=walk(v)}return y}return r(x)};
   const p=walk(o);['kuhEvoTap','kuhEvoSell'].forEach(k=>{try{if(localStorage.getItem(k)!=null)p['_'+k]=1}catch(e){}});return JSON.stringify(p)}
 function unpackState(j){const p=JSON.parse(j);if(!p||!Array.isArray(p.cows))throw 0;const flags={};['kuhEvoTap','kuhEvoSell'].forEach(k=>{if(p['_'+k]){flags[k]='1'}delete p['_'+k]});
-  p.cows=p.cows.map(l=>({lvl:l,x:.15+Math.random()*.7,y:.4+Math.random()*.45}));if(p.plant&&Array.isArray(p.plant.calves))p.plant.calves=p.plant.calves.map(l=>({lvl:l,x:.15+Math.random()*.7,y:.5+Math.random()*.35}));
+  p.cows=p.cows.map(l=>({lvl:Array.isArray(l)?l[0]:l,sick:Array.isArray(l)?l[1]:0,x:.15+Math.random()*.7,y:.4+Math.random()*.45}));if(p.plant&&Array.isArray(p.plant.calves))p.plant.calves=p.plant.calves.map(l=>({lvl:l,x:.15+Math.random()*.7,y:.5+Math.random()*.35}));
   p.last=Date.now();return [p,flags]}
 async function saveCodeStr(){const j=packState();try{return 'KUH2-'+b64u(await zip_(j))}catch(e){return 'KUH3-'+b64u(new TextEncoder().encode(j))}}
 let saveMode='exp';
@@ -1711,6 +1746,253 @@ function renderLegoLadder(){const box=document.getElementById('legoLadder');box.
     if(!moved){k.pop=.6;lFloats.push({t:legoRate(k.lvl).toLocaleString('de-DE',{maximumFractionDigits:1})+' Steine/Sek.',l:.9,x:k.x,y:k.y-.14});return}
     const s=legoSize(),t=S.lego.cows.find(o=>o!==k&&o.lvl===k.lvl&&Math.hypot((o.x-k.x)*LW_,(o.y-k.y)*LH_)<s*.6);if(t&&k.lvl<LMAX)mergeLego(k,t)};
   cvl.addEventListener('pointerup',end);cvl.addEventListener('pointercancel',end);
+})();
+
+// =================== Kuh-Apotheke ===================
+// Ab der ersten Weltrettung wird eine Kuh auf der Weide krank. Dann öffnet die Kuh-Apotheke auf der Karte.
+// Dort verschmilzt man Apotheken-Kühe entlang der Arzneiformen und heilt damit kranke Kühe.
+const APO=[
+ {n:'Kamillen-Kälbchen',d:'Duftet nach Kamille – einer der ältesten Heilpflanzen überhaupt.',body:'#fffdf5',spot:'#ffe98a',mz:'#fff3c4',ear:'#fff0a0',hoof:'#d9c27a',sc:.8,kawaii:1,horns:0,flower:'#ffffff'},
+ {n:'Tee-Kuh',d:'Brüht Kamillentee – der beruhigt Bauch und Magen.',body:'#fffdf8',spot:'#9fe0b5',mz:'#d9f7e3',ear:'#bff0cf',hoof:'#6fb98a',sc:.84,kawaii:1,acc:'tea'},
+ {n:'Tropfen-Kuh',d:'Zählt jeden Tropfen genau. Tinkturen sind Pflanzenauszüge mit Alkohol.',body:'#fffaf4',spot:'#e0b07a',mz:'#f7e0c4',ear:'#f0cfa8',hoof:'#a8784a',sc:.88,kawaii:1,acc:'drops'},
+ {n:'Salben-Kuh',d:'Rührt in der Fantaschale die cremigste Salbe der Weide.',body:'#fbfdff',spot:'#a8d8ff',mz:'#d8ecff',ear:'#c4e2ff',hoof:'#6a9cc9',sc:.92,kawaii:1,acc:'jar'},
+ {n:'Tabletten-Kuh',d:'Mit Bruchkerbe zum Teilen – aber nur, wenn die Packungsbeilage es erlaubt.',body:'#fffafc',spot:'#ffb3d1',mz:'#ffd9e8',ear:'#ffc6dc',hoof:'#c97a9b',sc:.96,kawaii:1,acc:'tablet'},
+ {n:'Kapsel-Kuh',d:'Zwei Hälften, eine Füllung: Die Hartkapsel schützt den Wirkstoff.',body:'#fdfbff',spot:'#c7a9ff',mz:'#e5d9ff',ear:'#d8c6ff',hoof:'#8f78c4',sc:1,kawaii:1,acc:'capsule'},
+ {n:'Ampullen-Kuh',d:'Steril bis zum letzten Tropfen. Ampullen bricht man am Farbring auf.',body:'#f9fffe',spot:'#7fdad0',mz:'#c9f3ee',ear:'#a9ebe3',hoof:'#4fa89e',sc:1.04,kawaii:1,acc:'ampoule',eyes:'open'},
+ {n:'Impf-Kuh',d:'Wusstest du? „Vakzin“ kommt von lateinisch vacca = Kuh – die ersten Impfungen nutzten Kuhpocken.',body:'#fffdf6',spot:'#ffd76a',mz:'#fff0c2',ear:'#ffe49a',hoof:'#c9a43a',sc:1.1,kawaii:1,acc:'vaccine',float:1,sparkle:1,glowc:'rgba(150,215,255,.9)'}
+];
+const AMAX=APO.length;
+// Krankheiten: Stufe der Apotheken-Kuh, die als Medizin gebraucht wird
+const DISEASE={2:{n:'Bauchgrummeln',m:'Kamillentee'},3:{n:'Husten',m:'Hustentropfen'},4:{n:'wunde Hufe',m:'Wund- und Heilsalbe'},5:{n:'Kopfweh',m:'eine Schmerztablette'},6:{n:'einen Bakterien-Infekt',m:'eine Antibiotikum-Kapsel'},7:{n:'Vitaminmangel',m:'eine Vitamin-Spritze aus der Ampulle'}};
+const APUP=[
+ {k:'slots',n:'Größere Offizin',d:l=>apoSlotsAt(l)+' Plätze',cost:l=>200*Math.pow(4,l),max:4},
+ {k:'lab',n:'Moderne Laborgeräte',d:l=>'+'+(l*25)+' % Pillen',cost:l=>100*Math.pow(2.3,l),max:20},
+ {k:'care',n:'Gute Beratung',d:l=>'+'+(l*50)+' % Diamanten beim Heilen',cost:l=>500*Math.pow(3,l),max:4}
+];
+const IMMUNE_MIN=30;
+IC.pill='<svg class="ic pillic" viewBox="0 0 24 24"><g transform="rotate(-40 12 12)"><rect x="2.5" y="7.5" width="19" height="9" rx="4.5" fill="#fff" stroke="#3d4a6b" stroke-width="1.7"/><path d="M12 7.5h5a4.5 4.5 0 0 1 0 9h-5z" fill="#59c98a" stroke="#3d4a6b" stroke-width="1.7" stroke-linejoin="round"/><rect x="5" y="9.4" width="5" height="1.7" rx=".85" fill="#e3f7ec"/></g></svg>';
+function defApo(){return {unlocked:false,seen:false,cows:[],pills:0,best:1,buys:0,sickT:0,immuneUntil:0,healed:0,up:{slots:0,lab:0,care:0}}}
+S.apo=Object.assign(defApo(),S.apo||{});S.apo.up=Object.assign(defApo().up,S.apo.up||{});if(!Array.isArray(S.apo.cows))S.apo.cows=[];
+let aUid=1;S.apo.cows.forEach(c=>{c.id=aUid++;c.tx=c.x;c.ty=c.y;c.wait=Math.random()*2});
+function apoSlotsAt(l){return Math.min(16,8+2*l)}
+function apoSlots(){return apoSlotsAt(S.apo.up.slots)}
+function apoRate(L){return .5*Math.pow(3,L-1)*(1+.25*S.apo.up.lab)}
+function apoOut(){return S.apo.cows.reduce((a,c)=>a+apoRate(c.lvl),0)}
+function apoPrice(){return Math.round(10*Math.pow(1.12,S.apo.buys||0))}
+function healReward(L){return Math.round(L*4*(1+.5*S.apo.up.care))}
+function addApo(L,x,y){const c={lvl:L,x:x??(.15+Math.random()*.7),y:y??(.56+Math.random()*.3),id:aUid++,pop:1,wait:Math.random()*2};c.tx=c.x;c.ty=c.y;S.apo.cows.push(c);return c}
+function sickCows(){return S.cows.filter(c=>c.sick)}
+function immuneLeft(){return Math.max(0,((S.apo.immuneUntil||0)-Date.now())/1000)}
+
+// ---- Arzneiform-Zubehör auf dem Kopf (wird auch in der Sprechblase kranker Kühe gezeichnet) ----
+function drawApoAcc(c,acc,s,hy,t,LW,OL){
+  const y0=hy-s*.17;c.save();c.lineWidth=LW;c.strokeStyle=OL;c.lineJoin='round';c.lineCap='round';
+  if(acc==='tea'){
+    c.save();c.lineWidth=s*.018;c.strokeStyle='rgba(255,255,255,.95)';for(let i=0;i<2;i++){const q=(t*.6+i*.5)%1;c.globalAlpha=Math.sin(q*Math.PI)*.9;c.beginPath();for(let k=0;k<=8;k++){const u=k/8;c.lineTo((i?.04:-.04)*s+Math.sin(u*5+t*3+i)*s*.02,y0-s*.17-q*s*.06-u*s*.1)}c.stroke()}c.restore();
+    c.fillStyle='#fff';c.beginPath();c.ellipse(0,y0+s*.005,s*.16,s*.035,0,0,7);c.fill();c.stroke();
+    c.beginPath();c.arc(s*.115,y0-s*.09,s*.04,-1.3,1.3);c.stroke();
+    c.beginPath();c.roundRect(-s*.11,y0-s*.15,s*.22,s*.14,[0,0,s*.07,s*.07]);c.fill();c.save();c.clip();c.fillStyle='#9fe0b5';c.fillRect(-s*.12,y0-s*.1,s*.24,s*.03);c.restore();c.stroke();
+    c.fillStyle='#e8b04a';c.beginPath();c.ellipse(0,y0-s*.15,s*.11,s*.022,0,0,7);c.fill();c.stroke();
+    c.lineWidth=LW*.6;c.beginPath();c.moveTo(s*.05,y0-s*.15);c.lineTo(s*.12,y0-s*.04);c.stroke();c.fillStyle='#ffd23f';c.lineWidth=LW*.8;c.beginPath();c.roundRect(s*.1,y0-s*.05,s*.05,s*.05,s*.01);c.fill();c.stroke()}
+  else if(acc==='drops'){
+    c.fillStyle='#c47a2c';c.beginPath();c.roundRect(-s*.075,y0-s*.17,s*.15,s*.17,s*.045);c.fill();c.stroke();
+    c.fillStyle='rgba(255,255,255,.45)';c.beginPath();c.roundRect(-s*.055,y0-s*.15,s*.025,s*.12,s*.012);c.fill();
+    c.fillStyle='#fff';c.beginPath();c.roundRect(-s*.045,y0-s*.11,s*.09,s*.06,s*.012);c.fill();c.fillStyle='#59c98a';c.fillRect(-s*.009,y0-s*.1,s*.018,s*.04);c.fillRect(-s*.02,y0-s*.089,s*.04,s*.018);
+    c.fillStyle='#3d4a6b';c.beginPath();c.roundRect(-s*.045,y0-s*.215,s*.09,s*.05,s*.012);c.fill();c.stroke();
+    c.fillStyle='#ff8fb8';c.beginPath();c.ellipse(0,y0-s*.255,s*.04,s*.05,0,0,7);c.fill();c.stroke();c.fillStyle='rgba(255,255,255,.6)';c.beginPath();c.ellipse(-s*.013,y0-s*.27,s*.01,s*.018,0,0,7);c.fill();
+    const q=(t*.7)%1;if(q<.8){const dy=y0-s*.05+q*s*.2;c.globalAlpha=1-q;c.fillStyle='#e8a050';c.beginPath();c.moveTo(s*.12,dy-s*.03);c.quadraticCurveTo(s*.145,dy,s*.12,dy+s*.015);c.quadraticCurveTo(s*.095,dy,s*.12,dy-s*.03);c.fill()}}
+  else if(acc==='jar'){
+    c.fillStyle='#fff';c.beginPath();c.roundRect(-s*.11,y0-s*.12,s*.22,s*.12,s*.035);c.fill();c.stroke();
+    c.fillStyle='#a8d8ff';c.fillRect(-s*.11+LW/2,y0-s*.085,s*.22-LW,s*.035);
+    c.fillStyle='#6a9cc9';c.beginPath();c.roundRect(-s*.13,y0-s*.17,s*.26,s*.06,s*.025);c.fill();c.stroke();
+    c.fillStyle='rgba(255,255,255,.55)';c.beginPath();c.roundRect(-s*.1,y0-s*.16,s*.08,s*.015,s*.008);c.fill();
+    c.save();c.translate(s*.06,y0-s*.17);c.rotate(.5);c.fillStyle='#e9eef5';c.beginPath();c.roundRect(-s*.012,-s*.12,s*.024,s*.12,s*.012);c.fill();c.stroke();c.restore()}
+  else if(acc==='tablet'){
+    c.save();c.translate(0,y0-s*.06);c.rotate(-.18);
+    c.fillStyle='#e3e8ef';c.beginPath();c.ellipse(0,s*.025,s*.16,s*.06,0,0,7);c.fill();c.stroke();
+    c.fillRect(-s*.16,-s*.005,s*.32,s*.03);c.beginPath();c.moveTo(-s*.16,0);c.lineTo(-s*.16,s*.025);c.moveTo(s*.16,0);c.lineTo(s*.16,s*.025);c.stroke();
+    c.fillStyle='#fff';c.beginPath();c.ellipse(0,0,s*.16,s*.06,0,0,7);c.fill();c.stroke();
+    c.strokeStyle='#b9c2cc';c.lineWidth=LW*.9;c.beginPath();c.moveTo(-s*.13,0);c.lineTo(s*.13,0);c.stroke();
+    c.fillStyle='rgba(255,179,209,.7)';c.beginPath();c.ellipse(-s*.07,-s*.025,s*.03,s*.01,0,0,7);c.fill();c.restore()}
+  else if(acc==='capsule'){
+    c.save();c.translate(0,y0-s*.08);c.rotate(-.35);const L=s*.17,R=s*.058;
+    c.fillStyle='#c7a9ff';c.beginPath();c.roundRect(-L,-R,L,R*2,[R,0,0,R]);c.fill();
+    c.fillStyle='#fff';c.beginPath();c.roundRect(0,-R,L,R*2,[0,R,R,0]);c.fill();
+    c.beginPath();c.roundRect(-L,-R,L*2,R*2,R);c.stroke();c.beginPath();c.moveTo(0,-R);c.lineTo(0,R);c.stroke();
+    c.fillStyle='rgba(255,255,255,.65)';c.beginPath();c.roundRect(-L*.8,-R*.6,L*.55,R*.35,R*.17);c.fill();c.restore()}
+  else if(acc==='ampoule'){
+    c.save();c.beginPath();c.roundRect(-s*.06,y0-s*.17,s*.12,s*.17,s*.045);c.fillStyle='rgba(215,245,255,.75)';c.fill();c.clip();c.fillStyle='#7fdad0';c.fillRect(-s*.07,y0-s*.1+Math.sin(t*2)*s*.006,s*.14,s*.12);c.restore();
+    c.beginPath();c.roundRect(-s*.06,y0-s*.17,s*.12,s*.17,s*.045);c.stroke();
+    c.fillStyle='rgba(215,245,255,.75)';c.beginPath();c.moveTo(-s*.04,y0-s*.17);c.lineTo(-s*.018,y0-s*.21);c.lineTo(s*.018,y0-s*.21);c.lineTo(s*.04,y0-s*.17);c.closePath();c.fill();c.stroke();
+    c.beginPath();c.ellipse(0,y0-s*.245,s*.032,s*.042,0,0,7);c.fill();c.stroke();
+    c.fillStyle='#ff5fa2';c.beginPath();c.arc(0,y0-s*.205,s*.016,0,7);c.fill();
+    c.fillStyle='rgba(255,255,255,.8)';c.beginPath();c.roundRect(-s*.043,y0-s*.15,s*.02,s*.1,s*.01);c.fill()}
+  else if(acc==='vaccine'){
+    c.save();const pu=.5+.5*Math.sin(t*2);c.globalAlpha=.22+.12*pu;c.strokeStyle='#7cc8ff';c.lineWidth=s*.025;c.fillStyle='rgba(170,225,255,.10)';c.beginPath();c.arc(0,hy+s*.26,s*.6,0,7);c.fill();c.stroke();c.restore();
+    c.save();c.beginPath();c.roundRect(-s*.065,y0-s*.15,s*.13,s*.15,s*.035);c.fillStyle='rgba(225,245,255,.85)';c.fill();c.clip();c.fillStyle='#ffe9a8';c.fillRect(-s*.07,y0-s*.085,s*.14,s*.09);c.restore();
+    c.beginPath();c.roundRect(-s*.065,y0-s*.15,s*.13,s*.15,s*.035);c.stroke();
+    c.fillStyle='#fff';c.beginPath();c.roundRect(-s*.05,y0-s*.12,s*.1,s*.05,s*.01);c.fill();
+    c.fillStyle='#ffc21a';const sx=0,sy=y0-s*.095,r=s*.022;c.beginPath();for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r*.45:r;c.lineTo(sx+Math.cos(a)*rr,sy+Math.sin(a)*rr)}c.closePath();c.fill();
+    c.fillStyle='#59c98a';c.beginPath();c.roundRect(-s*.07,y0-s*.205,s*.14,s*.06,s*.02);c.fill();c.stroke();
+    c.fillStyle='#b9c2cc';c.beginPath();c.roundRect(-s*.035,y0-s*.225,s*.07,s*.025,s*.008);c.fill();c.stroke()}
+  c.restore();
+}
+
+// ---- Kranke Kuh auf der Weide ----
+function drawSickOverlay(g,x,y,s,c){
+  const d=LV[c.lvl-1],k=s*d.sc,fl=d.float?k*.14:0,hy=y-k*.26-fl;
+  // kleine Bazillen kreisen um den Kopf
+  for(let i=0;i<3;i++){const a=T*1.6+i*2.1,bx=x+Math.cos(a)*k*.36,by=hy-k*.02+Math.sin(a)*k*.14,r=Math.max(4.5,k*.05);
+    g.save();g.fillStyle='#9be36a';g.strokeStyle='#3d4a6b';g.lineWidth=1.5;g.beginPath();for(let j=0;j<12;j++){const aa=j/12*Math.PI*2,rr=r*(j%2?1:1.25);g.lineTo(bx+Math.cos(aa+T)*rr,by+Math.sin(aa+T)*rr)}g.closePath();g.fill();g.stroke();
+    g.fillStyle='#3d4a6b';g.beginPath();g.arc(bx-r*.35,by-r*.1,r*.18,0,7);g.arc(bx+r*.35,by-r*.1,r*.18,0,7);g.fill();g.restore()}
+  // Sprechblase mit der benötigten Medizin
+  const bx=x+k*.42,by=hy-k*.42+Math.sin(T*2.5)*2,R=Math.max(17,k*.22);
+  g.save();g.fillStyle='#fff';g.shadowColor='rgba(0,0,0,.18)';g.shadowBlur=8;g.beginPath();g.arc(bx,by,R,0,7);g.fill();g.shadowBlur=0;g.strokeStyle='#ff5fa2';g.lineWidth=2.5;g.stroke();
+  g.fillStyle='#fff';g.beginPath();g.arc(bx-R*.75,by+R*.95,R*.2,0,7);g.fill();g.stroke();g.beginPath();g.arc(bx-R*1.1,by+R*1.35,R*.11,0,7);g.fill();g.stroke();
+  const A=APO[c.sick-1];if(A&&A.acc){const z=R*3.3;g.translate(bx,by);drawApoAcc(g,A.acc,z,z*.3,T,Math.max(1.4,z*.022),'#3d4a6b')}g.restore();
+}
+function sickInfo(c){const D=DISEASE[c.sick]||DISEASE[2];return D}
+function makeSick(c,L){c.sick=L;c.wait=1;c.mv=0;c.tx=c.x;c.ty=c.y;if(magPull&&(magPull.a===c||magPull.b===c))magPull=null}
+function pickSickCow(){const ok=S.cows.filter(c=>!c.sick&&c.lvl<MAXL&&!(drag&&drag.c===c)&&!(magPull&&(magPull.a===c||magPull.b===c))&&c!==sheetOpen());if(!ok.length)return null;
+  const pref=ok.filter(c=>c.lvl>=2);const L=pref.length?pref:ok;return L[Math.floor(Math.random()*L.length)]}
+function anyViewOpen(){return plantOpen||legoOpen||apoOpen||document.getElementById('mapView').classList.contains('on')||!!document.querySelector('.overlay.on')}
+function firstSick(){const c=pickSickCow();if(!c)return;const A=S.apo;makeSick(c,2);A.unlocked=true;A.sickT=420+Math.random()*300;
+  if(!A.cows.length){addApo(1,.35,.66);addApo(1,.65,.7)}save();updMapBtn();sfx('morph');
+  const D=sickInfo(c);document.getElementById('apoMName').textContent='Die '+LV[c.lvl-1].n+' ist krank!';
+  document.getElementById('apoMTxt').textContent='Sie hat '+D.n+' und gibt keine Münzen mehr. Zum Glück hat auf der Weltkarte die Kuh-Apotheke geöffnet – dort bekommst du '+D.m+'.';
+  const g=document.getElementById('apoMCv').getContext('2d');let t0=performance.now();open('apoModal');
+  (function an(){const m=document.getElementById('apoModal');if(!m.classList.contains('on'))return;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,400,320);g.setTransform(2,0,0,2,0,0);
+    drawCow(g,95+Math.sin(T*30)*1.2,95,105,c.lvl,T,false);drawSickOverlay(g,95+Math.sin(T*30)*1.2,95,105,c);requestAnimationFrame(an)})()}
+function laterSick(){const c=pickSickCow();if(!c)return;const A=S.apo,hi=Math.min(7,Math.max(2,(A.best||1)+1)),L=2+Math.floor(Math.random()*(hi-1));makeSick(c,L);
+  const D=sickInfo(c);showToast('Die '+LV[c.lvl-1].n+' hat '+D.n+'! In der Kuh-Apotheke gibt es '+D.m+'.');sfx('morph');save()}
+
+// ---- Tick: Pillen, Bewegung, Erkrankungen ----
+let apoOpen=false,apoCvEl=null,apoCx=null,AW=0,AH=0,abg=null,abgW=0,abgH=0,aDrag=null,aFloats=[];
+function apoTick(dt){const A=S.apo;
+  if(!A.unlocked){if(S.plant&&S.plant.unlocked&&S.plant.missions>=1&&!anyViewOpen()&&!drag)firstSick();return}
+  A.pills+=apoOut()*dt;
+  if(immuneLeft()<=0&&sickCows().length<2){A.sickT=(A.sickT||0)-dt;if(A.sickT<=0){A.sickT=360+Math.random()*360;laterSick()}}
+  A.cows.forEach(c=>{if(c.pop)c.pop=Math.max(0,c.pop-dt*3);if(aDrag&&aDrag.c===c)return;const dx=c.tx-c.x,dy=c.ty-c.y,d=Math.hypot(dx,dy);
+    if(d<.005){c.wait-=dt;if(c.wait<=0){c.tx=Math.min(.88,Math.max(.12,c.x+(Math.random()-.5)*.3));c.ty=Math.min(.9,Math.max(.56,c.y+(Math.random()-.5)*.25));c.wait=1+Math.random()*3}c.mv=0}
+    else{const sp=.06*dt;c.x+=dx/d*Math.min(sp,d);c.y+=dy/d*Math.min(sp,d);c.flip=dx<0;c.mv=1}})}
+
+// ---- Szene: Offizin mit Regalen, Tresen und Fliesenboden ----
+const AHZ=.4;
+function apoSize(){return Math.max(50,Math.min(100,Math.min(AW,AH)*.2))}
+function aPx(c){return [c.x*AW,c.y*AH]}
+function buildApoBg(){abgW=AW;abgH=AH;const dp=window.devicePixelRatio||1;abg=abg||document.createElement('canvas');abg.width=AW*dp;abg.height=AH*dp;
+  const g=abg.getContext('2d');g.setTransform(dp,0,0,dp,0,0);g.clearRect(0,0,AW,AH);const W2=AW,H2=AH,hz=H2*AHZ,r=srand(31),OL='#3d4a6b';
+  // Wand
+  g.fillStyle='#dff5ec';g.fillRect(0,0,W2,hz);g.fillStyle='rgba(255,255,255,.35)';for(let x=0;x<W2;x+=28)g.fillRect(x,0,12,hz);
+  // Regal mit Standgefäßen
+  const top=Math.max(86,H2*.13),sh=(hz-top-H2*.06)/3,cols=['#ffffff','#ffffff','#ffd6e8','#bfe9ff','#fff3a8','#d9c8ff','#c8f2d6'];
+  g.fillStyle='#f1d6b8';g.strokeStyle=OL;g.lineWidth=2.5;g.beginPath();g.roundRect(8,top-8,W2-16,hz-top+4,10);g.fill();g.stroke();
+  for(let i=0;i<3;i++){const sy=top+sh*(i+1)-4;let x=18;
+    while(x<W2-30){const kind=r(),w=kind<.45?sh*.5:kind<.75?sh*.34:sh*.42,h=kind<.45?sh*.62:kind<.75?sh*.74:sh*.5;if(x+w>W2-18)break;const col=cols[Math.floor(r()*cols.length)];
+      g.lineWidth=2;g.strokeStyle=OL;
+      if(kind<.45){g.fillStyle=col;g.beginPath();g.roundRect(x,sy-h,w,h,w*.25);g.fill();g.stroke();g.fillStyle='#6a9cc9';g.beginPath();g.roundRect(x-2,sy-h-w*.18,w+4,w*.22,w*.08);g.fill();g.stroke();
+        g.fillStyle='#fff';g.strokeStyle='#6a9cc9';g.lineWidth=1.5;g.beginPath();g.roundRect(x+w*.15,sy-h*.62,w*.7,h*.32,3);g.fill();g.stroke();g.fillStyle='#6a9cc9';g.fillRect(x+w*.25,sy-h*.5,w*.5,1.6);g.fillRect(x+w*.3,sy-h*.42,w*.4,1.6)}
+      else if(kind<.75){const bc=r()<.5?'#c47a2c':'#7fb6e8';g.fillStyle=bc;g.beginPath();g.roundRect(x,sy-h*.75,w,h*.75,w*.3);g.fill();g.stroke();g.fillRect(x+w*.3,sy-h,w*.4,h*.27);g.strokeRect(x+w*.3,sy-h,w*.4,h*.27);
+        g.fillStyle='#fff';g.fillRect(x+w*.15,sy-h*.5,w*.7,h*.22)}
+      else{g.fillStyle=col==='#ffffff'?'#ffd6e8':col;g.beginPath();g.roundRect(x,sy-h,w,h,4);g.fill();g.stroke();g.fillStyle='#59c98a';g.fillRect(x+w*.42,sy-h*.75,w*.16,h*.5);g.fillRect(x+w*.25,sy-h*.58,w*.5,h*.16)}
+      x+=w+6+r()*6}
+    g.fillStyle='#e0b48a';g.strokeStyle=OL;g.lineWidth=2.5;g.beginPath();g.roundRect(8,sy,W2-16,8,4);g.fill();g.stroke()}
+  // Tresen (HV-Tisch)
+  const ct=hz-H2*.045;g.fillStyle='#ffffff';g.strokeStyle=OL;g.lineWidth=2.5;g.beginPath();g.roundRect(-6,ct,W2+12,H2*.09,10);g.fill();g.stroke();
+  g.fillStyle='#9fe0b5';g.fillRect(-4,ct+H2*.07,W2+8,H2*.012);g.fillStyle='#f1d6b8';g.beginPath();g.roundRect(-6,ct-8,W2+12,12,6);g.fill();g.stroke();
+  // Mörser und Waage auf dem Tresen
+  const mx=W2*.16,my=ct-6;g.fillStyle='#fff';g.beginPath();g.moveTo(mx-18,my-16);g.quadraticCurveTo(mx,my+6,mx+18,my-16);g.closePath();g.fill();g.stroke();g.fillStyle='#e9eef5';g.beginPath();g.ellipse(mx,my-16,18,4,0,0,7);g.fill();g.stroke();
+  g.save();g.translate(mx+6,my-18);g.rotate(.5);g.fillStyle='#fff';g.beginPath();g.roundRect(-3,-22,6,24,3);g.fill();g.stroke();g.restore();
+  const wx=W2*.84,wy=ct-6;g.fillStyle='#e9eef5';g.beginPath();g.roundRect(wx-22,wy-10,44,10,3);g.fill();g.stroke();g.fillStyle='#bfe9ff';g.beginPath();g.roundRect(wx-12,wy-8,24,6,2);g.fill();g.fillStyle='#fff';g.beginPath();g.ellipse(wx,wy-14,20,4,0,0,7);g.fill();g.stroke();
+  // Boden: Fliesen
+  const fy=hz+H2*.045;g.fillStyle='#f4fbf8';g.fillRect(0,fy,W2,H2-fy);const ts=Math.max(26,W2/12);
+  for(let y=fy,ri=0;y<H2;y+=ts,ri++)for(let x=0,ci=0;x<W2;x+=ts,ci++){if((ci+ri)%2===0){g.fillStyle='#e3f5ec';g.fillRect(x,y,ts,ts)}}
+  g.fillStyle='rgba(61,74,107,.08)';g.fillRect(0,fy,W2,6);
+}
+function drawApoSign(c){const ct=AH*AHZ-AH*.045,ch=AH*.09,cy0=ct+ch*.42,pu=.6+.4*Math.sin(T*2.5);c.save();
+  c.font='900 '+Math.round(Math.min(22,ch*.42))+'px Nunito, system-ui';c.textAlign='left';c.textBaseline='middle';const t='Kuh-Apotheke',tw=c.measureText(t).width,q=Math.min(11,ch*.2),x0=AW/2-(tw+q*2+12)/2,cx0=x0+q;
+  c.shadowColor='rgba(89,201,138,'+pu+')';c.shadowBlur=14;c.fillStyle='#59c98a';c.fillRect(cx0-q*.4,cy0-q,q*.8,q*2);c.fillRect(cx0-q,cy0-q*.4,q*2,q*.8);c.shadowBlur=0;
+  c.fillStyle='#3d4a6b';c.fillText(t,cx0+q+12,cy0+1);c.restore()}
+function drawApoScene(dt){const c=apoCx;if(!c)return;if(abgW!==AW||abgH!==AH||!abg)buildApoBg();
+  c.clearRect(0,0,AW,AH);c.drawImage(abg,0,0,AW,AH);drawApoSign(c);
+  const s=apoSize(),order=[...S.apo.cows].sort((a,b)=>a.y-b.y);if(aDrag){const i=order.indexOf(aDrag.c);if(i>=0){order.splice(i,1);order.push(aDrag.c)}else aDrag=null}
+  order.forEach(k=>{const [x,y]=aPx(k),sc=1+(k.pop?Math.sin(k.pop*Math.PI)*.3:0),lift=aDrag&&aDrag.c===k&&aDrag.moved,glow=aDrag&&aDrag.moved&&aDrag.c!==k&&aDrag.c.lvl===k.lvl&&k.lvl<AMAX;
+    drawCow(c,x,y,s*sc,APO[k.lvl-1],T+k.id,k.flip,lift,glow,k.mv&&!lift)});
+  aFloats.forEach(f=>{f.l-=dt;if(f.spark){f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy+=.9*dt}else f.y-=dt*.06});aFloats=aFloats.filter(f=>f.l>0);
+  aFloats.forEach(f=>{const x=f.x*AW,y=f.y*AH;c.globalAlpha=Math.min(1,f.l*2);if(f.spark){c.fillStyle=f.col;c.beginPath();c.arc(x,y,3.5,0,7);c.fill()}else{c.font='800 15px Nunito, system-ui';c.textAlign='center';const tw=c.measureText(f.t).width,fx=Math.min(AW-tw/2-12,Math.max(tw/2+12,x));c.fillStyle='#fff';c.beginPath();c.roundRect(fx-tw/2-10,y-14,tw+20,26,13);c.fill();c.strokeStyle='rgba(89,201,138,.7)';c.lineWidth=2.5;c.stroke();c.fillStyle='#2f8f5b';c.textBaseline='middle';c.fillText(f.t,fx,y)}c.globalAlpha=1});
+  // Hinweis für die erste Heilung
+  const pend=sickCows();let hint='';if(pend.length&&!S.apo.healed){if(!S.apo.cows.some(k=>k.lvl===pend[0].sick))hint=S.apo.best<2?'Zieh zwei Kamillen-Kälbchen aufeinander!':'Verschmelze Apotheken-Kühe zur passenden Medizin!';else hint='Tippe auf „Patienten“, um die kranke Kuh zu heilen!'}
+  if(hint&&!aDrag){c.save();c.font='800 14px Nunito, system-ui';const tw=c.measureText(hint).width,hy2=AH*AHZ+AH*.09;c.fillStyle='rgba(255,255,255,.95)';c.shadowColor='rgba(0,0,0,.15)';c.shadowBlur=8;c.beginPath();c.roundRect(AW/2-tw/2-14,hy2-17,tw+28,34,17);c.fill();c.shadowBlur=0;c.strokeStyle='rgba(89,201,138,.7)';c.lineWidth=2.5;c.stroke();c.fillStyle='#2f8f5b';c.textAlign='center';c.textBaseline='middle';c.fillText(hint,AW/2,hy2+1);c.restore()}
+  updApoUI()}
+let aUiT=0;function updApoUI(){if(++aUiT%6)return;const A=S.apo;
+  document.getElementById('aPills').textContent=Math.floor(A.pills).toLocaleString('de-DE');
+  const r=apoOut();document.getElementById('aRate').textContent=r<100?r.toLocaleString('de-DE',{maximumFractionDigits:1}):fmt(r);
+  document.getElementById('aCnt').textContent=A.cows.length+'/'+apoSlots()+' Kühe';
+  const b=document.getElementById('aBuy'),pr=apoPrice();setH(b,'<span>Apo-Kalb</span><small>'+IC.pill+fmt(pr)+'</small>');b.disabled=A.cows.length>=apoSlots()||A.pills<pr;
+  const n=sickCows().length,bd=document.getElementById('aBadge'),bt=n?String(n):'';if(bd.textContent!==bt)bd.textContent=bt;bd.style.display=n?'':'none';
+  if(document.getElementById('aPat').classList.contains('on'))renderPatients(true);if(document.getElementById('aUps').classList.contains('on'))renderApoUps(true)}
+function openApo(){apoOpen=true;S.apo.seen=true;updMapBtn();document.getElementById('apoView').classList.add('on');apoCvEl=document.getElementById('apoCv');apoCx=apoCvEl.getContext('2d');const dp=window.devicePixelRatio||1;AW=apoCvEl.clientWidth;AH=apoCvEl.clientHeight;apoCvEl.width=AW*dp;apoCvEl.height=AH*dp;apoCx.setTransform(dp,0,0,dp,0,0);aUiT=0;updApoUI()}
+function closeApo(){apoOpen=false;aDrag=null;document.getElementById('apoView').classList.remove('on')}
+function mergeApo(a,b){const A=S.apo,L=a.lvl+1;A.cows=A.cows.filter(o=>o!==a&&o!==b);addApo(L,b.x,b.y);sfx('merge',L);
+  aFloats.push({t:'+'+fmtL(apoRate(L))+' Pillen/Sek.',l:1,x:b.x,y:b.y-.12});
+  for(let i=0;i<14;i++)aFloats.push({spark:1,x:b.x,y:b.y,vx:(Math.random()-.5)*.6,vy:(Math.random()-.8)*.5,l:.6,col:['#59c98a','#ffffff','#ffd23f','#ff8fb8'][i%4]});
+  if(L>A.best){A.best=L;setTimeout(()=>discover(L,APO[L-1]),350)}save()}
+
+// ---- Panels: Patienten, Upgrades, Stufen ----
+function apoMini(L,w,h){const cv=document.createElement('canvas');cv.width=w*2;cv.height=h*2;const g=cv.getContext('2d');g.scale(2,2);drawCow(g,w*.45,h*.58,h*.72,APO[L-1],1,false);return cv}
+function heal(c){const A=S.apo,need=c.sick,k=A.cows.find(o=>o.lvl===need&&!(aDrag&&aDrag.c===o));if(!k||!S.cows.includes(c))return;
+  A.cows=A.cows.filter(o=>o!==k);c.sick=0;c.pop=1;c.wait=1;A.healed=(A.healed||0)+1;const n=healReward(need);S.dia+=n;sfx('dia');{const e=document.getElementById('dias');e.classList.remove('bump');void e.offsetWidth;e.classList.add('bump')}
+  showToast('Die '+LV[c.lvl-1].n+' ist wieder gesund! +'+n+' Diamanten');save();renderPatients()}
+function vaccinate(){const A=S.apo,k=A.cows.find(o=>o.lvl===AMAX&&!(aDrag&&aDrag.c===o));if(!k)return;A.cows=A.cows.filter(o=>o!==k);
+  A.immuneUntil=Math.max(Date.now(),A.immuneUntil||0)+IMMUNE_MIN*60000;sfx('discover');showToast('Die ganze Herde ist geimpft! '+IMMUNE_MIN+' Minuten lang wird keine Kuh krank.');save();renderPatients()}
+function renderPatients(update){const box=document.getElementById('aPatList'),A=S.apo,list=sickCows(),key=list.map(c=>c.id+':'+c.sick).join(',');
+  if(!update||box.dataset.key!==key){box.dataset.key=key;box.innerHTML='';
+    if(!list.length){const p=document.createElement('p');p.className='apoEmpty';p.textContent='Allen Kühen auf der Weide geht es gut!';box.appendChild(p)}
+    list.forEach(c=>{const D=sickInfo(c),r=document.createElement('div');r.className='row';r.appendChild(miniCow(c.lvl,64,52,false));
+      const t=document.createElement('div');t.className='txt';t.innerHTML='<b></b><span></span>';t.querySelector('b').textContent=LV[c.lvl-1].n+' – '+D.n.replace(/^(einen|eine) /,'');r.appendChild(t);
+      const b=document.createElement('button');b.className='ap';b.textContent='Heilen';b.onclick=()=>heal(c);r.appendChild(b);r._c=c;box.appendChild(r)});
+    const v=document.createElement('div');v.className='row vrow';v.appendChild(apoMini(AMAX,64,52));const vt=document.createElement('div');vt.className='txt';vt.innerHTML='<b>Herde impfen</b><span></span>';v.appendChild(vt);
+    const vb=document.createElement('button');vb.className='ap';vb.textContent='Impfen';vb.onclick=vaccinate;v.appendChild(vb);box.appendChild(v)}
+  [...box.children].forEach(r=>{if(r._c){const c=r._c,D=sickInfo(c),has=A.cows.some(o=>o.lvl===c.sick),known=c.sick<=A.best,need=known?APO[c.sick-1].n:'eine unbekannte Apotheken-Kuh (Stufe '+c.sick+')';
+      const sp=r.querySelector('span'),st='Braucht '+D.m+' · gib dafür eine '+need+' ab'+(has?'':' – noch nicht vorhanden')+' · +'+healReward(c.sick)+' Diamanten';if(sp.textContent!==st)sp.textContent=st;r.querySelector('button').disabled=!has}
+    else if(r.classList.contains('vrow')){const has=A.cows.some(o=>o.lvl===AMAX),il=immuneLeft(),st=(il>0?'Geschützt noch '+fmtT(il)+'. ':'')+'Gib eine Impf-Kuh ab: '+IMMUNE_MIN+' Minuten lang wird keine Kuh krank.'+(has?'':' (Noch keine Impf-Kuh)');
+      const sp=r.querySelector('span');if(sp.textContent!==st)sp.textContent=st;r.querySelector('button').disabled=!has}})}
+function renderApoUps(update){const box=document.getElementById('aupList'),A=S.apo;
+  if(!update){box.innerHTML='';APUP.forEach((u,i)=>{const r=document.createElement('div');r.className='row';r.innerHTML='<div class="txt"><b>'+u.n+'</b><span></span></div><button class="ap"></button>';
+    r.querySelector('button').onclick=()=>{const l=A.up[u.k];if(l>=u.max||A.pills<u.cost(l))return;A.pills-=u.cost(l);A.up[u.k]++;sfx('upgrade');save();renderApoUps(true)};box.appendChild(r)})}
+  APUP.forEach((u,i)=>{const r=box.children[i],l=A.up[u.k],mx=l>=u.max;const t=mx?'Maximal · '+u.d(l):u.d(l)+' → '+u.d(l+1),sp=r.querySelector('span');if(sp.textContent!==t)sp.textContent=t;
+    const b=r.querySelector('button');setH(b,mx?'MAX':IC.pill+fmt(u.cost(l)));b.disabled=mx||A.pills<u.cost(l)})}
+function renderApoLadder(){const box=document.getElementById('apoLadder');box.innerHTML='';
+  APO.forEach((d,i)=>{const L=i+1,known=L<=S.apo.best,r=document.createElement('div');r.className='row';const cv=apoMini(L,64,52);if(!known)cv.className='locked';r.appendChild(cv);
+    const D=DISEASE[L],t=document.createElement('div');t.className='txt';t.innerHTML='<b></b><span></span>';t.querySelector('b').textContent=L+'. '+(known?d.n:'???');
+    t.querySelector('span').innerHTML=(known?d.d+'<br>':'')+fmtL(apoRate(L))+' Pillen/Sek.'+(D?' · hilft bei '+D.n.replace(/^(einen|eine) /,''):L===AMAX?' · schützt die Herde':'');r.appendChild(t);box.appendChild(r)})}
+
+// ---- Kartenpin ----
+function apoPin(pin){if(!S.apo.unlocked)return;const OLc='#3d4a6b',n=sickCows().length;
+  const b=pin(17,40,'city on apo','<svg viewBox="0 0 40 40"><path d="M5 36V17l15-10 15 10v19z" fill="#dff5ec" stroke="'+OLc+'" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 18 20 6l17 12" fill="none" stroke="'+OLc+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="16.5" y="12" width="7" height="16" fill="#59c98a" stroke="'+OLc+'" stroke-width="1.4"/><rect x="12" y="16.5" width="16" height="7" fill="#59c98a" stroke="'+OLc+'" stroke-width="1.4"/><rect x="17.9" y="17.9" width="4.2" height="4.2" fill="#59c98a"/><path d="M16 36v-6h8v6" fill="#fff" stroke="'+OLc+'" stroke-width="1.4"/></svg>',
+    'Kuh-Apotheke',()=>{closeMap();openApo()});if(n){const i=document.createElement('i');i.className='apoDot';i.textContent=n;b.appendChild(i)}}
+
+// ---- Start ----
+(function initApo(){
+  try{const off=Math.min(7200,Math.max(0,(Date.now()-(S.last||Date.now()))/1000));if(S.apo.unlocked&&off>0)S.apo.pills+=apoOut()*off}catch(e){}
+  document.getElementById('aPillIc').innerHTML=IC.pill;
+  document.getElementById('aMapBtn').onclick=()=>{closeApo();openMap()};
+  document.getElementById('aLadBtn').onclick=()=>{renderApoLadder();open('aLad')};
+  document.getElementById('aUpBtn').onclick=()=>{renderApoUps();open('aUps')};
+  document.getElementById('aPatBtn').onclick=()=>{renderPatients();open('aPat')};
+  document.getElementById('apoGo').onclick=()=>{document.getElementById('apoModal').classList.remove('on');openApo()};
+  document.getElementById('aBuy').onclick=()=>{const A=S.apo,pr=apoPrice();if(A.cows.length>=apoSlots()||A.pills<pr)return;A.pills-=pr;A.buys=(A.buys||0)+1;const k=addApo(1);sfx('buy');aFloats.push({t:'Neu: Kamillen-Kälbchen',l:1,x:k.x,y:k.y-.14});save()};
+  addEventListener('resize',()=>{if(apoOpen)openApo()});
+  const cva=document.getElementById('apoCv'),pos=e=>{const r=cva.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top]};
+  cva.addEventListener('pointerdown',e=>{const [px,py]=pos(e),s=apoSize();let best=null,bd=1e9;S.apo.cows.forEach(k=>{const [x,y]=aPx(k),d=Math.hypot(px-x,py-y);if(d<s*APO[k.lvl-1].sc*.6&&d<bd){bd=d;best=k}});
+    if(best){aDrag={c:best,dx:best.x*AW-px,dy:best.y*AH-py,sx:px,sy:py,moved:false};cva.setPointerCapture(e.pointerId)}});
+  cva.addEventListener('pointermove',e=>{if(!aDrag)return;const [px,py]=pos(e);if(Math.hypot(px-aDrag.sx,py-aDrag.sy)>8)aDrag.moved=true;
+    if(aDrag.moved){const k=aDrag.c,m=apoSize()*APO[k.lvl-1].sc*.7;k.x=Math.min(1-m/AW,Math.max(m/AW,(px+aDrag.dx)/AW));k.y=Math.min(1-m*.7/AH,Math.max(AHZ+.12,(py+aDrag.dy)/AH));k.tx=k.x;k.ty=k.y}});
+  const end=()=>{if(!aDrag)return;const k=aDrag.c,moved=aDrag.moved;aDrag=null;k.wait=1.5;
+    if(!moved){k.pop=.6;aFloats.push({t:fmtL(apoRate(k.lvl))+' Pillen/Sek.',l:.9,x:k.x,y:k.y-.14});return}
+    const s=apoSize(),t=S.apo.cows.find(o=>o!==k&&o.lvl===k.lvl&&Math.hypot((o.x-k.x)*AW,(o.y-k.y)*AH)<s*.6);if(t&&k.lvl<AMAX)mergeApo(k,t)};
+  cva.addEventListener('pointerup',end);cva.addEventListener('pointercancel',end);
+  updMapBtn();
 })();
 </script>
 </body>
