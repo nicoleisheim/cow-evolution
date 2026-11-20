@@ -356,7 +356,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 <div class="overlay" id="cowSheet"><div class="panel" style="text-align:center"><canvas id="cowCv" width="360" height="260" style="position:static;display:block;width:180px;height:130px;margin:0 auto 4px"></canvas><h2 id="cowName" style="margin-bottom:4px"></h2><p id="cowInfo" style="color:var(--muted);font-weight:600;margin-bottom:16px"></p><button id="sellBtn" class="sellbtn"></button><button class="close" data-close="cowSheet" style="background:#f3f6f2;color:var(--ink)">Abbrechen</button></div></div>
 <div class="overlay" id="buy"><div class="panel"><h2 class="hbal">Kuh kaufen<span class="bal" data-bal="coins"></span></h2><div id="buyList"></div><p id="buyNote" style="font-size:13px;color:#6b5a3e;margin-top:4px"></p><button class="close" data-close="buy">Schließen</button></div></div>
 <div class="overlay" id="shop"><div class="panel"><h2 class="hbal">Upgrades<span class="balw"><span class="bal" data-bal="coins"></span><span class="bal" data-bal="dia"></span></span></h2><div id="shopList"></div><h2 class="sec">Diamanten kaufen</h2><div id="exList"></div><h2 class="sec">Diamanten-Shop</h2><div id="diaList"></div><button class="close" data-close="shop">Schließen</button></div></div>
-<div class="overlay" id="dex"><div class="panel"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px"><h2 style="margin:0">Sammlung <small style="font-size:11px;color:#9aa4b5;font-weight:700">v82</small></h2><button id="testBtn" style="border:0;border-radius:999px;background:#eef1f4;color:#1d2a22;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;margin-left:auto;white-space:nowrap">Test aus</button><button id="resetBtn" style="display:flex;align-items:center;gap:6px;border:0;border-radius:999px;background:#fde7f1;color:#d6347f;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;white-space:nowrap"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v5h5"/></svg><span>Neu starten</span></button></div><div id="dexList"></div><div class="savebox"><b>Töne</b><span>Kurze Klänge beim Verschmelzen, Antippen und Entdecken.</span><div class="savebtns"><button id="sndBtn">Töne: an</button></div></div><div class="savebox" id="cloudBox"><b>☁️ Cloud-Speicherung</b><span id="cloudStat">Dein Spielstand wird automatisch online gesichert und lässt sich auf jedem Gerät wieder laden.</span><div class="savebtns"><button id="cloudBtn">Einrichten</button><button id="cloudOut" style="display:none">Abmelden</button></div></div><div class="savebox"><b>Spielstand-Code</b><span>Sichere deinen Fortschritt als Code, z.B. in deinen Notizen. So kannst du ihn jederzeit wiederherstellen.</span><div class="savebtns"><button id="saveExp">Sichern</button><button id="saveImp">Laden</button></div></div><button class="close" data-close="dex">Schließen</button></div></div>
+<div class="overlay" id="dex"><div class="panel"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px"><h2 style="margin:0">Sammlung <small style="font-size:11px;color:#9aa4b5;font-weight:700">v83</small></h2><button id="testBtn" style="border:0;border-radius:999px;background:#eef1f4;color:#1d2a22;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;margin-left:auto;white-space:nowrap">Test aus</button><button id="resetBtn" style="display:flex;align-items:center;gap:6px;border:0;border-radius:999px;background:#fde7f1;color:#d6347f;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;white-space:nowrap"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v5h5"/></svg><span>Neu starten</span></button></div><div id="dexList"></div><div class="savebox"><b>Töne</b><span>Kurze Klänge beim Verschmelzen, Antippen und Entdecken.</span><div class="savebtns"><button id="sndBtn">Töne: an</button></div></div><div class="savebox" id="cloudBox"><b>☁️ Cloud-Speicherung</b><span id="cloudStat">Dein Spielstand wird automatisch online gesichert und lässt sich auf jedem Gerät wieder laden.</span><div class="savebtns"><button id="cloudBtn">Einrichten</button><button id="cloudOut" style="display:none">Abmelden</button></div></div><div class="savebox"><b>Spielstand-Code</b><span>Sichere deinen Fortschritt als Code, z.B. in deinen Notizen. So kannst du ihn jederzeit wiederherstellen.</span><div class="savebtns"><button id="saveExp">Sichern</button><button id="saveImp">Laden</button></div></div><button class="close" data-close="dex">Schließen</button></div></div>
 <div class="overlay center" id="discover"><div class="panel"><h2>Neue Kuh entdeckt!</h2><canvas id="discCv" width="400" height="320"></canvas><h2 id="discName"></h2><p id="discDesc"></p><button class="close" data-close="discover">Weiter</button></div></div>
 <div class="overlay center" id="saveSheet"><div class="panel"><h2 id="saveTitle">Spielstand sichern</h2><p id="saveInfo" style="color:#6b5a3e;margin:0 0 8px;font-weight:600;font-size:14px"></p><textarea id="saveCode" spellcheck="false" autocomplete="off"></textarea><div class="savebtns"><button id="saveAct">Kopieren</button><button id="saveShare">Teilen</button></div><button class="close" data-close="saveSheet">Schließen</button></div></div>
 <div class="overlay center" id="cloudSheet"><div class="panel"><h2 id="cloudTitle">Cloud-Speicherung</h2><p id="cloudInfo" style="color:#6b5a3e;margin:0 0 10px;font-weight:600;font-size:14px">Wähle einen Spielernamen und eine Geheimzahl. Merke sie dir gut – damit holst du deinen Spielstand auf jedes Gerät.</p><div id="cloudForm"><input id="cloudName" placeholder="Spielername" autocomplete="off" autocapitalize="off"><input id="cloudPin" placeholder="Geheimzahl (mind. 4 Ziffern)" inputmode="numeric" autocomplete="off"></div><div class="savebtns" id="cloudBtns"><button id="cloudGo">Verbinden</button></div><button class="close" data-close="cloudSheet">Schließen</button></div></div>
@@ -386,7 +386,7 @@ function drawKawaii(c,x,y,s,t,flip,lifted,glow,walk,d){
   d=d||{};
   const OL=d.ol||'#3d4a6b',LW=Math.max(1.6,s*.028),PK=d.spot||'#ff8fbf',WH=d.body||'#fffaf6',HN=d.horn||'#ffd84d',MZ=d.mz||PK,EAR=d.ear||PK,HF=d.hoof||PK,LG=d.leg||WH,GL=d.glaze||'#5a321b',EC=d.eyec||OL;
   const SPR=['#ff5fa2','#ffe14d','#5fd0ff','#7dff4a','#ffffff'];
-  c.save();c.translate(x,y);
+  c.save();c.translate(x,y);if(d.sick){c.translate(0,s*.3);c.rotate(Math.sin(t*1.6)*.03);c.translate(0,-s*.3)}
   if(glow){c.strokeStyle='rgba(255,255,255,.95)';c.lineWidth=3;c.setLineDash([6,5]);c.beginPath();c.ellipse(0,s*.05,s*.62,s*.55,0,0,7);c.stroke();c.setLineDash([])}
   if(lifted)c.translate(0,-s*.14);
   if(d.float)c.translate(0,-s*.14+Math.sin(t*2)*s*.03);
@@ -446,7 +446,8 @@ function drawKawaii(c,x,y,s,t,flip,lifted,glow,walk,d){
   const hp=()=>{c.beginPath();if(d.robot)c.roundRect(-s*.24,hy-s*.19,s*.48,s*.38,s*.1);else c.ellipse(0,hy,s*.24,s*.19,0,0,7)};
   if(d.glowc){c.save();c.shadowColor=d.glowc;c.shadowBlur=s*.25}
   c.fillStyle=WH;hp();c.fill();if(d.glowc)c.restore();
-  c.save();hp();c.clip();c.fillStyle=PK;
+  c.save();hp();c.clip();
+  c.fillStyle=PK;
   if(d.choco)glaze(hy-s*.2,hy-s*.12,-s*.25,s*.25,3,.45);
   else if(d.spots!==0&&!d.headPlain)blob(-s*.13,hy-s*.1,s*.065);
   if(d.foreStar){c.save();c.shadowColor='#ffd23f';c.shadowBlur=s*.12*(.6+.4*Math.sin(t*3));star4(s*.04,hy-s*.12,s*.055,'#ffd23f');c.restore()}
@@ -470,12 +471,17 @@ function drawKawaii(c,x,y,s,t,flip,lifted,glow,walk,d){
     [['#ff5fa2',-.065],['#5fd0ff',0],['#7dff4a',.065]].forEach(([col,u])=>{c.fillStyle=col;c.beginPath();c.arc(u*s,hy-s*.195,s*.018,0,7);c.fill()})}
   // Augen
   const ey=hy-s*.02;
-  if(d.eyes==='shades'){c.fillStyle='#111';c.strokeStyle='#111';c.lineWidth=s*.02;c.beginPath();c.moveTo(-s*.06,ey);c.lineTo(s*.06,ey);c.stroke();[-1,1].forEach(k=>{c.beginPath();c.ellipse(k*s*.1,ey,s*.07,s*.05,0,0,7);c.fill()});c.fillStyle='rgba(255,111,176,.9)';[-1,1].forEach(k=>{c.beginPath();c.ellipse(k*s*.1-s*.025,ey-s*.018,s*.02,s*.01,-.4,0,7);c.fill()});c.lineWidth=LW;c.strokeStyle=OL}
+  if(d.sick&&d.eyes!=='shades'&&d.eyes!=='visor'){const E=d.eyes==='three'?[[-.1,0],[.1,0],[0,-.1]]:[[-.09,0],[.09,0]];c.strokeStyle=EC;c.lineWidth=LW*1.1;
+    E.forEach(([u,v])=>{const q=u<0?-1:u>0?1:0;c.save();c.translate(u*s,ey+v*s);c.rotate(q*.3);c.beginPath();c.arc(0,-s*.028,s*.036,Math.PI*.2,Math.PI*.8);c.stroke();c.restore()});c.strokeStyle=OL;c.lineWidth=LW}
+  else if(d.eyes==='shades'){c.fillStyle='#111';c.strokeStyle='#111';c.lineWidth=s*.02;c.beginPath();c.moveTo(-s*.06,ey);c.lineTo(s*.06,ey);c.stroke();[-1,1].forEach(k=>{c.beginPath();c.ellipse(k*s*.1,ey,s*.07,s*.05,0,0,7);c.fill()});c.fillStyle='rgba(255,111,176,.9)';[-1,1].forEach(k=>{c.beginPath();c.ellipse(k*s*.1-s*.025,ey-s*.018,s*.02,s*.01,-.4,0,7);c.fill()});c.lineWidth=LW;c.strokeStyle=OL}
   else if(d.eyes==='visor'){c.fillStyle='#16222c';c.beginPath();c.roundRect(-s*.17,ey-s*.05,s*.34,s*.08,s*.04);c.fill();c.fillStyle='#18ffff';c.beginPath();c.roundRect(-s*.13+((Math.sin(t*2)+1)/2)*s*.18,ey-s*.035,s*.08,s*.05,s*.025);c.fill()}
   else if(d.eyes==='open'||d.eyes==='three'){const E=d.eyes==='three'?[[-.1,0],[.1,0],[0,-.1]]:[[-.09,0],[.09,0]];const bl=Math.sin(t*.9+x)>.985;
     E.forEach(([u,v])=>{const ex=u*s,ey2=ey+v*s;if(bl){c.beginPath();c.moveTo(ex-s*.03,ey2);c.lineTo(ex+s*.03,ey2);c.stroke();return}c.fillStyle='#fff';c.beginPath();c.ellipse(ex,ey2,s*.042,s*.048,0,0,7);c.fill();c.lineWidth=LW*.8;c.stroke();c.lineWidth=LW;c.fillStyle=OL;c.beginPath();c.arc(ex+s*.008,ey2+s*.006,s*.024,0,7);c.fill();c.fillStyle='#fff';c.beginPath();c.arc(ex+s*.016,ey2-s*.006,s*.009,0,7);c.fill()})}
   else{c.strokeStyle=EC;c.lineWidth=LW*1.1;[[-1],[1]].forEach(([k])=>{c.beginPath();c.arc(k*s*.09,ey,s*.035,Math.PI*1.1,Math.PI*1.9);c.stroke()});c.strokeStyle=OL;c.lineWidth=LW}
-  c.fillStyle='rgba(255,120,160,.55)';[[-1],[1]].forEach(([k])=>{c.beginPath();c.ellipse(k*s*.17,hy+s*.05,s*.04,s*.025,0,0,7);c.fill()});
+  c.fillStyle=d.sick?'rgba(150,205,120,.6)':'rgba(255,120,160,.55)';(d.sick?[[-1]]:[[-1],[1]]).forEach(([k])=>{c.beginPath();c.ellipse(k*s*.17,hy+s*.05,s*.04,s*.025,0,0,7);c.fill()});
+  if(d.sick){c.save();c.translate(s*.06,hy+s*.1);c.rotate(-.12+Math.sin(t*1.4)*.03);const L=s*.27,w=s*.06;c.lineWidth=LW;c.strokeStyle=OL;
+    c.fillStyle='#fff';c.beginPath();c.roundRect(0,-w/2,L,w,w/2);c.fill();c.stroke();
+    c.fillStyle='#ff4d6d';c.beginPath();c.roundRect(0,-w*.2,L*(.62+.06*Math.sin(t*1.1)),w*.4,w*.2);c.fill();c.restore()}
   // Schnauze
   c.lineWidth=LW;c.fillStyle=MZ;c.beginPath();if(d.robot)c.roundRect(-s*.12,hy+s*.02,s*.24,s*.12,s*.04);else c.ellipse(0,hy+s*.08,s*.13,s*.08,0,0,7);c.fill();c.stroke();
   if(d.robot){c.strokeStyle='#4a5866';c.lineWidth=LW*.6;c.beginPath();for(let i=-2;i<=2;i++){c.moveTo(i*s*.04,hy+s*.04);c.lineTo(i*s*.04,hy+s*.12)}c.stroke();c.strokeStyle=OL;c.lineWidth=LW}
@@ -1283,10 +1289,9 @@ function draw(dt){
   if(drag){const dc=drag.c,i=order.indexOf(dc);if(i>=0){order.splice(i,1);order.push(dc)}else drag=null}
   order.forEach(c=>{const [x,y]=toPx(c);const sc=1+(c.pop?Math.sin(c.pop*Math.PI)*.35:0)+(c.tap?Math.sin(c.tap*Math.PI)*.06:0);
     const glow=drag&&drag.moved&&drag.c!==c&&drag.c.lvl===c.lvl&&c.lvl<mergeCap()&&!c.sick&&!drag.c.sick;
-    drawCow(cx,x+(c.sick&&!(drag&&drag.c===c)?Math.sin(T*30)*1.2:0),y,s*sc,c.lvl,T+c.id,c.flip,drag&&drag.moved&&drag.c===c,glow,c.mv&&!(drag&&drag.c===c));
+    drawCow(cx,x,y,s*sc,c.sick?sickD(c.lvl):c.lvl,T+c.id,c.flip,drag&&drag.moved&&drag.c===c,glow,c.mv&&!(drag&&drag.c===c));
     if(drag&&drag.c===c&&overSell(c)){cx.globalAlpha=.35;cx.fillStyle='#4dd9ff';cx.beginPath();cx.arc(x,y,s*.55,0,7);cx.fill();cx.globalAlpha=1;const n=diaFor(c.lvl),t='+'+n;cx.font='bold 20px Nunito, system-ui';cx.textAlign='center';cx.lineWidth=4;cx.strokeStyle='rgba(0,0,0,.45)';const tw=cx.measureText(t).width;cx.strokeText(t,x-10,y-s*.75);cx.fillStyle='#fff';cx.fillText(t,x-10,y-s*.75);drawDia(cx,x+tw/2-2,y-s*.77,11)}});
   drawMagLine(true);
-  S.cows.forEach(c=>{if(c.sick&&!(drag&&drag.moved&&drag.c===c)){const [x,y]=toPx(c);drawSickOverlay(cx,x,y,s,c)}});
   try{drawIntro()}catch(e){}
   drawFuelAnims();
   drawNight();
@@ -1954,18 +1959,7 @@ function drawApoEx(c,ex,s,hy,t,LW,OL,b){ex.forEach(e=>{c.save();c.lineWidth=LW;c
   c.restore()})}
 
 // ---- Kranke Kuh auf der Weide ----
-function drawSickOverlay(g,x,y,s,c){
-  const d=LV[c.lvl-1],k=s*d.sc,fl=d.float?k*.14:0,hy=y-k*.26-fl;
-  // kleine Bazillen kreisen um den Kopf
-  for(let i=0;i<3;i++){const a=T*1.6+i*2.1,bx=x+Math.cos(a)*k*.36,by=hy-k*.02+Math.sin(a)*k*.14,r=Math.max(4.5,k*.05);
-    g.save();g.fillStyle='#9be36a';g.strokeStyle='#3d4a6b';g.lineWidth=1.5;g.beginPath();for(let j=0;j<12;j++){const aa=j/12*Math.PI*2,rr=r*(j%2?1:1.25);g.lineTo(bx+Math.cos(aa+T)*rr,by+Math.sin(aa+T)*rr)}g.closePath();g.fill();g.stroke();
-    g.fillStyle='#3d4a6b';g.beginPath();g.arc(bx-r*.35,by-r*.1,r*.18,0,7);g.arc(bx+r*.35,by-r*.1,r*.18,0,7);g.fill();g.restore()}
-  // Sprechblase mit der benötigten Medizin
-  const bx=x+k*.42,by=hy-k*.42+Math.sin(T*2.5)*2,R=Math.max(17,k*.22);
-  g.save();g.fillStyle='#fff';g.shadowColor='rgba(0,0,0,.18)';g.shadowBlur=8;g.beginPath();g.arc(bx,by,R,0,7);g.fill();g.shadowBlur=0;g.strokeStyle='#ff5fa2';g.lineWidth=2.5;g.stroke();
-  g.fillStyle='#fff';g.beginPath();g.arc(bx-R*.75,by+R*.95,R*.2,0,7);g.fill();g.stroke();g.beginPath();g.arc(bx-R*1.1,by+R*1.35,R*.11,0,7);g.fill();g.stroke();
-  const A=APO[c.sick-1];if(A&&A.acc){const z=R*3.3;g.translate(bx,by);drawApoAcc(g,A.bub||A.acc,z,z*.3,T,Math.max(1.4,z*.022),'#3d4a6b')}g.restore();
-}
+const SICKD={};function sickD(L){return SICKD[L]||(SICKD[L]=Object.assign({},LV[L-1],{sick:1}))}
 function sickInfo(c){const D=DISEASE[c.sick]||DISEASE[2];return D}
 function makeSick(c,L){c.sick=L;c.wait=1;c.mv=0;c.tx=c.x;c.ty=c.y;if(magPull&&(magPull.a===c||magPull.b===c))magPull=null}
 function pickSickCow(){const ok=S.cows.filter(c=>!c.sick&&c.lvl<MAXL&&!(drag&&drag.c===c)&&!(magPull&&(magPull.a===c||magPull.b===c))&&c!==sheetOpen());if(!ok.length)return null;
@@ -1977,7 +1971,7 @@ function firstSick(){const c=pickSickCow();if(!c)return;const A=S.apo;makeSick(c
   document.getElementById('apoMTxt').textContent='Sie hat '+D.n+' und gibt keine Münzen mehr. Zum Glück hat auf der Weltkarte die Kuh-Apotheke geöffnet – dort bekommst du '+D.m+'.';
   const g=document.getElementById('apoMCv').getContext('2d');let t0=performance.now();open('apoModal');
   (function an(){const m=document.getElementById('apoModal');if(!m.classList.contains('on'))return;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,400,320);g.setTransform(2,0,0,2,0,0);
-    drawCow(g,95+Math.sin(T*30)*1.2,95,105,c.lvl,T,false);drawSickOverlay(g,95+Math.sin(T*30)*1.2,95,105,c);requestAnimationFrame(an)})()}
+    drawCow(g,95,95,105,sickD(c.lvl),T,false);requestAnimationFrame(an)})()}
 function laterSick(){const c=pickSickCow();if(!c)return;const A=S.apo,hi=Math.min(7,Math.max(2,(A.best||1)+1)),L=2+Math.floor(Math.random()*(hi-1));makeSick(c,L);
   const D=sickInfo(c);showToast('Die '+LV[c.lvl-1].n+' hat '+D.n+'! In der Kuh-Apotheke gibt es '+D.m+'.');sfx('morph');save()}
 
