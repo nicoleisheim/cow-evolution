@@ -357,7 +357,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 <div class="overlay" id="cowSheet"><div class="panel" style="text-align:center"><canvas id="cowCv" width="360" height="260" style="position:static;display:block;width:180px;height:130px;margin:0 auto 4px"></canvas><h2 id="cowName" style="margin-bottom:4px"></h2><p id="cowInfo" style="color:var(--muted);font-weight:600;margin-bottom:16px"></p><button id="sellBtn" class="sellbtn"></button><button class="close" data-close="cowSheet" style="background:#f3f6f2;color:var(--ink)">Abbrechen</button></div></div>
 <div class="overlay" id="buy"><div class="panel"><h2 class="hbal">Kuh kaufen<span class="bal" data-bal="coins"></span></h2><div id="buyList"></div><p id="buyNote" style="font-size:13px;color:#6b5a3e;margin-top:4px"></p><button class="close" data-close="buy">Schließen</button></div></div>
 <div class="overlay" id="shop"><div class="panel"><h2 class="hbal">Upgrades<span class="balw"><span class="bal" data-bal="coins"></span><span class="bal" data-bal="dia"></span></span></h2><div id="shopList"></div><h2 class="sec">Diamanten kaufen</h2><div id="exList"></div><h2 class="sec">Diamanten-Shop</h2><div id="diaList"></div><button class="close" data-close="shop">Schließen</button></div></div>
-<div class="overlay" id="dex"><div class="panel"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px"><h2 style="margin:0">Sammlung <small style="font-size:11px;color:#9aa4b5;font-weight:700">v104</small></h2><button id="testBtn" style="border:0;border-radius:999px;background:#eef1f4;color:#1d2a22;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;margin-left:auto;white-space:nowrap">Test aus</button><button id="resetBtn" style="display:flex;align-items:center;gap:6px;border:0;border-radius:999px;background:#fde7f1;color:#d6347f;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;white-space:nowrap"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v5h5"/></svg><span>Neu starten</span></button></div><div id="dexList"></div><div class="savebox"><b>Töne</b><span>Kurze Klänge beim Verschmelzen, Antippen und Entdecken.</span><div class="savebtns"><button id="sndBtn">Töne: an</button></div></div><div class="savebox" id="cloudBox"><b>☁️ Cloud-Speicherung</b><span id="cloudStat">Dein Spielstand wird automatisch online gesichert und lässt sich auf jedem Gerät wieder laden.</span><div class="savebtns"><button id="cloudBtn">Einrichten</button><button id="cloudOut" style="display:none">Abmelden</button></div></div><div class="savebox"><b>Spielstand-Code</b><span>Sichere deinen Fortschritt als Code, z.B. in deinen Notizen. So kannst du ihn jederzeit wiederherstellen.</span><div class="savebtns"><button id="saveExp">Sichern</button><button id="saveImp">Laden</button></div></div><button class="close" data-close="dex">Schließen</button></div></div>
+<div class="overlay" id="dex"><div class="panel"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px"><h2 style="margin:0">Sammlung <small style="font-size:11px;color:#9aa4b5;font-weight:700">v107</small></h2><button id="testBtn" style="border:0;border-radius:999px;background:#eef1f4;color:#1d2a22;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;margin-left:auto;white-space:nowrap">Test aus</button><button id="resetBtn" style="display:flex;align-items:center;gap:6px;border:0;border-radius:999px;background:#fde7f1;color:#d6347f;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;white-space:nowrap"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v5h5"/></svg><span>Neu starten</span></button></div><div id="dexList"></div><div class="savebox"><b>Töne</b><span>Kurze Klänge beim Verschmelzen, Antippen und Entdecken.</span><div class="savebtns"><button id="sndBtn">Töne: an</button></div></div><div class="savebox" id="cloudBox"><b>☁️ Cloud-Speicherung</b><span id="cloudStat">Dein Spielstand wird automatisch online gesichert und lässt sich auf jedem Gerät wieder laden.</span><div class="savebtns"><button id="cloudBtn">Einrichten</button><button id="cloudOut" style="display:none">Abmelden</button></div></div><div class="savebox"><b>Spielstand-Code</b><span>Sichere deinen Fortschritt als Code, z.B. in deinen Notizen. So kannst du ihn jederzeit wiederherstellen.</span><div class="savebtns"><button id="saveExp">Sichern</button><button id="saveImp">Laden</button></div></div><button class="close" data-close="dex">Schließen</button></div></div>
 <div class="overlay center" id="discover"><div class="panel"><h2>Neue Kuh entdeckt!</h2><canvas id="discCv" width="400" height="320"></canvas><h2 id="discName"></h2><p id="discDesc"></p><button class="close" data-close="discover">Weiter</button></div></div>
 <div class="overlay center" id="saveSheet"><div class="panel"><h2 id="saveTitle">Spielstand sichern</h2><p id="saveInfo" style="color:#6b5a3e;margin:0 0 8px;font-weight:600;font-size:14px"></p><textarea id="saveCode" spellcheck="false" autocomplete="off"></textarea><div class="savebtns"><button id="saveAct">Kopieren</button><button id="saveShare">Teilen</button></div><button class="close" data-close="saveSheet">Schließen</button></div></div>
 <div class="overlay center" id="cloudSheet"><div class="panel"><h2 id="cloudTitle">Cloud-Speicherung</h2><p id="cloudInfo" style="color:#6b5a3e;margin:0 0 10px;font-weight:600;font-size:14px">Wähle einen Spielernamen und eine Geheimzahl. Merke sie dir gut – damit holst du deinen Spielstand auf jedes Gerät.</p><div id="cloudForm"><input id="cloudName" placeholder="Spielername" autocomplete="off" autocapitalize="off"><input id="cloudPin" placeholder="Geheimzahl (mind. 4 Ziffern)" inputmode="numeric" autocomplete="off"></div><div class="savebtns" id="cloudBtns"><button id="cloudGo">Verbinden</button></div><button class="close" data-close="cloudSheet">Schließen</button></div></div>
@@ -1997,13 +1997,13 @@ function pickSickCow(){const ok=S.cows.filter(c=>!c.sick&&c.lvl<MAXL&&!(drag&&dr
 function anyViewOpen(){return plantOpen||legoOpen||apoOpen||document.getElementById('mapView').classList.contains('on')||!!document.querySelector('.overlay.on')}
 function firstSick(){const c=pickSickCow();if(!c)return;const A=S.apo;makeSick(c,2);A.unlocked=true;A.sickT=420+Math.random()*300;
   if(!A.cows.length){addApo(1,.35,.66);addApo(1,.65,.7)}save();updMapBtn();sfx('morph');
-  const D=sickInfo(c);document.getElementById('apoMName').textContent='Die '+LV[c.lvl-1].n+' ist krank!';
+  const D=sickInfo(c);document.getElementById('apoMName').textContent=(c.lvl===1?'Das ':'Die ')+LV[c.lvl-1].n+' ist krank!';
   document.getElementById('apoMTxt').textContent='Sie hat '+D.n+' und gibt keine Münzen mehr. Zum Glück hat auf der Weltkarte die Kuh-Apotheke geöffnet – dort bekommst du '+D.m+'.';
   const g=document.getElementById('apoMCv').getContext('2d');let t0=performance.now();open('apoModal');
   (function an(){const m=document.getElementById('apoModal');if(!m.classList.contains('on'))return;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,400,320);g.setTransform(2,0,0,2,0,0);
     drawCow(g,95,95,105,sickD(c.lvl),T,false);requestAnimationFrame(an)})()}
 function laterSick(){const c=pickSickCow();if(!c)return;const A=S.apo,hi=Math.min(7,Math.max(2,(A.best||1)+1)),L=2+Math.floor(Math.random()*(hi-1));makeSick(c,L);
-  const D=sickInfo(c);showToast('Die '+LV[c.lvl-1].n+' hat '+D.n+'! In der Kuh-Apotheke gibt es '+D.m+'.');sfx('morph');save()}
+  const D=sickInfo(c);showToast((c.lvl===1?'Das ':'Die ')+LV[c.lvl-1].n+' hat '+D.n+'! In der Kuh-Apotheke gibt es '+D.m+'.');sfx('morph');save()}
 
 // ---- Tick: Pillen, Bewegung, Erkrankungen ----
 let apoOpen=false,apoCvEl=null,apoCx=null,AW=0,AH=0,abg=null,abgW=0,abgH=0,aDrag=null,aFloats=[];
@@ -2020,38 +2020,47 @@ const AHZ=.4;
 function apoSize(){return Math.max(50,Math.min(100,Math.min(AW,AH)*.2))}
 function aPx(c){return [c.x*AW,c.y*AH]}
 function buildApoBg(){abgW=AW;abgH=AH;const dp=window.devicePixelRatio||1;abg=abg||document.createElement('canvas');abg.width=AW*dp;abg.height=AH*dp;
-  const g=abg.getContext('2d');g.setTransform(dp,0,0,dp,0,0);g.clearRect(0,0,AW,AH);const W2=AW,H2=AH,hz=H2*AHZ,r=srand(31),OL='#3d4a6b';
-  // Wand
-  g.fillStyle='#dff5ec';g.fillRect(0,0,W2,hz);g.fillStyle='rgba(255,255,255,.35)';for(let x=0;x<W2;x+=28)g.fillRect(x,0,12,hz);
-  // Regal mit Standgefäßen
-  const top=Math.max(86,H2*.13),sh=(hz-top-H2*.06)/3,cols=['#ffffff','#ffffff','#ffd6e8','#bfe9ff','#fff3a8','#d9c8ff','#c8f2d6'];
-  g.fillStyle='#f1d6b8';g.strokeStyle=OL;g.lineWidth=2.5;g.beginPath();g.roundRect(8,top-8,W2-16,hz-top+4,10);g.fill();g.stroke();
-  for(let i=0;i<3;i++){const sy=top+sh*(i+1)-4;let x=18;
-    while(x<W2-30){const kind=r(),w=kind<.45?sh*.5:kind<.75?sh*.34:sh*.42,h=kind<.45?sh*.62:kind<.75?sh*.74:sh*.5;if(x+w>W2-18)break;const col=cols[Math.floor(r()*cols.length)];
-      g.lineWidth=2;g.strokeStyle=OL;
-      if(kind<.45){g.fillStyle=col;g.beginPath();g.roundRect(x,sy-h,w,h,w*.25);g.fill();g.stroke();g.fillStyle='#6a9cc9';g.beginPath();g.roundRect(x-2,sy-h-w*.18,w+4,w*.22,w*.08);g.fill();g.stroke();
-        g.fillStyle='#fff';g.strokeStyle='#6a9cc9';g.lineWidth=1.5;g.beginPath();g.roundRect(x+w*.15,sy-h*.62,w*.7,h*.32,3);g.fill();g.stroke();g.fillStyle='#6a9cc9';g.fillRect(x+w*.25,sy-h*.5,w*.5,1.6);g.fillRect(x+w*.3,sy-h*.42,w*.4,1.6)}
-      else if(kind<.75){const bc=r()<.5?'#c47a2c':'#7fb6e8';g.fillStyle=bc;g.beginPath();g.roundRect(x,sy-h*.75,w,h*.75,w*.3);g.fill();g.stroke();g.fillRect(x+w*.3,sy-h,w*.4,h*.27);g.strokeRect(x+w*.3,sy-h,w*.4,h*.27);
-        g.fillStyle='#fff';g.fillRect(x+w*.15,sy-h*.5,w*.7,h*.22)}
-      else{g.fillStyle=col==='#ffffff'?'#ffd6e8':col;g.beginPath();g.roundRect(x,sy-h,w,h,4);g.fill();g.stroke();g.fillStyle='#59c98a';g.fillRect(x+w*.42,sy-h*.75,w*.16,h*.5);g.fillRect(x+w*.25,sy-h*.58,w*.5,h*.16)}
-      x+=w+6+r()*6}
-    g.fillStyle='#e0b48a';g.strokeStyle=OL;g.lineWidth=2.5;g.beginPath();g.roundRect(8,sy,W2-16,8,4);g.fill();g.stroke()}
-  // Tresen (HV-Tisch)
-  const ct=hz-H2*.045;g.fillStyle='#ffffff';g.strokeStyle=OL;g.lineWidth=2.5;g.beginPath();g.roundRect(-6,ct,W2+12,H2*.09,10);g.fill();g.stroke();
-  g.fillStyle='#9fe0b5';g.fillRect(-4,ct+H2*.07,W2+8,H2*.012);g.fillStyle='#f1d6b8';g.beginPath();g.roundRect(-6,ct-8,W2+12,12,6);g.fill();g.stroke();
-  // Mörser und Waage auf dem Tresen
-  const mx=W2*.16,my=ct-6;g.fillStyle='#fff';g.beginPath();g.moveTo(mx-18,my-16);g.quadraticCurveTo(mx,my+6,mx+18,my-16);g.closePath();g.fill();g.stroke();g.fillStyle='#e9eef5';g.beginPath();g.ellipse(mx,my-16,18,4,0,0,7);g.fill();g.stroke();
-  g.save();g.translate(mx+6,my-18);g.rotate(.5);g.fillStyle='#fff';g.beginPath();g.roundRect(-3,-22,6,24,3);g.fill();g.stroke();g.restore();
-  const wx=W2*.84,wy=ct-6;g.fillStyle='#e9eef5';g.beginPath();g.roundRect(wx-22,wy-10,44,10,3);g.fill();g.stroke();g.fillStyle='#bfe9ff';g.beginPath();g.roundRect(wx-12,wy-8,24,6,2);g.fill();g.fillStyle='#fff';g.beginPath();g.ellipse(wx,wy-14,20,4,0,0,7);g.fill();g.stroke();
-  // Boden: Fliesen
-  const fy=hz+H2*.045;g.fillStyle='#f4fbf8';g.fillRect(0,fy,W2,H2-fy);const ts=Math.max(26,W2/12);
-  for(let y=fy,ri=0;y<H2;y+=ts,ri++)for(let x=0,ci=0;x<W2;x+=ts,ci++){if((ci+ri)%2===0){g.fillStyle='#e3f5ec';g.fillRect(x,y,ts,ts)}}
+  const g=abg.getContext('2d');g.setTransform(dp,0,0,dp,0,0);g.clearRect(0,0,AW,AH);const W2=AW,H2=AH,hz=H2*AHZ,OL='#3d4a6b',top=Math.max(86,H2*.13),ct=hz-H2*.045;
+  g.lineJoin='round';g.lineCap='round';
+  const rr=(x,y,w,h,r,f,lw)=>{g.beginPath();g.roundRect(x,y,w,h,r);g.fillStyle=f;g.fill();g.strokeStyle=OL;g.lineWidth=lw||2;g.stroke()};
+  // Wand: Salbeigrün mit feinen Holzpaneelen
+  g.fillStyle='#e9f3e1';g.fillRect(0,0,W2,hz);g.strokeStyle='rgba(255,255,255,.55)';g.lineWidth=1.5;for(let x=17;x<W2;x+=34){g.beginPath();g.moveTo(x,0);g.lineTo(x,hz);g.stroke()}
+  // Geometrie der Regale
+  const beamY=top-12,y2=ct-20,y1=top+(y2-top)*.5,h1=Math.min(40,y1-beamY-34),h2=Math.min(40,y2-y1-24),n=Math.max(5,Math.floor((W2-24)/46)),sw=(W2-24)/n,FILL=['#ffe07a','#b9e08f','#d6b8f0','#ffc09a','#a8dcf0'];
+  const jar=(cx,y,h,k)=>{const w=Math.min(28,sw*.62);g.save();g.beginPath();g.roundRect(cx-w/2,y-h,w,h,6);g.fillStyle='#eef9fd';g.fill();g.clip();g.fillStyle=FILL[k%FILL.length];g.fillRect(cx-w/2,y-h*.6,w,h*.6);g.restore();
+    g.beginPath();g.roundRect(cx-w/2,y-h,w,h,6);g.strokeStyle=OL;g.lineWidth=2;g.stroke();g.strokeStyle='rgba(255,255,255,.85)';g.lineWidth=2;g.beginPath();g.moveTo(cx-w/2+4,y-h+7);g.lineTo(cx-w/2+4,y-h*.45);g.stroke();
+    rr(cx-w*.3,y-h*.86,w*.6,h*.2,2,'#fffaf0',1.3);rr(cx-w/2-1,y-h-6,w+2,7,3,'#d9a676',2)};
+  const pot=(cx,y,h,k)=>{const w=Math.min(30,sw*.66),ph=h*.5;g.fillStyle='#ec9a74';g.beginPath();g.moveTo(cx-w/2+2,y-ph);g.lineTo(cx+w/2-2,y-ph);g.lineTo(cx+w/2-5,y);g.lineTo(cx-w/2+5,y);g.closePath();g.fill();g.strokeStyle=OL;g.lineWidth=2;g.stroke();rr(cx-w/2,y-ph-5,w,6,2,'#f3ad8a',2);
+    const by=y-ph-5;if(k%2===0){[[-8,-h*.42],[0,-h*.52],[8,-h*.38]].forEach(([dx,dy])=>{g.strokeStyle='#5fae6e';g.lineWidth=1.8;g.beginPath();g.moveTo(cx+dx*.25,by);g.quadraticCurveTo(cx+dx*.4,by+dy*.5,cx+dx,by+dy);g.stroke()});
+        [[-8,-h*.42],[0,-h*.52],[8,-h*.38]].forEach(([dx,dy])=>{const fx=cx+dx,fy=by+dy;g.fillStyle='#fff';for(let i=0;i<7;i++){const a=i/7*Math.PI*2;g.beginPath();g.ellipse(fx+Math.cos(a)*3.2,fy+Math.sin(a)*3.2,2.4,1.3,a,0,7);g.fill()}g.fillStyle='#ffd23f';g.beginPath();g.arc(fx,fy,1.9,0,7);g.fill()})}
+      else{[[-1,.8],[1,.8],[0,1]].forEach(([a,l])=>{g.save();g.translate(cx,by+1);g.rotate(a*.62);const L=h*.55*l,bw=Math.max(4,L*.32);g.fillStyle='#8fd6a0';g.beginPath();g.moveTo(0,0);g.quadraticCurveTo(-bw,-L*.55,0,-L);g.quadraticCurveTo(bw,-L*.55,0,0);g.fill();g.strokeStyle=OL;g.lineWidth=1.5;g.stroke();g.strokeStyle='#5fae6e';g.lineWidth=1;g.beginPath();g.moveTo(0,-2);g.lineTo(0,-L+3);g.stroke();g.restore()})}};
+  const plank=y=>{g.fillStyle='rgba(61,74,107,.08)';g.fillRect(12,y+8,W2-24,4);rr(10,y,W2-20,8,4,'#d9a676',2.2)};
+  // Balken mit Kräuterbündeln (hängen genau zwischen den Gefäßen)
+  rr(-6,beamY,W2+12,10,4,'#d9a676',2.4);
+  const bx=[1,Math.floor(n/2),n-1].filter((v,i,a)=>a.indexOf(v)===i);bx.forEach((k,i)=>{const x=12+sw*k,yb=beamY+18,len=Math.max(14,(y1-14-yb)*.8);g.strokeStyle=OL;g.lineWidth=1.6;g.beginPath();g.moveTo(x,beamY+10);g.lineTo(x,yb);g.stroke();
+    const bw=Math.min(8,sw*.15),y0=yb+2,y9=yb+2+len;g.fillStyle=i===1?'#c9a6e8':'#a8d98f';g.beginPath();g.moveTo(x-2.5,y0);g.bezierCurveTo(x-bw*.6,y0+len*.35,x-bw,y9-len*.25,x-bw*.75,y9-2);g.quadraticCurveTo(x,y9+3,x+bw*.75,y9-2);g.bezierCurveTo(x+bw,y9-len*.25,x+bw*.6,y0+len*.35,x+2.5,y0);g.closePath();g.fill();g.strokeStyle=OL;g.lineWidth=1.6;g.stroke();
+    g.strokeStyle=i===1?'#9b78c4':'#6fb86a';g.lineWidth=1.1;g.beginPath();[-.45,0,.45].forEach(u=>{g.moveTo(x+u*1.5,y0+5);g.lineTo(x+u*bw*.9,y9-4)});g.stroke();rr(x-5,yb-1,10,5,2.5,'#f0a8c0',1.5)});
+  // Obere und untere Reihe
+  for(let i=0;i<n;i++){const cx=12+sw*(i+.5);if(i%2===0)jar(cx,y1,h1,i);else pot(cx,y1,h1,(i>>1));if(i%2===1)jar(cx,y2,h2,i+2);else pot(cx,y2,h2,(i>>1)+1)}
+  plank(y1);plank(y2);
+  // Tresen aus Holz
+  g.fillStyle='#f7dfc6';g.beginPath();g.roundRect(-6,ct,W2+12,H2*.09,10);g.fill();g.strokeStyle='rgba(190,130,85,.3)';g.lineWidth=1.3;for(let x=W2/8;x<W2;x+=W2/4){g.beginPath();g.moveTo(x,ct+6);g.lineTo(x,ct+H2*.085);g.stroke()}
+  g.strokeStyle=OL;g.lineWidth=2.5;g.beginPath();g.roundRect(-6,ct,W2+12,H2*.09,10);g.stroke();rr(-6,ct-8,W2+12,12,6,'#d9a676',2.5);
+  // Boden: Terrakotta-Fliesen
+  const fy=hz+H2*.045,ts=W2/Math.max(8,Math.round(W2/42));g.fillStyle='#fbe4d2';g.fillRect(0,fy,W2,H2-fy);
+  for(let y=fy,ri=0;y<H2;y+=ts,ri++)for(let x=0,ci=0;x<W2;x+=ts,ci++){if((ci+ri)%2===0){g.fillStyle='#f8dac4';g.fillRect(x,y,ts,ts)}}
+  g.strokeStyle='rgba(222,172,140,.6)';g.lineWidth=1.2;g.beginPath();for(let y=fy+ts;y<H2;y+=ts){g.moveTo(0,y);g.lineTo(W2,y)}for(let x=ts;x<W2;x+=ts){g.moveTo(x,fy);g.lineTo(x,H2)}g.stroke();
   g.fillStyle='rgba(61,74,107,.08)';g.fillRect(0,fy,W2,6);
 }
-function drawApoSign(c){const ct=AH*AHZ-AH*.045,ch=AH*.09,cy0=ct+ch*.42,pu=.6+.4*Math.sin(T*2.5);c.save();
-  c.font='900 '+Math.round(Math.min(22,ch*.42))+'px Nunito, system-ui';c.textAlign='left';c.textBaseline='middle';const t='Kuh-Apotheke',tw=c.measureText(t).width,q=Math.min(11,ch*.2),x0=AW/2-(tw+q*2+12)/2,cx0=x0+q;
-  c.shadowColor='rgba(89,201,138,'+pu+')';c.shadowBlur=14;c.fillStyle='#59c98a';c.fillRect(cx0-q*.4,cy0-q,q*.8,q*2);c.fillRect(cx0-q,cy0-q*.4,q*2,q*.8);c.shadowBlur=0;
-  c.fillStyle='#3d4a6b';c.fillText(t,cx0+q+12,cy0+1);c.restore()}
+function apoCrossU(c,x,y,q){const a=q*.34,b=q,r=q*.16;c.beginPath();c.moveTo(x-a,y-b+r);c.quadraticCurveTo(x-a,y-b,x-a+r,y-b);c.lineTo(x+a-r,y-b);c.quadraticCurveTo(x+a,y-b,x+a,y-b+r);c.lineTo(x+a,y-a);c.lineTo(x+b-r,y-a);c.quadraticCurveTo(x+b,y-a,x+b,y-a+r);c.lineTo(x+b,y+a-r);c.quadraticCurveTo(x+b,y+a,x+b-r,y+a);c.lineTo(x+a,y+a);c.lineTo(x+a,y+b-r);c.quadraticCurveTo(x+a,y+b,x+a-r,y+b);c.lineTo(x-a+r,y+b);c.quadraticCurveTo(x-a,y+b,x-a,y+b-r);c.lineTo(x-a,y+a);c.lineTo(x-b+r,y+a);c.quadraticCurveTo(x-b,y+a,x-b,y+a-r);c.lineTo(x-b,y-a+r);c.quadraticCurveTo(x-b,y-a,x-b+r,y-a);c.lineTo(x-a,y-a);c.closePath()}
+// Holzschild mit grünem Apotheken-Abzeichen auf dem Tresen
+function drawApoSign(c){const ct=AH*AHZ-AH*.045,ch=AH*.09,top=ct+6,cy=top+(ch-6)/2,OL='#3d4a6b';c.save();const fs=Math.round(Math.min(21,ch*.4));c.font='900 '+fs+'px Nunito, system-ui';
+  const t='Kuh-Apotheke',tw=c.measureText(t).width,ph=Math.min(ch-6-12,fs*2.1),R=Math.min(fs*.78,(ph-10)/2-3),q=R*.54,pw=10+R*2+12+tw+20,x0=AW/2-pw/2,y0=cy-ph/2;
+  c.fillStyle='rgba(61,74,107,.12)';c.beginPath();c.roundRect(x0+2,y0+4,pw,ph,ph*.32);c.fill();
+  c.fillStyle='#d9a676';c.strokeStyle=OL;c.lineWidth=2.5;c.beginPath();c.roundRect(x0,y0,pw,ph,ph*.32);c.fill();c.stroke();
+  c.fillStyle='#fff8ec';c.lineWidth=1.8;c.beginPath();c.roundRect(x0+5,y0+5,pw-10,ph-10,ph*.24);c.fill();c.stroke();
+  const bx=x0+10+R;c.fillStyle='#3fbf78';c.lineWidth=2;c.beginPath();c.arc(bx,cy,R,0,7);c.fill();c.stroke();c.fillStyle='#fff';apoCrossU(c,bx,cy,q);c.fill();
+  c.fillStyle='#5a3a22';c.textAlign='left';c.textBaseline='middle';c.fillText(t,bx+R+10,cy+1);c.restore()}
 function drawApoScene(dt){const c=apoCx;if(!c)return;if(abgW!==AW||abgH!==AH||!abg)buildApoBg();
   c.clearRect(0,0,AW,AH);c.drawImage(abg,0,0,AW,AH);drawApoSign(c);
   const s=apoSize(),order=[...S.apo.cows].sort((a,b)=>a.y-b.y);if(aDrag){const i=order.indexOf(aDrag.c);if(i>=0){order.splice(i,1);order.push(aDrag.c)}else aDrag=null}
@@ -2081,7 +2090,7 @@ function mergeApo(a,b){const A=S.apo,L=a.lvl+1;A.cows=A.cows.filter(o=>o!==a&&o!
 function apoMini(L,w,h){const cv=document.createElement('canvas');cv.width=w*2;cv.height=h*2;const g=cv.getContext('2d');g.scale(2,2);drawCow(g,w*.45,h*.58,h*.72,APO[L-1],1,false);return cv}
 function heal(c){const A=S.apo,need=c.sick,k=A.cows.find(o=>o.lvl===need&&!(aDrag&&aDrag.c===o));if(!k||!S.cows.includes(c))return;
   A.cows=A.cows.filter(o=>o!==k);c.sick=0;c.pop=1;c.wait=1;A.healed=(A.healed||0)+1;const n=healReward(need);S.dia+=n;sfx('dia');{const e=document.getElementById('dias');e.classList.remove('bump');void e.offsetWidth;e.classList.add('bump')}
-  showToast('Die '+LV[c.lvl-1].n+' ist wieder gesund! +'+n+' Diamanten');save();renderPatients()}
+  showToast((c.lvl===1?'Das ':'Die ')+LV[c.lvl-1].n+' ist wieder gesund! +'+n+' Diamanten');save();renderPatients()}
 function vaccinate(){const A=S.apo,k=A.cows.find(o=>o.lvl===AMAX&&!(aDrag&&aDrag.c===o));if(!k)return;A.cows=A.cows.filter(o=>o!==k);
   A.immuneUntil=Math.max(Date.now(),A.immuneUntil||0)+IMMUNE_MIN*60000;sfx('discover');showToast('Die ganze Herde ist geimpft! '+IMMUNE_MIN+' Minuten lang wird keine Kuh krank.');save();renderPatients()}
 function renderPatients(update){const box=document.getElementById('aPatList'),A=S.apo,list=sickCows(),key=list.map(c=>c.id+':'+c.sick).join(',');
