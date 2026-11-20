@@ -357,7 +357,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 <div class="overlay" id="cowSheet"><div class="panel" style="text-align:center"><canvas id="cowCv" width="360" height="260" style="position:static;display:block;width:180px;height:130px;margin:0 auto 4px"></canvas><h2 id="cowName" style="margin-bottom:4px"></h2><p id="cowInfo" style="color:var(--muted);font-weight:600;margin-bottom:16px"></p><button id="sellBtn" class="sellbtn"></button><button class="close" data-close="cowSheet" style="background:#f3f6f2;color:var(--ink)">Abbrechen</button></div></div>
 <div class="overlay" id="buy"><div class="panel"><h2 class="hbal">Kuh kaufen<span class="bal" data-bal="coins"></span></h2><div id="buyList"></div><p id="buyNote" style="font-size:13px;color:#6b5a3e;margin-top:4px"></p><button class="close" data-close="buy">Schließen</button></div></div>
 <div class="overlay" id="shop"><div class="panel"><h2 class="hbal">Upgrades<span class="balw"><span class="bal" data-bal="coins"></span><span class="bal" data-bal="dia"></span></span></h2><div id="shopList"></div><h2 class="sec">Diamanten kaufen</h2><div id="exList"></div><h2 class="sec">Diamanten-Shop</h2><div id="diaList"></div><button class="close" data-close="shop">Schließen</button></div></div>
-<div class="overlay" id="dex"><div class="panel"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px"><h2 style="margin:0">Sammlung <small style="font-size:11px;color:#9aa4b5;font-weight:700">v91</small></h2><button id="testBtn" style="border:0;border-radius:999px;background:#eef1f4;color:#1d2a22;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;margin-left:auto;white-space:nowrap">Test aus</button><button id="resetBtn" style="display:flex;align-items:center;gap:6px;border:0;border-radius:999px;background:#fde7f1;color:#d6347f;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;white-space:nowrap"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v5h5"/></svg><span>Neu starten</span></button></div><div id="dexList"></div><div class="savebox"><b>Töne</b><span>Kurze Klänge beim Verschmelzen, Antippen und Entdecken.</span><div class="savebtns"><button id="sndBtn">Töne: an</button></div></div><div class="savebox" id="cloudBox"><b>☁️ Cloud-Speicherung</b><span id="cloudStat">Dein Spielstand wird automatisch online gesichert und lässt sich auf jedem Gerät wieder laden.</span><div class="savebtns"><button id="cloudBtn">Einrichten</button><button id="cloudOut" style="display:none">Abmelden</button></div></div><div class="savebox"><b>Spielstand-Code</b><span>Sichere deinen Fortschritt als Code, z.B. in deinen Notizen. So kannst du ihn jederzeit wiederherstellen.</span><div class="savebtns"><button id="saveExp">Sichern</button><button id="saveImp">Laden</button></div></div><button class="close" data-close="dex">Schließen</button></div></div>
+<div class="overlay" id="dex"><div class="panel"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px"><h2 style="margin:0">Sammlung <small style="font-size:11px;color:#9aa4b5;font-weight:700">v92</small></h2><button id="testBtn" style="border:0;border-radius:999px;background:#eef1f4;color:#1d2a22;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;margin-left:auto;white-space:nowrap">Test aus</button><button id="resetBtn" style="display:flex;align-items:center;gap:6px;border:0;border-radius:999px;background:#fde7f1;color:#d6347f;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;white-space:nowrap"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v5h5"/></svg><span>Neu starten</span></button></div><div id="dexList"></div><div class="savebox"><b>Töne</b><span>Kurze Klänge beim Verschmelzen, Antippen und Entdecken.</span><div class="savebtns"><button id="sndBtn">Töne: an</button></div></div><div class="savebox" id="cloudBox"><b>☁️ Cloud-Speicherung</b><span id="cloudStat">Dein Spielstand wird automatisch online gesichert und lässt sich auf jedem Gerät wieder laden.</span><div class="savebtns"><button id="cloudBtn">Einrichten</button><button id="cloudOut" style="display:none">Abmelden</button></div></div><div class="savebox"><b>Spielstand-Code</b><span>Sichere deinen Fortschritt als Code, z.B. in deinen Notizen. So kannst du ihn jederzeit wiederherstellen.</span><div class="savebtns"><button id="saveExp">Sichern</button><button id="saveImp">Laden</button></div></div><button class="close" data-close="dex">Schließen</button></div></div>
 <div class="overlay center" id="discover"><div class="panel"><h2>Neue Kuh entdeckt!</h2><canvas id="discCv" width="400" height="320"></canvas><h2 id="discName"></h2><p id="discDesc"></p><button class="close" data-close="discover">Weiter</button></div></div>
 <div class="overlay center" id="saveSheet"><div class="panel"><h2 id="saveTitle">Spielstand sichern</h2><p id="saveInfo" style="color:#6b5a3e;margin:0 0 8px;font-weight:600;font-size:14px"></p><textarea id="saveCode" spellcheck="false" autocomplete="off"></textarea><div class="savebtns"><button id="saveAct">Kopieren</button><button id="saveShare">Teilen</button></div><button class="close" data-close="saveSheet">Schließen</button></div></div>
 <div class="overlay center" id="cloudSheet"><div class="panel"><h2 id="cloudTitle">Cloud-Speicherung</h2><p id="cloudInfo" style="color:#6b5a3e;margin:0 0 10px;font-weight:600;font-size:14px">Wähle einen Spielernamen und eine Geheimzahl. Merke sie dir gut – damit holst du deinen Spielstand auf jedes Gerät.</p><div id="cloudForm"><input id="cloudName" placeholder="Spielername" autocomplete="off" autocapitalize="off"><input id="cloudPin" placeholder="Geheimzahl (mind. 4 Ziffern)" inputmode="numeric" autocomplete="off"></div><div class="savebtns" id="cloudBtns"><button id="cloudGo">Verbinden</button></div><button class="close" data-close="cloudSheet">Schließen</button></div></div>
@@ -510,14 +510,16 @@ function drawCow(c,x,y,s,L,t,flip,lifted,glow,walk){
 }
 
 const MAXL=LV.length;
+// Preise immer glatt: unter 10.000 auf Hunderter, darüber auf zwei geltende Ziffern
+function niceCost(v){if(v<1e4)return Math.max(100,Math.round(v/100)*100);const p=Math.pow(10,Math.floor(Math.log10(v))-1);return Math.round(v/p)*p}
 const UPG=[
- {k:'crate',n:'Schnellere Kisten',d:l=>'Kiste alle '+crateInt(l)+' s',cost:l=>1000*Math.pow(3.5,l),max:5},
- {k:'cap',n:'Größere Weide',d:l=>Math.min(16,10+l)+' Kühe Platz',cost:l=>2500*Math.pow(3.5,l),max:6},
- {k:'income',n:'Saftigeres Gras',d:l=>'Kälbchen '+(Math.round(2*(1+l))/10).toLocaleString('de-DE')+'/s',cost:l=>1500*Math.pow(2.7,l),max:4},
- {k:'gold',n:'Goldene Kiste öfter',d:l=>'alle '+goldInt(l)+' Kisten',cost:l=>7500*Math.pow(3.5,l),max:5},
- {k:'magnet',n:'Stärkerer Magnet',d:l=>'Magnet alle '+magInt(l)+' s',cost:l=>3000*Math.pow(3.2,l),max:7},
- {k:'wkFreq',n:'Häufigere Mitarbeiter-Besuche',d:l=>'Besuch alle '+fmtT(wkInt(l)),cost:l=>4e6*Math.pow(2.2,l),max:4,need:l=>MAXL},
- {k:'wkPay',n:'Bessere Atom-Preise',d:l=>(2+Math.min(3,l))+' Atom-Münzen pro Kuh-Stufe',cost:l=>5e6*Math.pow(2.2,l),max:3,need:l=>MAXL}
+ {k:'crate',n:'Schnellere Kisten',d:l=>'Kiste alle '+crateInt(l)+' s',cost:l=>niceCost(1000*Math.pow(3.5,l)),max:5},
+ {k:'cap',n:'Größere Weide',d:l=>Math.min(16,10+l)+' Kühe Platz',cost:l=>niceCost(2500*Math.pow(3.5,l)),max:6},
+ {k:'income',n:'Saftigeres Gras',d:l=>'Kälbchen '+(Math.round(2*(1+l))/10).toLocaleString('de-DE')+'/s',cost:l=>[2000,10000,50000,250000][Math.min(3,l)],max:4},
+ {k:'gold',n:'Goldene Kiste öfter',d:l=>'alle '+goldInt(l)+' Kisten',cost:l=>niceCost(7500*Math.pow(3.5,l)),max:5},
+ {k:'magnet',n:'Stärkerer Magnet',d:l=>'Magnet alle '+magInt(l)+' s',cost:l=>niceCost(3000*Math.pow(3.2,l)),max:7},
+ {k:'wkFreq',n:'Häufigere Mitarbeiter-Besuche',d:l=>'Besuch alle '+fmtT(wkInt(l)),cost:l=>niceCost(4e6*Math.pow(2.2,l)),max:4,need:l=>MAXL},
+ {k:'wkPay',n:'Bessere Atom-Preise',d:l=>(2+Math.min(3,l))+' Atom-Münzen pro Kuh-Stufe',cost:l=>niceCost(5e6*Math.pow(2.2,l)),max:3,need:l=>MAXL}
 ];
 function magInt(l){return 10-l}
 function goldInt(l){return 20-2*l}
@@ -564,8 +566,8 @@ const MISSIONS=[
 ];
 function misCost(m){return m.need*300}
 const PUP=[
- {k:'slots',n:'Größerer Brutkasten',d:l=>Math.min(16,8+2*l)+' Plätze',cost:l=>5000*Math.pow(4,l),max:4},
- {k:'amp',n:'Reaktor-Verstärker',d:l=>'+'+(l*25)+' % Leistung',cost:l=>2500*Math.pow(2.5,l),max:20}
+ {k:'slots',n:'Größerer Brutkasten',d:l=>Math.min(16,8+2*l)+' Plätze',cost:l=>niceCost(5000*Math.pow(4,l)),max:4},
+ {k:'amp',n:'Reaktor-Verstärker',d:l=>'+'+(l*25)+' % Leistung',cost:l=>niceCost(2500*Math.pow(1.5,l)),max:20}
 ];
 const CALF_PRICE=250000;
 function fmtL(n){return n<1e4?(Math.round(n*10)/10).toLocaleString('de-DE',{maximumFractionDigits:1}):fmt(n)}
@@ -1778,9 +1780,9 @@ const AMAX=APO.length;
 // Krankheiten: Stufe der Apotheken-Kuh, die als Medizin gebraucht wird
 const DISEASE={2:{n:'Bauchgrummeln',m:'Kamillentee'},3:{n:'Husten',m:'Hustentropfen'},4:{n:'wunde Hufe',m:'Wund- und Heilsalbe'},5:{n:'Kopfweh',m:'eine Schmerztablette'},6:{n:'einen Bakterien-Infekt',m:'eine Antibiotikum-Kapsel'},7:{n:'Vitaminmangel',m:'eine Vitamin-Spritze aus der Ampulle'}};
 const APUP=[
- {k:'slots',n:'Größere Offizin',d:l=>apoSlotsAt(l)+' Plätze',cost:l=>200*Math.pow(4,l),max:4},
- {k:'lab',n:'Moderne Laborgeräte',d:l=>'+'+(l*25)+' % Pillen',cost:l=>100*Math.pow(2.3,l),max:20},
- {k:'care',n:'Gute Beratung',d:l=>'+'+(l*50)+' % Diamanten',cost:l=>500*Math.pow(3,l),max:4}
+ {k:'slots',n:'Größere Offizin',d:l=>apoSlotsAt(l)+' Plätze',cost:l=>niceCost(200*Math.pow(4,l)),max:4},
+ {k:'lab',n:'Moderne Laborgeräte',d:l=>'+'+(l*25)+' % Pillen',cost:l=>niceCost(100*Math.pow(1.6,l)),max:20},
+ {k:'care',n:'Gute Beratung',d:l=>'+'+(l*50)+' % Diamanten',cost:l=>niceCost(500*Math.pow(3,l)),max:4}
 ];
 const IMMUNE_MIN=30;
 IC.pill='<svg class="ic pillic" viewBox="0 0 24 24"><g transform="rotate(-40 12 12)"><rect x="2.5" y="7.5" width="19" height="9" rx="4.5" fill="#fff" stroke="#3d4a6b" stroke-width="1.7"/><path d="M12 7.5h5a4.5 4.5 0 0 1 0 9h-5z" fill="#59c98a" stroke="#3d4a6b" stroke-width="1.7" stroke-linejoin="round"/><rect x="5" y="9.4" width="5" height="1.7" rx=".85" fill="#e3f7ec"/></g></svg>';
