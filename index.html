@@ -357,7 +357,7 @@ body.shake #plantView,body.shake #app{animation:shake .12s linear infinite}
 <div class="overlay" id="cowSheet"><div class="panel" style="text-align:center"><canvas id="cowCv" width="360" height="260" style="position:static;display:block;width:180px;height:130px;margin:0 auto 4px"></canvas><h2 id="cowName" style="margin-bottom:4px"></h2><p id="cowInfo" style="color:var(--muted);font-weight:600;margin-bottom:16px"></p><button id="sellBtn" class="sellbtn"></button><button class="close" data-close="cowSheet" style="background:#f3f6f2;color:var(--ink)">Abbrechen</button></div></div>
 <div class="overlay" id="buy"><div class="panel"><h2 class="hbal">Kuh kaufen<span class="bal" data-bal="coins"></span></h2><div id="buyList"></div><p id="buyNote" style="font-size:13px;color:#6b5a3e;margin-top:4px"></p><button class="close" data-close="buy">Schließen</button></div></div>
 <div class="overlay" id="shop"><div class="panel"><h2 class="hbal">Upgrades<span class="balw"><span class="bal" data-bal="coins"></span><span class="bal" data-bal="dia"></span></span></h2><div id="shopList"></div><h2 class="sec">Diamanten kaufen</h2><div id="exList"></div><h2 class="sec">Diamanten-Shop</h2><div id="diaList"></div><button class="close" data-close="shop">Schließen</button></div></div>
-<div class="overlay" id="dex"><div class="panel"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px"><h2 style="margin:0">Sammlung <small style="font-size:11px;color:#9aa4b5;font-weight:700">v94</small></h2><button id="testBtn" style="border:0;border-radius:999px;background:#eef1f4;color:#1d2a22;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;margin-left:auto;white-space:nowrap">Test aus</button><button id="resetBtn" style="display:flex;align-items:center;gap:6px;border:0;border-radius:999px;background:#fde7f1;color:#d6347f;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;white-space:nowrap"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v5h5"/></svg><span>Neu starten</span></button></div><div id="dexList"></div><div class="savebox"><b>Töne</b><span>Kurze Klänge beim Verschmelzen, Antippen und Entdecken.</span><div class="savebtns"><button id="sndBtn">Töne: an</button></div></div><div class="savebox" id="cloudBox"><b>☁️ Cloud-Speicherung</b><span id="cloudStat">Dein Spielstand wird automatisch online gesichert und lässt sich auf jedem Gerät wieder laden.</span><div class="savebtns"><button id="cloudBtn">Einrichten</button><button id="cloudOut" style="display:none">Abmelden</button></div></div><div class="savebox"><b>Spielstand-Code</b><span>Sichere deinen Fortschritt als Code, z.B. in deinen Notizen. So kannst du ihn jederzeit wiederherstellen.</span><div class="savebtns"><button id="saveExp">Sichern</button><button id="saveImp">Laden</button></div></div><button class="close" data-close="dex">Schließen</button></div></div>
+<div class="overlay" id="dex"><div class="panel"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px"><h2 style="margin:0">Sammlung <small style="font-size:11px;color:#9aa4b5;font-weight:700">v95</small></h2><button id="testBtn" style="border:0;border-radius:999px;background:#eef1f4;color:#1d2a22;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;margin-left:auto;white-space:nowrap">Test aus</button><button id="resetBtn" style="display:flex;align-items:center;gap:6px;border:0;border-radius:999px;background:#fde7f1;color:#d6347f;font:800 13px Nunito,system-ui;padding:8px 12px;cursor:pointer;white-space:nowrap"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v5h5"/></svg><span>Neu starten</span></button></div><div id="dexList"></div><div class="savebox"><b>Töne</b><span>Kurze Klänge beim Verschmelzen, Antippen und Entdecken.</span><div class="savebtns"><button id="sndBtn">Töne: an</button></div></div><div class="savebox" id="cloudBox"><b>☁️ Cloud-Speicherung</b><span id="cloudStat">Dein Spielstand wird automatisch online gesichert und lässt sich auf jedem Gerät wieder laden.</span><div class="savebtns"><button id="cloudBtn">Einrichten</button><button id="cloudOut" style="display:none">Abmelden</button></div></div><div class="savebox"><b>Spielstand-Code</b><span>Sichere deinen Fortschritt als Code, z.B. in deinen Notizen. So kannst du ihn jederzeit wiederherstellen.</span><div class="savebtns"><button id="saveExp">Sichern</button><button id="saveImp">Laden</button></div></div><button class="close" data-close="dex">Schließen</button></div></div>
 <div class="overlay center" id="discover"><div class="panel"><h2>Neue Kuh entdeckt!</h2><canvas id="discCv" width="400" height="320"></canvas><h2 id="discName"></h2><p id="discDesc"></p><button class="close" data-close="discover">Weiter</button></div></div>
 <div class="overlay center" id="saveSheet"><div class="panel"><h2 id="saveTitle">Spielstand sichern</h2><p id="saveInfo" style="color:#6b5a3e;margin:0 0 8px;font-weight:600;font-size:14px"></p><textarea id="saveCode" spellcheck="false" autocomplete="off"></textarea><div class="savebtns"><button id="saveAct">Kopieren</button><button id="saveShare">Teilen</button></div><button class="close" data-close="saveSheet">Schließen</button></div></div>
 <div class="overlay center" id="cloudSheet"><div class="panel"><h2 id="cloudTitle">Cloud-Speicherung</h2><p id="cloudInfo" style="color:#6b5a3e;margin:0 0 10px;font-weight:600;font-size:14px">Wähle einen Spielernamen und eine Geheimzahl. Merke sie dir gut – damit holst du deinen Spielstand auf jedes Gerät.</p><div id="cloudForm"><input id="cloudName" placeholder="Spielername" autocomplete="off" autocapitalize="off"><input id="cloudPin" placeholder="Geheimzahl (mind. 4 Ziffern)" inputmode="numeric" autocomplete="off"></div><div class="savebtns" id="cloudBtns"><button id="cloudGo">Verbinden</button></div><button class="close" data-close="cloudSheet">Schließen</button></div></div>
@@ -1027,6 +1027,7 @@ function sell(c){if(diaFor(c.lvl)<1||c.sick)return;
   save();
 }
 function drawTapBadge(f){
+  if(f.tapB){drawTapPill(f);return}
   const age=.9-f.l,a=Math.min(1,f.l*3),sc=age<.1?.55+age/.1*.55:age<.18?1.1-(age-.1)/.08*.1:1;
   cx.save();cx.globalAlpha=a;cx.translate(f.x,f.y);cx.scale(sc,sc);
   cx.font=f.grey?'800 14px Nunito, system-ui':'800 17px Nunito, system-ui';const tw=cx.measureText(f.t).width,h=30,w=tw+(f.grey?28:44),x0=-w/2;
@@ -1038,11 +1039,22 @@ function drawTapBadge(f){
   cx.fillStyle='#d6347f';cx.font='800 17px Nunito, system-ui';cx.textAlign='left';cx.textBaseline='middle';cx.fillText(f.t,x0+33,1);
   cx.restore();
 }
-function fmtTap(n){return n<1?n.toFixed(2).replace('.',','):n<100&&n%1?n.toFixed(1).replace('.',','):fmt(n)}
+function drawTapPill(f){
+  const b=f.bump,k=Math.min(1,b/.22),pop=b<.22?(k<.6?.5+k/.6*.68:1.18-(k-.6)/.4*.18):1,end=f.l<.25?f.l/.25:1,sc=pop*(.9+.1*end),a=end;
+  cx.save();cx.globalAlpha=a;cx.translate(f.x,f.y);cx.scale(sc,sc);cx.rotate(b<.3?Math.sin(b*28)*.06*(1-b/.3):0);
+  cx.font='900 18px Nunito, system-ui';const tw=cx.measureText(f.t).width,h=32,w=tw+48,x0=-w/2;
+  cx.shadowColor='rgba(150,60,110,.28)';cx.shadowBlur=10;cx.shadowOffsetY=3;cx.fillStyle='#fff';cx.beginPath();cx.roundRect(x0,-h/2,w,h,h/2);cx.fill();cx.shadowColor='transparent';
+  cx.lineWidth=2.5;cx.strokeStyle='#ffd23f';cx.beginPath();cx.roundRect(x0+1.25,-h/2+1.25,w-2.5,h-2.5,h/2-1.25);cx.stroke();
+  drawCoin(cx,x0+18,0,11,1);
+  cx.textAlign='left';cx.textBaseline='middle';cx.lineJoin='round';cx.fillStyle='#d6347f';cx.fillText(f.t,x0+34,1.5);
+  if(b<.4){const q=b/.4;cx.globalAlpha=a*(1-q);cx.fillStyle='#ffd23f';[[-1,-1],[1,-1],[1,1],[-1,1]].forEach(([u,v],i)=>{const r=(w/2+6+q*10),px=u*r*.92,py=v*(h/2+4+q*8),z=3.2*(1-q*.5);cx.beginPath();cx.moveTo(px,py-z*1.6);cx.quadraticCurveTo(px,py,px+z*1.6,py);cx.quadraticCurveTo(px,py,px,py+z*1.6);cx.quadraticCurveTo(px,py,px-z*1.6,py);cx.quadraticCurveTo(px,py,px,py-z*1.6);cx.fill()})}
+  cx.restore()}
+function fmtTap(n){return n<1e6?(Math.round(n*100)/100).toLocaleString('de-DE',{maximumFractionDigits:n<100?2:1}):fmt(Math.round(n))}
 function tapCow(c){
   if(c.sick){c.tap=1;const D=sickInfo(c),[x,y]=toPx(c);floats=floats.filter(f=>f.cow!==c);floats.push({x,y:y-cowSize()*.75,t:'Krank – ab in die Kuh-Apotheke!',l:1.6,cow:c});return}
   const bonus=income(c.lvl)/COIN_EVERY*.1;c.tap=1;c.wait=Math.max(c.wait,.6);if(!(bonus>0))return;S.coins+=bonus;sfx('coin');
-  const [x,y]=toPx(c);floats=floats.filter(f=>f.cow!==c);floats.push({x,y:y-cowSize()*.55,t:'+'+fmtTap(bonus),l:.9,gold:1,cow:c});
+  const [x,y]=toPx(c),old=floats.find(f=>f.cow===c&&f.tapB&&f.l>.25);floats=floats.filter(f=>f.cow!==c||f===old);
+  if(old){old.v+=bonus;old.t='+'+fmtTap(old.v);old.l=1.1;old.bump=0;old.x=x;old.y0=y-cowSize()*.55}else floats.push({x,y:y-cowSize()*.55,y0:y-cowSize()*.55,v:bonus,t:'+'+fmtTap(bonus),l:1.1,gold:1,tapB:1,bump:0,cow:c});
   spawnTapCoins(x,y-cowSize()*.2);
   hideHint2();hideHint();
 }
@@ -1276,7 +1288,7 @@ function loop(now){
   // Münzen
   for(let i=coins.length-1;i>=0;i--){coins[i].age+=dt;if(coins[i].age>6)collect(i)}
   parts.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=400*dt;p.l-=dt});parts=parts.filter(p=>p.l>0);
-  floats.forEach(f=>{f.y-=(f.gold?22:40)*dt;f.l-=dt});floats=floats.filter(f=>f.l>0);
+  floats.forEach(f=>{if(f.tapB){f.bump+=dt;f.l-=dt;const a=1.1-f.l,e=1-Math.pow(1-Math.min(1,a/1.1),3);f.y=f.y0-30*e;return}f.y-=(f.gold?22:40)*dt;f.l-=dt});floats=floats.filter(f=>f.l>0);
   if(drag){if(drag.moved&&overSell(drag.c))drag.sellT+=dt;else drag.sellT=0}
   if(S.magnetOn!==false&&!magPull){const iv=magInt(S.up.magnet);magT=Math.min(iv,magT+dt);if(magT>=iv){startMagnet();if(magPull)magT=0}}
   if(magPull){const {a,b}=magPull;
